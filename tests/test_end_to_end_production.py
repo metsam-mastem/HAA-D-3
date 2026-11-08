@@ -1,0 +1,62 @@
+import json
+import tempfile
+import unittest
+import zipfile
+from pathlib import Path
+
+from haa_d3.kuramoto import simulate_kuramoto
+from haa_d3.scene_mappings import kuramoto_to_scene
+from haa_d3.schema_validation import validate_json_schema
+from haa_d3.render_svg import render_scene_frames
+from haa_d3.sonification import write_sonification_midi
+from haa_d3.release import build_release_bundle
+
+
+class EndToEndProductionTests(unittest.TestCase):
+    def setUp(self):
+        self.simulation = simulate_kuramoto(nodes=4, coupling=1.2, dt=0.5, steps=2, seed=9)
+        self.scene = kuramoto_to_scene(self.simulation, frame_rate=2.0)
+
+    def test_scene_spec_is_validated_against_json_schema(self):
+        self.assertEqual(validate_json_schema(self.scene, "scene-spec.schema.json"), [])
+        invalid = dict(self.scene)
+        invalid["unexpected"] = True
+        self.assertTrue(validate_json_schema(invalid, "scene-spec.schema.json"))
+
+    def test_svg_renderer_emits_deterministic_frame_sequence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            first = Path(directory) / "first"
+            second = Path(directory) / "second"
+            paths_a = render_scene_frames(self.scene, first, frame_rate=2)
+            paths_b = render_scene_frames(self.scene, second, frame_rate=2)
+            self.assertEqual(len(paths_a), 3)
+            self.assertEqual([p.read_bytes() for p in paths_a], [p.read_bytes() for p in paths_b])
+            self.assertIn(b"<svg", paths_a[0].read_bytes())
+
+    def test_sonification_writes_valid_standard_midi_container(self):
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "coherence.mid"
+            metadata = write_sonification_midi(self.simulation, target)
+            payload = target.read_bytes()
+            self.assertEqual(payload[:4], b"MThd")
+            self.assertEqual(payload[14:18], b"MTrk")
+            self.assertGreater(metadata["event_count"], 0)
+            self.assertEqual(metadata["evidence_class"], "MODEL_OUTPUT")
+
+    def test_release_bundle_contains_manifest_scene_frames_and_audio_cue(self):
+        with tempfile.TemporaryDirectory() as directory:
+            archive = build_release_bundle(self.simulation, self.scene, Path(directory) / "release.zip")
+            self.assertTrue(archive.is_file())
+            with zipfile.ZipFile(archive) as bundle:
+                names = set(bundle.namelist())
+                self.assertIn("manifest.json", names)
+                self.assertIn("scene.json", names)
+                self.assertIn("sonification/coherence.mid", names)
+                self.assertIn("frames/000000.svg", names)
+                manifest = json.loads(bundle.read("manifest.json"))
+                self.assertEqual(manifest["status"], "GENERATED_NOT_REVIEWED")
+                self.assertIn("sha256", manifest["artifacts"]["scene.json"])
+
+
+if __name__ == "__main__":
+    unittest.main()
