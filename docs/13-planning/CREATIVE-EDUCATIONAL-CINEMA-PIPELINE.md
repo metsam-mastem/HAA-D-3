@@ -123,12 +123,12 @@ The accessible account inventory contained 18 repositories at the time of the au
 | `STD` | Research-only media workbench baseline; MVP engine and local render validation open |
 | `VINT` | Root contains `projects/reel-intelligence/WORK_REPORT_0001.md`; VINT describes Reel Intelligence as a platform-independent, local-first multimodal media analysis workbench. It is research/architecture proposal, not a production analyzer; its report prefers user-supplied media over platform URL dependence. |
 
-“Empty” above means the repository contents endpoint explicitly returned GitHub’s “repository is empty” response. A README 404 alone is not interpreted as repository-empty.
+“Empty” above means the repository contents endpoint explicitly returned GitHub’s “repository is empty” response. A README 404 alone is not interpreted as repository-empty. This section is the initial README/index snapshot; the subsequent source-tree/key-file review and its limits are recorded in [Portfolio Deep-Audit Snapshot](PORTFOLIO-DEEP-AUDIT-2026-11-08.md).
 
 ## 8. Prioritized implementation backlog
 
 ### P0 — prove the smallest useful vertical slice
-1. Lock one 30–60 second scientific concept from HAA-D-3 (no new claims without evidence).
+1. First establish STD’s deterministic 5–10 second 2D SVG/PNG → frame sequence → FFmpeg MP4 proof with metadata and checksums; only then expand to the HAA-D-3 30–60 second scientific concept (no new claims without evidence).
 2. Make one approved script and 5–8-scene storyboard.
 3. Render a Manim test scene and Blender headless smoke scene; record machine, versions, duration, and output hashes.
 4. Assemble narrated MP4 with FFmpeg and export a vertical derivative using a separate safe-area layout.
@@ -155,3 +155,14 @@ The accessible account inventory contained 18 repositories at the time of the au
 - API/AI generation is optional and must not be a required dependency of the deterministic core.
 - Do not promise fully unattended cinematic release: final science, editorial, accessibility, and rights approvals remain human gates.
 - This plan is not an approved product architecture until an ADR and benchmark are accepted.
+
+
+## 10. Perceptual design controls — research update
+
+Animated scientific graphics should be constrained by the task the viewer must perceive, not by how many objects the renderer can move. Jiang et al. (2026) consolidate perceptual-capacity-based guidelines for tracking, holistic judgments, and object additions/removals: https://doi.org/10.1186/s41235-026-00724-y . Operationalize this as:
+- Keep simultaneously tracked moving objects to a small, deliberate set; when comparison is important, consider small multiples or staged reveals instead of fast temporal transitions.
+- Slow critical transitions, hold the “aha” state, and allow replay/pause where the format permits.
+- Use a single visual focal point and restrained annotation; labels should clarify the science, not become a competing overlay.
+- Distinguish empirical data, model simulation, conceptual metaphor and unknown/speculative elements in both narration and asset metadata.
+
+Cinematic 3D science communication audience research (Jensen et al.; survey experiment, n=577) found that labels raised perceived quality ratings, while many other audience outcomes did not significantly change; the paper points toward story structure, voiceover and audiovisual content as major determinants. Reference: https://pubmed.ncbi.nlm.nih.gov/39418271/ . So the editorial rubric must grade comprehension/story/narration, not label count or visual spectacle alone.
