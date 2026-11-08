@@ -39,4 +39,4 @@ At the audit snapshot the recursive main tree contained 82 tracked files. It had
 - Existing numbered documentation paths were preserved during this merge. Overlapping folder labels remain a known taxonomy debt; no content was silently relocated.
 - No project license selected.
 - No claim of external scientific validation, biological validity, renderer/audio implementation or full media E2E.
-- Next numerical validation work is tracked separately in the Kuramoto validation branch; its status depends on CI evidence.
+- PR #5 added independent O(N²) pairwise reference, K=0 analytical checks and second-order convergence tests; it was squash-merged at `ce4e421b630179900ccd1e18f13bae61e37e29eb`. Quality run 42463415737 passed both `python-core` and `repository-governance`.

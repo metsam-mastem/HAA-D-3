@@ -58,3 +58,11 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Canonical runtime, tests, single CI workflow, topology guard, source map, governance and end-to-end lifecycle are now on `main`. PR #4 is CLOSED / MERGED.
 - Follow-up branch `research/kuramoto-independent-validation-v1` adds tests for an independently coded O(N²) pairwise solver, the analytical K=0 solution and second-order time-step convergence. These checks are NOT considered PASS until the corresponding GitHub Actions run completes successfully.
 - External scientific review, biological interpretation, experimental-data comparison, renderer adapters and original audio production remain NOT RUN.
+
+
+## Numerical verification merged — 2026-11-08
+- PR #5 was squash-merged to main at `ce4e421b630179900ccd1e18f13bae61e37e29eb`.
+- Quality Gate run [42463415737](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42463415737) completed SUCCESS: `python-core` and `repository-governance` both passed.
+- Added an independently coded O(N²) pairwise Heun reference; the production O(N) mean-field implementation matches within the asserted circular-phase tolerance.
+- Added exact K=0 analytical free-rotation checks and a time-step-halving convergence check consistent with second-order Heun behavior.
+- Updated VS-02 and the foundation handoff. These checks establish numerical implementation consistency, not empirical validation or external scientific review.
