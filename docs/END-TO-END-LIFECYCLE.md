@@ -55,7 +55,13 @@ Preserve failing inputs, logs and hashes; classify deviation; create a bounded c
 Include media, source project/SceneSpec, research references, model/experiment config, renderer/dependency versions, credits/licenses, QC report, checksums, limitations and reproduction instructions. Large media belongs in release/artifact storage; Git tracks manifests and lightweight reproducible inputs.
 
 ## Current implementation boundary
-Implemented: Python contracts/CLI, Kuramoto prototype, research-to-scene mapping, deterministic knowledge-graph SVG projection and unit tests. Not implemented yet: full research registry, JSON Schema runtime engine, automated scientific validation suite, Blender/Manim adapters, audio timeline, full browser/media E2E workflow and release automation.
+Implemented and covered by the repository Quality Gate: Python contracts/CLI, JSON Schema runtime validation, Kuramoto prototype, independent numerical checks (pairwise reference, analytical zero-coupling case and Heun convergence), research-to-scene mapping, deterministic knowledge-graph SVG projection, provenance receipts, SVG frame rendering, MIDI/WAV sonification, MP4 preview generation and reproducible ZIP release bundling.
+
+Implemented but not fully runtime-verified: Blender background-render adapter. Its source compiles in CI; Blender itself is not installed/executed in the current Quality Gate, so scene preservation, render behavior and output quality remain NOT RUN.
+
+Not implemented as complete production capabilities: full research/source/claim registry, complete automated scientific validation and uncertainty workflow, Manim adapter, synchronized multitrack audio timeline, full browser-to-media E2E workflow, professional editing/compositing, human creative/scientific/rights QC and production release approval.
+
+Current hardening branch additionally introduces bounded graph, simulation and SVG rendering budgets; stricter finite-value and root-type validation; Blender SceneSpec preflight and preservation of unowned Blender objects; security reporting guidance; Dependabot; CODEOWNERS routing; and commit-SHA-pinned Node 24 compatible workflow actions. These changes remain subject to PR review and full Quality Gate verification until merged.
 
 
 ## Conversation-derived requirement traceability
