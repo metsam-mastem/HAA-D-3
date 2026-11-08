@@ -23,7 +23,7 @@
 - Blender background adapter creates editable scene, animated oscillator objects, coherence ring and PNG sequence.
 - Gate: execute in a pinned Blender version, compare frame count and render manifest, inspect frames and confirm no unsupported scientific depiction.
 
-**State:** PASS — Blender 4.0.2 / BLENDER_EEVEE executed in GitHub Actions. 11 PNG frames at 1920×1080 were rendered; hashes, dimensions and frame count were verified; saved .blend reopened; original factory Cube/Camera/Light were preserved and restored. Run [42472362620](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42472362620); evidence artifact ID 13614135874 (10,856,635 bytes).
+**State:** PASS — Blender 4.0.2 / BLENDER_EEVEE executed in GitHub Actions. 11 PNG frames at 1920×1080 were rendered and assembled into an H.264/AAC MP4 with deterministic Kuramoto order-parameter WAV sonification. FFprobe and full FFmpeg decode passed; audio/video duration delta was 0.02 s. Hashes, dimensions, frame count and saved .blend reopen passed; original factory Cube/Camera/Light were preserved and restored. Run [42473039140](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473039140); evidence artifact ID 13614063107 (10,937,896 bytes).
 
 ## Phase D — Production acceptance and release
 - Scientific review of model assumptions and selected source/data.
