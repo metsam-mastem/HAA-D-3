@@ -132,3 +132,12 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added SECURITY.md, Dependabot, CODEOWNERS, patched setuptools, pip-audit and CycloneDX SBOM artifact; pinned workflow actions to verified commit SHAs.
 - Pre-merge Quality Gate passed on branch head `efca1a5`: 61 Python tests, dependency audit, SBOM upload, SceneSpec validation, release bundle and knowledge-graph artifact checks. Post-merge main verification is tracked by the latest main Actions run.
 - Blender executable/runtime rendering remains NOT RUN; only adapter source compilation and stubbed preflight/ownership/overwrite tests passed. Human scientific, creative, accessibility and rights reviews remain outstanding.
+
+
+## Phase C Blender runtime verification — 2026-11-08
+- Added a real Blender runtime CI job, not merely a source compile or bpy stub.
+- Blender 4.0.2 / BLENDER_EEVEE rendered 11 PNG frames at 1920×1080 from a generated Kuramoto SceneSpec under Xvfb/software OpenGL.
+- Verified PNG signatures/dimensions/count, SHA-256 inventory, frame metadata, saved .blend reopening, and preservation/restoration of the factory-startup Cube, Camera and Light.
+- Render evidence artifact: `haa-d3-blender-runtime-evidence`, artifact ID `13614135874`, 10,856,635 bytes. Run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42472362620
+- Python core Quality Gate: 63 tests PASS; dependency audit and SBOM upload PASS; repository governance PASS.
+- The render is still labeled `RENDERED_NOT_REVIEWED`. Human scientific, cinematic, audio, accessibility and rights approval remains NOT RUN. Manim runtime validation remains NOT RUN.
