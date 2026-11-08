@@ -46,7 +46,7 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Consolidation moves graph validation, deterministic SVG projection and hash receipt into src/haa_d3/; fixture into examples/knowledge/; tests into tests/; removes the duplicate prototype package and its independent CI workflow.
 - Adds the canonical source map, governance standard and end-to-end lifecycle. Root README, manifesto, docs index and catalog are synchronized.
 - Root index.html intentionally not added: the root is a source repository; the existing browser demo owns demo/neural-odyssey/index.html.
-- Scientific independent validation, JSON Schema runtime validation, renderer adapters, audio pipeline and full media E2E remain NOT RUN.
+- Independent numerical software verification was added and merged in PR #5; external scientific review, empirical-data comparison, JSON Schema runtime validation, renderer adapters, audio pipeline and full media E2E remain NOT RUN.
 
 - Added scripts/check_repository_structure.py and a CI gate that rejects duplicate Python package roots, test roots, or quality workflows; this makes the anti-sprawl rules executable rather than advisory.
 
@@ -56,7 +56,7 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 ## Foundation merge and numerical verification — 2026-11-08
 - PR #4 was marked ready and squash-merged after its branch Quality Gate passed both `python-core` and `repository-governance`: merge commit `4098ba5042b4adc53d3dc77795ca8989489c922c`.
 - Canonical runtime, tests, single CI workflow, topology guard, source map, governance and end-to-end lifecycle are now on `main`. PR #4 is CLOSED / MERGED.
-- Follow-up branch `research/kuramoto-independent-validation-v1` adds tests for an independently coded O(N²) pairwise solver, the analytical K=0 solution and second-order time-step convergence. These checks are NOT considered PASS until the corresponding GitHub Actions run completes successfully.
+- Follow-up PR #5 added an independently coded O(N²) pairwise solver, analytical K=0 solution and second-order time-step convergence. CI run 42463415737 passed both required jobs; PR #5 is CLOSED / MERGED.
 - External scientific review, biological interpretation, experimental-data comparison, renderer adapters and original audio production remain NOT RUN.
 
 
@@ -66,3 +66,10 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added an independently coded O(N²) pairwise Heun reference; the production O(N) mean-field implementation matches within the asserted circular-phase tolerance.
 - Added exact K=0 analytical free-rotation checks and a time-step-halving convergence check consistent with second-order Heun behavior.
 - Updated VS-02 and the foundation handoff. These checks establish numerical implementation consistency, not empirical validation or external scientific review.
+
+
+## Project-state reconciliation — 2026-11-08
+- PR #6 merged to main at `78dde7741adddf22d0ae44919bb5be98a2d2c5e7`.
+- Quality Gate run [42463486089](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42463486089) passed `python-core` and `repository-governance`.
+- README, source map and foundation handoff now agree on merged status and verification scope.
+- The current source map explicitly keeps runtime code under `src/haa_d3/` and independent numerical verification under `tests/`.
