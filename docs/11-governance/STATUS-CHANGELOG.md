@@ -124,3 +124,9 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Confirmed capability boundaries as recommendations: HAA-D-3 owns scientific research-to-scene/episode; VINT owns general media intake/evidence contracts; STD owns generic renderer workbench research; SSS archive owns evidence-based audit research; SSG remains optional graph/provenance prototype; SOVEREIGN/UGI remains separate Git/runtime.
 - License and runtime gaps surfaced: SOVEREIGN OS license ambiguity and UGI release/device gates; SSG license TBD and round-trip proof gate; STD no engine render proof; VINT is not yet a complete semantic analyzer; HAA-D-3 generated previews remain unreviewed outputs.
 - Added prioritized P0/P1/P2 gates and a 2D-first reproducible 5–10 second media proof. No sibling repository was modified. This is a source-tree/key-file audit, not exhaustive code/security/dependency closure or independent runtime testing.
+
+
+## GitHub Actions run ergonomics — 2026-11-08
+- Added manual workflow dispatch scopes to the canonical `.github/workflows/quality.yml`: `full` (default), `docs`, and `python`. Push and pull-request triggers continue to run both full validation jobs; scoped profiles only affect a manual run.
+- Added a prominent expandable “Run the Quality Gate” section near the top of README with exact GitHub UI steps, workflow/action links, profile descriptions and artifact download instructions (14-day retention).
+- Manual dispatch workflow must exist on the default branch to appear in GitHub’s Run workflow UI; until the draft PR is merged, the updated dispatch options may not be available to select.
