@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "haa-d3"
+version = "0.1.0"
+description = "Portable scientific-to-cinematic research and scene contracts"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "License not yet selected; see docs/07-data/DATA-AND-PROVENANCE.md" }
+authors = [{ name = "HAA-D-3 contributors" }]
+dependencies = []
+
+[project.scripts]
+haa-d3 = "haa_d3.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
