@@ -64,5 +64,5 @@ def write_sonification_midi(simulation: dict[str, Any], output_path: Path) -> di
         "mapping": "order_parameter -> pitch and velocity",
         "evidence_class": "MODEL_OUTPUT",
         "interpretation": "data sonification; not a composed soundtrack",
-        "output": str(output_path),
+        "output": "sonification/coherence.mid",
     }
