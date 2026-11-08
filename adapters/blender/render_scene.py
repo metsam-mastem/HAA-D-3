@@ -277,6 +277,8 @@ def build_scene(spec, output_dir, *, overwrite=False):
         "frame_end": frame_end,
         "frame_count": len(rendered_frames),
         "fps": round(render_fps, 6),
+        "fps_base": round(scene.render.fps_base, 6),
+        "effective_fps": round(scene.render.fps / scene.render.fps_base, 6),
         "resolution": list(render_resolution),
         "unowned_objects_preserved": len(unowned_objects),
         "artifact_inventory": artifact_inventory,
