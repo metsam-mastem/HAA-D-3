@@ -95,7 +95,7 @@ jobs:
       - name: Install Blender runtime
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender xvfb xauth libgl1-mesa-dri
+          sudo apt-get install -y blender xvfb xauth libgl1-mesa-dri ffmpeg
           blender --version
       - name: Install HAA-D-3 core
         run: |
@@ -104,9 +104,60 @@ jobs:
       - name: Generate representative SceneSpec
         run: |
           PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 8 --steps 10 --dt 0.1 --frame-rate 10 --seed 17 --output /tmp/haa-d3-blender-scene.json
+      - name: Generate deterministic WAV data sonification
+        run: |
+          PYTHONPATH=src python - <<'PY'
+          from pathlib import Path
+          from haa_d3.kuramoto import simulate_kuramoto
+          from haa_d3.media import write_sonification_wav
+          simulation = simulate_kuramoto(nodes=8, coupling=1.5, dt=0.1, steps=10, seed=17)
+          write_sonification_wav(simulation, Path("/tmp/haa-d3-blender/coherence.wav"))
+          PY
       - name: Execute Blender background render
         run: |
           LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender --background --factory-startup --python adapters/blender/render_scene.py -- --scene /tmp/haa-d3-blender-scene.json --output /tmp/haa-d3-blender
+      - name: Assemble and decode Blender audiovisual preview
+        run: |
+          ffmpeg -y -hide_banner -loglevel error -framerate 10 -start_number 1 -i /tmp/haa-d3-blender/frame_%04d.png -i /tmp/haa-d3-blender/coherence.wav -c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p -c:a aac -b:a 128k -shortest -movflags +faststart /tmp/haa-d3-blender/blender-preview.mp4
+          ffprobe -v error -count_frames -show_entries stream=codec_type,codec_name,width,height,nb_read_frames,duration,r_frame_rate:format=duration -of json /tmp/haa-d3-blender/blender-preview.mp4 > /tmp/haa-d3-blender/mp4-probe.json
+          ffmpeg -v error -xerror -i /tmp/haa-d3-blender/blender-preview.mp4 -f null -
+          python - <<'PY'
+          import hashlib, json, math
+          from pathlib import Path
+          root = Path("/tmp/haa-d3-blender")
+          manifest_path = root / "render-manifest.json"
+          manifest = json.loads(manifest_path.read_text())
+          probe = json.loads((root / "mp4-probe.json").read_text())
+          streams = probe["streams"]
+          video = next(s for s in streams if s["codec_type"] == "video")
+          audio = next(s for s in streams if s["codec_type"] == "audio")
+          assert video["codec_name"] == "h264" and audio["codec_name"] == "aac"
+          assert int(video["nb_read_frames"]) == manifest["frame_count"]
+          video_duration = float(video["duration"])
+          audio_duration = float(audio["duration"])
+          delta = abs(video_duration - audio_duration)
+          assert math.isfinite(delta) and delta <= 0.1, (video_duration, audio_duration, delta)
+          for name in ("coherence.wav", "blender-preview.mp4"):
+              path = root / name
+              assert path.is_file() and path.stat().st_size > 1000
+              manifest["artifact_inventory"][name] = {
+                  "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                  "size_bytes": path.stat().st_size,
+              }
+          manifest["video_preview"] = {
+              "file": "blender-preview.mp4",
+              "video_codec": video["codec_name"],
+              "audio_codec": audio["codec_name"],
+              "frame_count": int(video["nb_read_frames"]),
+              "video_duration_seconds": video_duration,
+              "audio_duration_seconds": audio_duration,
+              "audio_video_duration_delta_seconds": round(delta, 6),
+              "audio_interpretation": "algorithmic order-parameter data sonification; not a composed soundtrack",
+              "evidence_class": "MODEL_OUTPUT",
+          }
+          manifest_path.write_text(json.dumps(manifest, indent=2) + "\\n")
+          print(json.dumps(manifest["video_preview"], indent=2))
+          PY
       - name: Verify Blender render and editable project
         run: |
           python - <<'PY'
@@ -121,7 +172,11 @@ jobs:
           assert manifest["effective_fps"] > 0
           assert manifest["unowned_objects_preserved"] == 3
           assert (root / "scene.blend").is_file() and (root / "scene.blend").stat().st_size > 1000
-          assert set(manifest["artifact_inventory"]) == {"scene.blend", *(p.name for p in frames)}
+          assert set(manifest["artifact_inventory"]) == {"scene.blend", "coherence.wav", "blender-preview.mp4", *(p.name for p in frames)}
+          assert manifest["video_preview"]["video_codec"] == "h264"
+          assert manifest["video_preview"]["audio_codec"] == "aac"
+          assert manifest["video_preview"]["frame_count"] == len(frames)
+          assert manifest["video_preview"]["audio_video_duration_delta_seconds"] <= 0.1
           for frame in frames:
               data = frame.read_bytes()
               assert data[:8] == b"\x89PNG\r\n\x1a\n"
