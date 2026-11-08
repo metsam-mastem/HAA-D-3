@@ -6,13 +6,12 @@ execution is performed. Set HAA_D3_SCENE_FILE to the SceneSpec path.
 from __future__ import annotations
 
 import json
-import math
 import os
 from pathlib import Path
 
 from manim import (
     BLUE_C, Circle, Dot, FadeIn, FadeOut, MathTex, ORIGIN, Scene,
-    Text, VGroup, WHITE, YELLOW, interpolate,
+    Text, VGroup, WHITE, YELLOW, DOWN, UP,
 )
 
 
@@ -25,7 +24,7 @@ def _position_at(keyframes: list[dict], time_seconds: float) -> tuple[float, flo
         t0, t1 = left["time_seconds"], right["time_seconds"]
         if t0 <= time_seconds <= t1:
             alpha = 0.0 if t1 == t0 else (time_seconds - t0) / (t1 - t0)
-            return tuple(interpolate(a, b, alpha) for a, b in zip(left["value"], right["value"]))
+            return tuple(a + (b - a) * alpha for a, b in zip(left["value"], right["value"]))
     return tuple(keyframes[-1]["value"])
 
 
