@@ -104,5 +104,24 @@ class KuramotoSimulationTests(unittest.TestCase):
         self.assertTrue(any("interpretation_mode" in error for error in validate_scene(scene)))
 
 
+    def test_rejects_malformed_animation_tracks(self):
+        scene = self.scene()
+        scene["objects"][0]["animation"] = [{"property": "transform.position", "keyframes": "bad"}]
+        self.assertTrue(any("keyframes" in error for error in validate_scene(scene)))
+
+    def test_rejects_duplicate_or_non_finite_keyframe_times(self):
+        for times in ([0, 0], [0, float("nan")]):
+            with self.subTest(times=times):
+                scene = self.scene()
+                scene["objects"][0]["animation"] = [{
+                    "property": "transform.position",
+                    "keyframes": [
+                        {"time_seconds": times[0], "value": [0, 0, 0]},
+                        {"time_seconds": times[1], "value": [1, 1, 1]},
+                    ],
+                }]
+                self.assertTrue(any("time_seconds" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
