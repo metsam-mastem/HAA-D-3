@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from typing import Any
+import math
 
 
 def kuramoto_to_scene(
@@ -40,8 +41,8 @@ def kuramoto_to_scene(
             keyframes.append({
                 "time_seconds": sample["time_seconds"],
                 "value": [
-                    round(orbit_radius * __import__("math").cos(theta), 9),
-                    round(orbit_radius * __import__("math").sin(theta), 9),
+                    round(orbit_radius * math.cos(theta), 9),
+                    round(orbit_radius * math.sin(theta), 9),
                     0.0,
                 ],
             })
