@@ -1,7 +1,5 @@
 # Project Continuity, Knowledge Ingestion and Handoff Protocol
 
-<badge-placeholder/>
-
 **Status:** Mandatory operating rule  
 **Purpose:** Prevent loss, scattering, duplication, context drift and unsafe restructuring as HAA-D-3 grows or work moves between models, agents and human contributors.
 
