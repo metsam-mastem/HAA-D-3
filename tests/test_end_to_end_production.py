@@ -167,5 +167,26 @@ class EndToEndProductionTests(unittest.TestCase):
                 module.build_scene({"scene_id":"bad","frame_rate":True,"duration_seconds":1,"objects":[]}, Path("/tmp/unused"))
 
 
+    def test_blender_adapter_refuses_to_overwrite_existing_outputs_by_default(self):
+        import importlib.util
+        import sys
+        import tempfile
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_overwrite_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "render"
+            output.mkdir()
+            (output / "scene.blend").write_bytes(b"preserve")
+            with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+                spec.loader.exec_module(module)
+                with self.assertRaisesRegex(FileExistsError, "already contains HAA-D-3 outputs"):
+                    module.build_scene({"scene_id":"demo","frame_rate":24,"duration_seconds":1,"objects":[]}, output)
+            self.assertEqual((output / "scene.blend").read_bytes(), b"preserve")
+
+
 if __name__ == "__main__":
     unittest.main()
