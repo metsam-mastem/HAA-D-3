@@ -81,7 +81,10 @@ The Python package has one canonical root: src/haa_d3/. The test suite has one r
 - Deterministic SVG frame renderer and MIDI data-sonification adapter.
 - End-to-end ZIP release bundler with SHA-256 inventory and explicit review status.
 - Optional Blender 4.2+ background renderer adapter (runtime execution pending).
-- Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt.
+- Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt, with graph-size and render-pixel budgets.
+- Scene contract validation rejects non-finite values, booleans in numeric fields, malformed root types and unhashable enum values.
+- Kuramoto simulation and SVG rendering enforce snapshot, frame, object, pixel and work budgets.
+- Blender adapter preserves unowned scene objects and performs SceneSpec render-budget preflight; actual Blender runtime verification remains pending.
 - Browser-based Neural Odyssey illustrative demo.
 
 Graph and Kuramoto outputs remain computational/model outputs, not empirical scientific validation. The Kuramoto numerical implementation passes independent-formulation, analytical-special-case and convergence checks; external scientific review and experimental-data comparison remain pending. It is a generic coupled-oscillator system, not a biological brain model.
@@ -112,6 +115,13 @@ The compressed execution gates and acceptance criteria are in [Phased Delivery P
 
 ## Creative identity
 The narrative frame has three chapters: **The Genesis / پیدایش**, **The Convergence / همگرایی**, and **The Emergence / ظهور**. Original music references and creative direction remain in the series bible and creative reference map. They are inspiration only; no copyrighted audio is bundled or assumed cleared.
+
+## Security and repository governance
+
+- [Security reporting and vulnerability handling](SECURITY.md)
+- Dependabot monitors Python and GitHub Actions dependencies weekly.
+- `CODEOWNERS` routes sensitive implementation and governance paths to the repository owner; this file does not itself enforce branch protection or independent approval.
+- The Quality Gate pins third-party GitHub Actions to verified commit SHAs.
 
 ## Quality and evidence
 Work statuses: PASS, FAIL, NOT RUN, BLOCKED, DRAFT, IN REVIEW. Evidence classes: OBSERVED, REPRODUCED, MODEL_OUTPUT, HYPOTHESIS, INTERPRETATION, METAPHOR, UNKNOWN. Green CI proves only the checks it runs. Scientific review, rights clearance and creative QC are separate release gates.
