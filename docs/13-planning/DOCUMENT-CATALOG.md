@@ -24,6 +24,7 @@ This file is an inventory, not an approval or assertion that all planned work is
 | `docs/02-product/PRODUCT-SCOPE.md` | Project document | Tracked Markdown; checked in CI |
 | `docs/03-architecture/ADAPTER-CAPABILITY-CONTRACT.md` | Project document | Tracked Markdown; checked in CI |
 | `docs/03-architecture/CONCEPT-ARCHITECTURE.md` | Project document | Tracked Markdown; checked in CI |
+| `docs/03-architecture/MLMF-NX-RESEARCH-BRIEF.md` | Project document | Tracked Markdown; checked in CI |
 | `docs/03-architecture/REFERENCE-ARCHITECTURE.md` | Project document | Tracked Markdown; checked in CI |
 | `docs/04-domain/DOMAIN-MODEL.md` | Project document | Tracked Markdown; checked in CI |
 | `docs/04-engineering-spec/ES-DRAFT-0.1.md` | Project document | Tracked Markdown; checked in CI |
