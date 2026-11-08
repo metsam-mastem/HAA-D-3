@@ -111,7 +111,7 @@ class KuramotoSimulationTests(unittest.TestCase):
     def test_rejects_duplicate_or_non_finite_keyframe_times(self):
         for times in ([0, 0], [0, float("nan")]):
             with self.subTest(times=times):
-                scene = self.scene()
+                scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[{"id":"node-1","type":"point"}]}
                 scene["objects"][0]["animation"] = [{
                     "property": "transform.position",
                     "keyframes": [
@@ -124,7 +124,7 @@ class KuramotoSimulationTests(unittest.TestCase):
 
     def test_rejects_animation_values_with_property_shape_mismatch(self):
         scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[{"id":"node-1","type":"point","animation":[{"property":"transform.position","keyframes":[{"time_seconds":0,"value":1.0}]}]}]}
-        self.assertTrue(any("3D vector" in error for error in validate_scene(scene)))
+        self.assertTrue(any("match the property" in error for error in validate_scene(scene)))
 
 
     def test_rejects_scene_render_parameters_over_budget(self):
