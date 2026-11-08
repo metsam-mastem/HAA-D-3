@@ -49,8 +49,9 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
             errors.append(f"{key} must be a non-empty string")
     for key in ("duration_seconds", "frame_rate"):
         number = value.get(key)
-        if isinstance(number, bool) or not isinstance(number, (int, float)) or number <= 0:
-            errors.append(f"{key} must be a positive number")
+        import math
+        if isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(number) or number <= 0:
+            errors.append(f"{key} must be a finite positive number")
     if value.get("interpretation_mode") not in INTERPRETATION_MODES:
         errors.append("interpretation_mode is not supported")
     refs = value.get("evidence_refs")
