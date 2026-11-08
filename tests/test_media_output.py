@@ -35,6 +35,7 @@ class MediaOutputTests(unittest.TestCase):
             self.assertEqual(result["verification"]["decode"], "PASS")
             self.assertTrue(result["verification"]["has_video"])
             self.assertTrue(result["verification"]["has_audio"])
+            self.assertLessEqual(result["verification"]["audio_video_duration_delta_seconds"], 0.30)
 
 
 if __name__ == "__main__":
