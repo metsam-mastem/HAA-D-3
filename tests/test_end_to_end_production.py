@@ -39,9 +39,16 @@ class EndToEndProductionTests(unittest.TestCase):
             metadata = write_sonification_midi(self.simulation, target)
             payload = target.read_bytes()
             self.assertEqual(payload[:4], b"MThd")
-            self.assertEqual(payload[14:18], b"MTrk")
+            self.assertEqual(payload[14:18], b"MTrk")\n            self.assertEqual(payload[22:29], b"\\x00\\xff\\x51\\x03\\x07\\xa1\\x20")
             self.assertGreater(metadata["event_count"], 0)
             self.assertEqual(metadata["evidence_class"], "MODEL_OUTPUT")
+
+    def test_sonification_rejects_non_monotonic_sample_times(self):
+        invalid = dict(self.simulation)
+        invalid["samples"] = list(reversed(self.simulation["samples"]))
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(ValueError):
+                write_sonification_midi(invalid, Path(directory) / "invalid.mid")
 
     def test_release_bundle_is_byte_for_byte_reproducible(self):
         with tempfile.TemporaryDirectory() as directory:
