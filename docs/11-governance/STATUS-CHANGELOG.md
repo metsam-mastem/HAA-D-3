@@ -33,3 +33,7 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added reconciliation appendices to two historical handoffs; original dated context preserved rather than rewritten.
 - Local Markdown link destination checking is now enforced by `scripts/check_markdown_links.py` and passed in Quality run `42461219275`. JSON Schema engine validation remains a follow-up; scientific/creative reviews remain NOT RUN.
 - Created follow-up issue [#2](https://github.com/metsam-mastem/HAA-D-3/issues/2) to track licensing, schema validation, scientific checks, renderer, cue-sheet rights, reference curation, owner review and cross-platform matrix.
+
+## Recovery of original architecture thread — 2026-11-08
+- GitHub code search for `MLMF-NX` and related terms showed the exact working label was absent from the tracked files. Added `docs/03-architecture/MLMF-NX-RESEARCH-BRIEF.md` to capture the original hypothesis, modular/spatial/denoising/feedback facets, research questions, baseline/ablation plan, gates and explicit UNKNOWNs.
+- The brief is a preservation/research draft; it does not imply the architecture has been implemented or empirically validated.
