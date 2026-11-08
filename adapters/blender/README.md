@@ -3,7 +3,7 @@
 **Status:** implemented as an optional adapter; Blender runtime execution is **NOT RUN** in the repository CI environment.
 
 ## Requirements
-- Blender 4.x with bundled `bpy`.
+- Blender 4.2+ with bundled `bpy` (the adapter selects `BLENDER_EEVEE_NEXT`).
 - A valid HAA-D-3 SceneSpec JSON file.
 
 ## Run
