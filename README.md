@@ -6,6 +6,27 @@
 **Baseline:** 0.2.0 consolidated foundation on main  
 **Repository:** https://github.com/metsam-mastem/HAA-D-3
 
+## 🚦 Run the Quality Gate — start here
+
+<details>
+<summary><strong>How to run checks on GitHub (no local setup)</strong></summary>
+
+1. Open **[Actions → HAA-D-3 Quality Gate](https://github.com/metsam-mastem/HAA-D-3/actions/workflows/quality.yml)**.
+2. Select **Run workflow** (top-right). If the workflow is not yet listed, merge the PR that adds this guide/workflow update first; GitHub requires a workflow on the default branch for manual dispatch.
+3. Select the branch you want to verify.
+4. Choose a scope:
+   - **full** — repository structure, Markdown inventory/links, complete Python tests, SceneSpec validation, deterministic release bundle with MP4/WAV/MIDI/SVG, and knowledge-graph provenance outputs. Recommended for final verification.
+   - **docs** — structure + Markdown inventory + local links. Fastest for documentation-only edits.
+   - **python** — Python test suite + SceneSpec + media/release + graph checks. Use for code changes.
+5. Press **Run workflow** and open the run to follow the jobs/logs.
+6. For generated ZIP output, open the completed run → **Artifacts** → download `haa-d3-e2e-release`. Artifact retention is 14 days.
+
+**Automatic checks:** push to configured branches and every pull request trigger the full gate. Manual scopes only reduce work for an explicitly requested run; they do not replace full PR verification.
+
+Useful links: [All workflow runs](https://github.com/metsam-mastem/HAA-D-3/actions) · [Workflow file](.github/workflows/quality.yml) · [Latest release artifacts](https://github.com/metsam-mastem/HAA-D-3/actions?query=workflow%3A%22HAA-D-3+Quality+Gate%22)
+
+</details>
+
 ## Mission
 HAA-D-3 connects research, mathematics, computational engineering, knowledge representation, scientific visualization, animation, cinematography and original sound design in one governed production lifecycle. It is not a pile of disconnected tools, demos or agent-specific projects: every capability must contribute to a traceable path from a question to a validated and reviewable output.
 
