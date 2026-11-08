@@ -32,6 +32,9 @@ class MediaOutputTests(unittest.TestCase):
             self.assertIn(b"ftyp", payload[:32])
             self.assertEqual(result["status"], "RENDERED_NOT_REVIEWED")
             self.assertGreater(result["frame_count"], 0)
+            self.assertEqual(result["verification"]["decode"], "PASS")
+            self.assertTrue(result["verification"]["has_video"])
+            self.assertTrue(result["verification"]["has_audio"])
 
 
 if __name__ == "__main__":
