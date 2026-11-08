@@ -69,9 +69,19 @@ def main() -> int:
             print(f"ERROR: {exc}", file=sys.stderr)
             return 2
 
-        if args.format == "json":
+        output_kind = "SCENE"
+        if args.command == "kuramoto-scene":
+            try:
+                result = kuramoto_to_scene(result, frame_rate=args.frame_rate)
+            except ValueError as exc:
+                print(f"ERROR: {exc}", file=sys.stderr)
+                return 2
+            rendered = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
+        elif args.format == "json":
+            output_kind = "JSON"
             rendered = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
         else:
+            output_kind = "CSV"
             buffer = io.StringIO()
             writer = csv.DictWriter(buffer, fieldnames=("step", "time_seconds", "order_parameter"))
             writer.writeheader()
@@ -81,7 +91,7 @@ def main() -> int:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(rendered, encoding="utf-8")
-            print(f"PASS: wrote {"SCENE" if args.command == "kuramoto-scene" else args.format.upper()} output to {args.output}")
+            print(f"PASS: wrote {output_kind} output to {args.output}")
         else:
             sys.stdout.write(rendered)
         return 0
