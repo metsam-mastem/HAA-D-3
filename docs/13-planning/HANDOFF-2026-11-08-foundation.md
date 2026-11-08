@@ -65,3 +65,7 @@ Implement a deterministic Coupled Oscillator / Kuramoto vertical slice with:
 - one renderer adapter and a separate original-audio design brief.
 
 Acceptance: repeatable outputs under fixed seed/config; tests for edge cases; validation report; source-to-scene provenance; no claim that the model is a complete biological brain model.
+
+
+## Post-handoff reconciliation (2026-11-08)
+This file is a historical handoff snapshot. Its original statement that the PR was draft/not merged describes the handoff time and is superseded by repository history: PR #1 was subsequently marked ready and squash-merged into `main` at `64807c5d554900ba8055e321cd4e1b59fcfb09a7`. Quality checks on the PR and merge commit passed. Current residual checks are tracked in root README, catalog and changelog; do not treat the old “draft” state as current.
