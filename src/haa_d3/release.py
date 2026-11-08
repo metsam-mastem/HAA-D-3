@@ -61,7 +61,6 @@ def build_release_bundle(
         (root / "README.md").write_text(
             "# HAA-D-3 generated vertical slice\n\n"
             "Contents: source simulation, renderer-neutral SceneSpec, SVG frames, MP4 preview, WAV/MIDI sonification, "
-            "MIDI/WAV data-sonification cue, MP4 preview and SHA-256 manifest.\n\n"
             "Status: GENERATED_NOT_REVIEWED. Numerical software checks do not establish empirical "
             "or biological validity. Human scientific, creative, accessibility and rights review "
             "is required before public release.\n",
@@ -86,7 +85,7 @@ def build_release_bundle(
             "frame_count": len(list((root / "frames").glob("*.svg"))),
             "sonification": sonification,
             "wav_sonification": wav_metadata,
-            "video": video_metadata,\n            "wav_sonification": wav_metadata,\n            "video": video_metadata,
+            "video": video_metadata,
             "artifacts": artifacts,
             "required_reviews": ["scientific", "creative", "accessibility", "rights"],
             "limitations": [
