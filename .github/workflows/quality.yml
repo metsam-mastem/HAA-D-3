@@ -157,7 +157,7 @@ jobs:
               "audio_interpretation": "algorithmic order-parameter data sonification; not a composed soundtrack",
               "evidence_class": "MODEL_OUTPUT",
           }
-          manifest_path.write_text(json.dumps(manifest, indent=2) + "\\n")
+          manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
           (root / "mp4-probe.json").unlink()
           print(json.dumps(manifest["video_preview"], indent=2))
           PY
