@@ -138,8 +138,14 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
                         valid_value = all(not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) for v in value)
                     else:
                         valid_value = False
+                    if prop == "transform.position" and not (isinstance(value, (list, tuple)) and len(value) == 3 and valid_value):
+                        valid_value = False
+                    if prop == "material.emission_intensity" and (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)):
+                        valid_value = False
                     if not valid_value:
-                        errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].value must be a finite number or 3D vector")
+                        errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].value must match the property and contain finite numbers")
+                    if isinstance(time_value, (int, float)) and not isinstance(time_value, bool) and math.isfinite(time_value) and time_value > value.get("duration_seconds", math.inf):
+                        errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].time_seconds exceeds scene duration")
             if total_keyframes > 50_000:
                 errors.append("scene total keyframe budget exceeded (50000)")
     return errors
