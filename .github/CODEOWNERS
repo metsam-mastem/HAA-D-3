@@ -1,0 +1,6 @@
+# Route review requests for core logic and CI/security policy to the repository owner.
+ /src/ @metsam-mastem
+ /adapters/ @metsam-mastem
+ /.github/ @metsam-mastem
+ /schemas/ @metsam-mastem
+ /tests/ @metsam-mastem
