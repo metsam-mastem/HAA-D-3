@@ -133,7 +133,7 @@ class EndToEndProductionTests(unittest.TestCase):
         user_mesh = FakeID(name="user-mesh", users=0)
         generated_mesh = FakeID(haa_d3_generated=True, users=0)
         fake_bpy = SimpleNamespace(
-            context=SimpleNamespace(scene=SimpleNamespace(camera=generated_camera)),
+            context=SimpleNamespace(scene=SimpleNamespace(camera=generated_camera, world=None)),
             data=SimpleNamespace(
                 objects=FakeCollection([owned, user_object, generated_camera]),
                 meshes=FakeCollection([user_mesh, generated_mesh]),
