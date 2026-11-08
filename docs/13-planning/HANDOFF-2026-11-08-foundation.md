@@ -20,6 +20,7 @@ Repository governance, documentation organization, product/domain boundaries, re
 - Earlier curated Nature/GitHub reference list retained in docs/10-references/GITHUB-NATURE-LANDSCAPE.md.
 
 ## Durable findings
+0. The original README's soundtrack references, neural research framing and success criteria were retained in the updated README. Its legacy document map was inventoried separately because the referenced files were absent from the inspected main tree.
 1. Keep the scientific research layer separate from creative interpretation and renderer implementation.
 2. Use a portable core and capability-based adapters; do not hard-code a single model, renderer, cloud provider or UI framework.
 3. Use SceneSpec as a renderer-independent interchange contract.
