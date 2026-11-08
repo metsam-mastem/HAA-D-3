@@ -1,6 +1,6 @@
 # HAA-D-3 Source Map and Repository Topology
 
-**Canonical source map · Version 0.2.0**
+**Canonical source map · Version 0.3.0**
 
 ## One authoritative home per responsibility
 
@@ -34,8 +34,9 @@ src/haa_d3/
 ├── contracts.py         # Finding and SceneSpec semantic checks
 ├── kuramoto.py          # numerical coupled-oscillator prototype
 ├── knowledge_graph.py   # graph validation, SVG projection, hash receipt
-├── scene_mappings.py    # model-output to SceneSpec transforms
-└── (tests/test_kuramoto_validation.py) # independent pairwise/analytical/convergence checks
+└── scene_mappings.py    # model-output to SceneSpec transforms
+
+tests/test_kuramoto_validation.py  # independent pairwise/analytical/convergence checks
 ~~~
 
 Dependency direction:
