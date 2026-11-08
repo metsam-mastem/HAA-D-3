@@ -52,6 +52,7 @@
 - [Visual Animation Pipeline](09-creative-tech/VISUAL-ANIMATION-PIPELINE.md)
 - [Creative Direction Bible](12-production/CREATIVE-DIRECTION-BIBLE.md)
 - [Creative Reference Map](10-references/CREATIVE-REFERENCE-MAP.md)
+- [Creative, Educational, and Cinematic Content Pipeline](13-planning/CREATIVE-EDUCATIONAL-CINEMA-PIPELINE.md)
 
 ## Planning, operations and handoffs
 - [WBS Roadmap](06-planning/WBS-ROADMAP.md)
