@@ -83,7 +83,7 @@ class EndToEndProductionTests(unittest.TestCase):
 
     def test_svg_renderer_rejects_excessive_object_count(self):
         scene = dict(self.scene)
-        scene["objects"] = self.scene["objects"] * 2000
+        scene["objects"] = [dict(obj, id=f"safe-{index}") for index, obj in enumerate(self.scene["objects"] * 201)]
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(ValueError, "object limit"):
                 render_scene_frames(scene, Path(directory))
