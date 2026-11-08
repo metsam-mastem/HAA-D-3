@@ -76,6 +76,13 @@ class KuramotoSimulationTests(unittest.TestCase):
         self.assertEqual(len(scene["objects"]), 6)
         self.assertEqual(len(scene["objects"][0]["animation"][0]["keyframes"]), 4)
         self.assertTrue(any(obj["id"] == "global-coherence" for obj in scene["objects"]))
+        self.assertTrue(scene["metadata"]["source_run_id"])
+        self.assertEqual(scene["evidence_refs"][0], "simulation:kuramoto:" + scene["metadata"]["source_run_id"])
+
+    def test_different_parameters_produce_different_scene_identity(self):
+        a = kuramoto_to_scene(simulate_kuramoto(nodes=4, steps=2, seed=2, coupling=1.0))
+        b = kuramoto_to_scene(simulate_kuramoto(nodes=4, steps=2, seed=2, coupling=2.0))
+        self.assertNotEqual(a["scene_id"], b["scene_id"])
 
 
 if __name__ == "__main__":
