@@ -43,6 +43,10 @@ class EndToEndProductionTests(unittest.TestCase):
             self.assertGreater(metadata["event_count"], 0)
             self.assertEqual(metadata["evidence_class"], "MODEL_OUTPUT")
 
+    def test_blender_adapter_source_is_valid_python(self):
+        adapter = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        compile(adapter.read_text(encoding="utf-8"), str(adapter), "exec")
+
     def test_release_bundle_contains_manifest_scene_frames_and_audio_cue(self):
         with tempfile.TemporaryDirectory() as directory:
             archive = build_release_bundle(self.simulation, self.scene, Path(directory) / "release.zip")
