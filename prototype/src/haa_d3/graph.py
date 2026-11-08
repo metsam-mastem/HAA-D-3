@@ -59,7 +59,7 @@ def render_svg(graph: dict[str, Any], width: int = 1000, height: int = 600) -> s
     for i,n in enumerate(nodes):
         x=float(n.get("x",i*100)); y=float(n.get("y",i*60))
         pos[n["id"]]=(pad+(x-min_x)*sx,pad+(y-min_y)*sy)
-    out=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}>',
+    out=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
          f'<title>{_esc(graph.get("title","HAA-D-3 graph"))}</title>',
          '<desc>Graph projection based only on the source JSON coordinates and relations.</desc>',
          '<rect width="100%" height="100%" fill="#0b1020"/>']
