@@ -49,6 +49,7 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 | `docs/11-governance/RISK-REGISTER.md` | Project document |
 | `docs/11-governance/STATUS-CHANGELOG.md` | Project document |
 | `docs/12-production/CREATIVE-DIRECTION-BIBLE.md` | Project document |
+| `docs/13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md` | Project document |
 | `docs/13-planning/DOCUMENT-CATALOG.md` | Project document |
 | `docs/13-planning/HANDOFF-2026-11-08-foundation-v02.md` | Project document |
 | `docs/13-planning/HANDOFF-2026-11-08-foundation.md` | Project document |
