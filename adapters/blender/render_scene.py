@@ -25,6 +25,11 @@ def parse_args():
     return parser.parse_args(argv)
 
 
+def eevee_engine_for_version(version):
+    """Return the Eevee engine identifier available in Blender 4.x."""
+    return "BLENDER_EEVEE_NEXT" if tuple(version) >= (4, 2, 0) else "BLENDER_EEVEE"
+
+
 def interpolate(keyframes, timestamp):
     ordered = sorted(keyframes, key=lambda item: float(item["time_seconds"]))
     if timestamp <= float(ordered[0]["time_seconds"]):
@@ -64,8 +69,12 @@ def make_material(name, color, emission=0.0):
     material.use_nodes = True
     principled = material.node_tree.nodes.get("Principled BSDF")
     principled.inputs["Base Color"].default_value = (*color, 1.0)
-    principled.inputs["Emission Color"].default_value = (*color, 1.0)
-    principled.inputs["Emission Strength"].default_value = emission
+    emission_color = principled.inputs.get("Emission Color") or principled.inputs.get("Emission")
+    if emission_color is not None:
+        emission_color.default_value = (*color, 1.0)
+    emission_strength = principled.inputs.get("Emission Strength")
+    if emission_strength is not None:
+        emission_strength.default_value = emission
     return material
 
 
@@ -142,6 +151,7 @@ def build_scene(spec, output_dir, *, overwrite=False):
     fps = float(spec["frame_rate"])
     duration = float(spec["duration_seconds"])
     scene.render.fps = round(fps)
+    scene.render.fps_base = scene.render.fps / fps
     scene.frame_start = 1
     scene.frame_end = max(1, round(duration * fps) + 1)
     scene.render.resolution_x = 1920
@@ -149,7 +159,10 @@ def build_scene(spec, output_dir, *, overwrite=False):
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
     scene.render.film_transparent = False
-    scene.render.engine = "BLENDER_EEVEE_NEXT"
+    scene.render.engine = eevee_engine_for_version(bpy.app.version)
+    if scene.world is None:
+        scene.world = bpy.data.worlds.new("HAA-D3-World")
+        scene.world["haa_d3_generated"] = True
     scene.world.color = (0.005, 0.012, 0.025)
     cyan = make_material("HAA-D3-Cyan", (0.08, 0.72, 0.82), 1.2)
     amber = make_material("HAA-D3-Amber", (1.0, 0.52, 0.12), 0.8)
