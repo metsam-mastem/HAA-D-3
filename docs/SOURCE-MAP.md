@@ -45,7 +45,7 @@ tests/
 ├── test_contracts.py
 ├── test_knowledge_graph.py
 ├── test_kuramoto_validation.py
-└── test_end_to_end_production.py
+├── test_end_to_end_production.py\n└── test_media_output.py
 ~~~
 
 Dependency direction:
