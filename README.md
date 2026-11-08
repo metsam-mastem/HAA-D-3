@@ -82,4 +82,4 @@ Work statuses: PASS, FAIL, NOT RUN, BLOCKED, DRAFT, IN REVIEW. Evidence classes:
 The repository owner has not selected a project license. Public visibility does not grant reuse rights. Do not reuse external code, data, models, fonts, images, music or video without checking applicable terms.
 
 ## Current change
-Foundation consolidation [PR #4](https://github.com/metsam-mastem/HAA-D-3/pull/4) is merged. Numerical verification [PR #5](https://github.com/metsam-mastem/HAA-D-3/pull/5) is also merged. Current main baseline: `ce4e421b630179900ccd1e18f13bae61e37e29eb`.
+Foundation consolidation [PR #4](https://github.com/metsam-mastem/HAA-D-3/pull/4) is merged. Numerical verification [PR #5](https://github.com/metsam-mastem/HAA-D-3/pull/5) is also merged. Project-state reconciliation [PR #6](https://github.com/metsam-mastem/HAA-D-3/pull/6) is merged; `main` is the authoritative current baseline.
