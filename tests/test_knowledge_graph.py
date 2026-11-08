@@ -72,5 +72,15 @@ class KnowledgeGraphTests(unittest.TestCase):
         self.assertTrue(any("relation limit" in error for error in validate_graph(graph)))
 
 
+    def test_rejects_oversized_graph_text_fields(self):
+        graph = dict(self.graph)
+        graph["title"] = "x" * 1025
+        self.assertTrue(any("title" in error and "length" in error for error in validate_graph(graph)))
+        graph = dict(self.graph)
+        graph["concepts"] = [dict(node) for node in self.graph["concepts"]]
+        graph["concepts"][0]["label"] = "x" * 513
+        self.assertTrue(any("label" in error and "length" in error for error in validate_graph(graph)))
+
+
 if __name__ == "__main__":
     unittest.main()
