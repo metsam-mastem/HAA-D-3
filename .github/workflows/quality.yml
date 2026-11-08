@@ -81,3 +81,64 @@ jobs:
           test -s /tmp/knowledge-graph/graph.json
           test -s /tmp/knowledge-graph/graph.svg
           test -s /tmp/knowledge-graph/receipt.json
+
+  blender-runtime:
+    needs: python-core
+    if: github.event_name != 'workflow_dispatch' || inputs.scope == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.11"
+      - name: Install Blender runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version
+      - name: Install HAA-D-3 core
+        run: |
+          python -m pip install --upgrade "setuptools>=84.1.0"
+          python -m pip install -e .
+      - name: Generate representative SceneSpec
+        run: |
+          PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 8 --steps 10 --dt 0.1 --frame-rate 10 --seed 17 --output /tmp/haa-d3-blender-scene.json
+      - name: Execute Blender background render
+        run: |
+          blender --background --factory-startup --python adapters/blender/render_scene.py -- --scene /tmp/haa-d3-blender-scene.json --output /tmp/haa-d3-blender
+      - name: Verify Blender render and editable project
+        run: |
+          python - <<'PY'
+          import json, struct
+          from pathlib import Path
+          root = Path("/tmp/haa-d3-blender")
+          manifest = json.loads((root / "render-manifest.json").read_text())
+          expected = manifest["frame_end"] - manifest["frame_start"] + 1
+          frames = sorted(root.glob("frame_*.png"))
+          assert manifest["status"] == "RENDERED_NOT_REVIEWED"
+          assert manifest["frame_count"] == expected == len(frames), (manifest, len(frames))
+          assert manifest["effective_fps"] > 0
+          assert (root / "scene.blend").is_file() and (root / "scene.blend").stat().st_size > 1000
+          assert set(manifest["artifact_inventory"]) == {"scene.blend", *(p.name for p in frames)}
+          for frame in frames:
+              data = frame.read_bytes()
+              assert data[:8] == b"\x89PNG\r\n\x1a\n"
+              width, height = struct.unpack(">II", data[16:24])
+              assert (width, height) == (1920, 1080)
+              assert len(data) > 1000
+          for name, item in manifest["artifact_inventory"].items():
+              path = root / name
+              import hashlib
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"]
+          print(json.dumps({"blender_version":manifest["blender_version"],"frames":len(frames),"resolution":manifest["resolution"],"engine":manifest["render_engine"]}, indent=2))
+          PY
+      - name: Reopen saved Blender project
+        run: |
+          blender --background /tmp/haa-d3-blender/scene.blend --python-expr "import bpy; assert bpy.context.scene.camera is not None; assert sum(1 for obj in bpy.data.objects if obj.get('haa_d3_generated') is True) >= 10; print('BLEND_REOPEN_PASS', bpy.app.version_string)"
+      - name: Upload Blender render evidence
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: haa-d3-blender-runtime-evidence
+          path: /tmp/haa-d3-blender/
+          retention-days: 14
