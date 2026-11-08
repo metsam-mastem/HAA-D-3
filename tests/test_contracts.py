@@ -1,5 +1,6 @@
 import unittest
 from haa_d3.contracts import validate_finding, validate_scene
+from haa_d3.capabilities import AdapterDescriptor, RuntimeProfile, select_adapters
 
 class ContractTests(unittest.TestCase):
     def scene(self):
@@ -22,12 +23,6 @@ class ContractTests(unittest.TestCase):
         f={"id":"f-1","statement":"Claim","evidence_class":"PROVEN","source_ids":[],"limitations":[]}
         self.assertTrue(any("evidence_class" in e for e in validate_finding(f)))
 
-if __name__ == "__main__":
-    unittest.main()
-
-
-from haa_d3.capabilities import AdapterDescriptor, RuntimeProfile, select_adapters
-
 class AdapterSelectionTests(unittest.TestCase):
     def test_selects_offline_platform_compatible_adapter(self):
         items = [
@@ -46,3 +41,7 @@ class AdapterSelectionTests(unittest.TestCase):
         items = [AdapterDescriptor("z-adapter", "1", ("render",)), AdapterDescriptor("a-adapter", "1", ("render",))]
         selected = select_adapters(items, "render", RuntimeProfile("linux"))
         self.assertEqual([item.adapter_id for item in selected], ["a-adapter", "z-adapter"])
+
+
+if __name__ == "__main__":
+    unittest.main()
