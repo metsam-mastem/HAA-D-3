@@ -177,6 +177,7 @@ def build_scene(spec, output_dir, *, overwrite=False):
         if obj.get("haa_d3_generated") is not True
     ]
     render_fps = float(fps)
+    render_fps_base = round(render_fps) / render_fps
     render_engine = eevee_engine_for_version(bpy.app.version)
     render_resolution = (1920, 1080)
     frame_start = 1
@@ -184,7 +185,7 @@ def build_scene(spec, output_dir, *, overwrite=False):
 
     try:
         scene.render.fps = round(render_fps)
-        scene.render.fps_base = scene.render.fps / render_fps
+        scene.render.fps_base = render_fps_base
         scene.frame_start = frame_start
         scene.frame_end = frame_end
         scene.render.resolution_x, scene.render.resolution_y = render_resolution
@@ -277,8 +278,8 @@ def build_scene(spec, output_dir, *, overwrite=False):
         "frame_end": frame_end,
         "frame_count": len(rendered_frames),
         "fps": round(render_fps, 6),
-        "fps_base": round(scene.render.fps_base, 6),
-        "effective_fps": round(scene.render.fps / scene.render.fps_base, 6),
+        "fps_base": round(render_fps_base, 6),
+        "effective_fps": round(round(render_fps) / render_fps_base, 6),
         "resolution": list(render_resolution),
         "unowned_objects_preserved": len(unowned_objects),
         "artifact_inventory": artifact_inventory,
