@@ -1,6 +1,7 @@
 import unittest
 from haa_d3.contracts import validate_finding, validate_scene
 from haa_d3.capabilities import AdapterDescriptor, RuntimeProfile, select_adapters
+from haa_d3.kuramoto import simulate_kuramoto, order_parameter
 
 class ContractTests(unittest.TestCase):
     def scene(self):
@@ -41,6 +42,30 @@ class AdapterSelectionTests(unittest.TestCase):
         items = [AdapterDescriptor("z-adapter", "1", ("render",)), AdapterDescriptor("a-adapter", "1", ("render",))]
         selected = select_adapters(items, "render", RuntimeProfile("linux"))
         self.assertEqual([item.adapter_id for item in selected], ["a-adapter", "z-adapter"])
+
+
+
+class KuramotoSimulationTests(unittest.TestCase):
+    def test_fixed_seed_is_deterministic(self):
+        a = simulate_kuramoto(nodes=8, steps=5, seed=19)
+        b = simulate_kuramoto(nodes=8, steps=5, seed=19)
+        self.assertEqual(a, b)
+
+    def test_sample_count_and_order_parameter_bounds(self):
+        result = simulate_kuramoto(nodes=12, steps=7, seed=3)
+        self.assertEqual(len(result["samples"]), 8)
+        for sample in result["samples"]:
+            self.assertGreaterEqual(sample["order_parameter"], 0.0)
+            self.assertLessEqual(sample["order_parameter"], 1.0 + 1e-12)
+
+    def test_invalid_inputs_are_rejected(self):
+        for kwargs in ({"nodes": 1}, {"steps": 0}, {"dt": 0}, {"omega_std": -1}):
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    simulate_kuramoto(**kwargs)
+
+    def test_order_parameter_for_identical_phases_is_one(self):
+        self.assertAlmostEqual(order_parameter([0.3, 0.3, 0.3]), 1.0, places=12)
 
 
 if __name__ == "__main__":
