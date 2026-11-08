@@ -64,6 +64,8 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
     if not isinstance(refs, list) or not all(isinstance(x, str) for x in refs):
         errors.append("evidence_refs must be an array of strings")
     scene_duration = value.get("duration_seconds")
+    valid_scene_duration = (not isinstance(scene_duration, bool) and isinstance(scene_duration, (int, float))
+                            and math.isfinite(scene_duration) and scene_duration > 0)
     objects = value.get("objects")
     if not isinstance(objects, list):
         errors.append("objects must be an array")
@@ -145,7 +147,7 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
                         valid_value = False
                     if not valid_value:
                         errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].value must match the property and contain finite numbers")
-                    if isinstance(time_value, (int, float)) and not isinstance(time_value, bool) and math.isfinite(time_value) and time_value > scene_duration:
+                    if valid_scene_duration and isinstance(time_value, (int, float)) and not isinstance(time_value, bool) and math.isfinite(time_value) and time_value > scene_duration:
                         errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].time_seconds exceeds scene duration")
             if total_keyframes > 50_000:
                 errors.append("scene total keyframe budget exceeded (50000)")
