@@ -80,11 +80,11 @@ The Python package has one canonical root: src/haa_d3/. The test suite has one r
 - Runtime JSON Schema validation for SceneSpec and Finding contracts.
 - Deterministic SVG frame renderer and MIDI data-sonification adapter.
 - End-to-end ZIP release bundler with SHA-256 inventory and explicit review status.
-- Blender 4.x background renderer adapter; Blender 4.0.2 / EEVEE runtime passed in CI with 11 verified 1920×1080 PNG frames, saved .blend reopen and user-scene preservation.
+- Blender 4.x background renderer adapter; Blender 4.0.2 / EEVEE runtime passed in CI with 11 verified 1920×1080 PNG frames, H.264/AAC MP4, WAV data sonification, 0.02 s stream-duration delta, saved .blend reopen and user-scene preservation.
 - Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt, with graph-size and render-pixel budgets.
 - Scene contract validation rejects non-finite values, booleans in numeric fields, malformed root types and unhashable enum values.
 - Kuramoto simulation and SVG rendering enforce snapshot, frame, object, pixel and work budgets.
-- Blender adapter preserves unowned scene objects and restores user render settings; Blender 4.0.2 runtime rendering and artifact verification passed (11 frames, 1920×1080).
+- Blender adapter preserves unowned scene objects and restores user render settings; Blender 4.0.2 runtime rendering and artifact verification passed (11 frames, 1920×1080), including H.264/AAC assembly and WAV data sonification.
 - MP4 generation now requires FFprobe stream validation and a full FFmpeg decode pass before returning a verification PASS.
 - CI audits installed third-party Python dependencies and publishes a CycloneDX SBOM artifact.
 - Browser-based Neural Odyssey illustrative demo.
