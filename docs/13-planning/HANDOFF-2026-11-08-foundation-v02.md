@@ -30,15 +30,13 @@ At the audit snapshot the recursive main tree contained 82 tracked files. It had
 ## Verification
 - RED test-first commit: 025fac876922113d766d2cfbaff59cde2bdf03ec.
 - Expected failing Quality run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42462293966 (Python tests failed because implementation was not yet added; documentation checks passed).
-- GREEN: consolidated Quality Gate run 42462509735 succeeded. The complete Python test suite, example SceneSpec validation, generated Kuramoto SceneSpec validation, graph JSON/SVG/receipt generation, Markdown catalog and local-link checks all passed. A follow-up commit adds an automated single-source topology guard; its final CI run is the latest verification gate.
+- GREEN: consolidated Quality Gate run 42462509735 succeeded. The complete Python test suite, example SceneSpec validation, generated Kuramoto SceneSpec validation, graph JSON/SVG/receipt generation, Markdown catalog and local-link checks all passed. A follow-up commit added an automated single-source topology guard. Final Quality Gate run 42462583716 completed SUCCESS: repository structure guard, Markdown catalog, local-link checker, full Python suite, SceneSpec validation, Kuramoto scene generation/validation and graph JSON/SVG/receipt generation all passed.
 
 ## Boundaries
 No changes to main. No project license selected. No PR merge authorized. No claim of scientific validation or renderer/audio implementation.
 
 ## Next actions
-1. Finish implementation and push to this branch.
-2. Inspect consolidated workflow and fix every failure.
-3. Verify local Markdown links and catalog entries.
-4. Inspect final diff for accidental deletions and verify moved graph functionality.
-5. Review PR #4; merge only with owner authorization.
-6. Migrate overlapping numbered documentation directories only in a dedicated link-safe migration with a complete path map and compatibility review.
+1. Owner reviews PR #4 and its 24-file diff.
+2. Merge only after explicit owner authorization; PR remains Draft and main remains unchanged.
+3. Plan a separate link-safe migration for overlapping numbered documentation directories, with complete path map and compatibility review.
+4. Next engineering slice: scientific validation of Kuramoto and a renderer adapter; these are not part of this PR.
