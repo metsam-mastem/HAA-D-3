@@ -91,3 +91,9 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added compressed delivery plan: Phase A contracts/numerics; Phase B executable media/release bundle; Phase C Blender render; Phase D human scientific/creative/accessibility/rights acceptance.
 - CI run [42464847359](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42464847359) passed all 28 Python tests, SceneSpec validation, Kuramoto SceneSpec generation, end-to-end release archive creation, graph artifact generation, repository structure, Markdown inventory and local-link checks.
 - An earlier CI run exposed scalar interpolation failure in the metric ring; the implementation was corrected and the subsequent complete run passed.
+
+
+## Release pipeline hardening — 2026-11-08
+- MIDI output now writes explicit 120 BPM and 4/4 metadata, rejects non-monotonic sample times, and bounds note lengths to avoid overlapping same-pitch note-offs.
+- Release builder validates SceneSpec JSON Schema and semantic constraints even when called as a Python API, not only through the CLI.
+- CI now asserts MIDI tempo metadata and monotonic input rejection; deterministic ZIP bytes remain an acceptance criterion.
