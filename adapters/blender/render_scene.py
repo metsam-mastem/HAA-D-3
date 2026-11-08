@@ -95,9 +95,11 @@ def build_scene(spec, output_dir):
     missing = [key for key in required if key not in spec]
     if missing:
         raise ValueError("SceneSpec missing required fields: " + ", ".join(missing))
+    if not isinstance(spec["scene_id"], str) or not spec["scene_id"].strip():
+        raise ValueError("scene_id must be a non-empty string")
     fps = spec["frame_rate"]
     duration = spec["duration_seconds"]
-    if isinstance(fps, bool) or not isinstance(fps, (int, float)) or not math.isfinite(fps) or fps <= 0:
+    if isinstance(fps, bool) or not isinstance(fps, (int, float)) or not math.isfinite(fps) or fps < 1:
         raise ValueError("frame_rate must be finite and positive")
     if isinstance(duration, bool) or not isinstance(duration, (int, float)) or not math.isfinite(duration) or duration <= 0:
         raise ValueError("duration_seconds must be finite and positive")
@@ -112,8 +114,17 @@ def build_scene(spec, output_dir):
         if item["id"] in seen_ids:
             raise ValueError(f"duplicate object id: {item['id']}")
         seen_ids.add(item["id"])
-        if item.get("type") not in {"oscillator", "metric"}:
+        object_type = item.get("type")
+        if not isinstance(object_type, str) or object_type not in {"oscillator", "metric"}:
             raise ValueError(f"objects[{index}] has unsupported type")
+        animation = item.get("animation", [])
+        if not isinstance(animation, list) or len(animation) > 100:
+            raise ValueError(f"objects[{index}].animation must be an array with at most 100 tracks")
+        for track_index, track in enumerate(animation):
+            if not isinstance(track, dict) or not isinstance(track.get("keyframes", []), list):
+                raise ValueError(f"objects[{index}].animation[{track_index}] is invalid")
+            if len(track.get("keyframes", [])) > 1000:
+                raise ValueError(f"objects[{index}].animation[{track_index}] exceeds keyframe limit")
     clear_scene()
     scene = bpy.context.scene
     fps = float(spec["frame_rate"])
