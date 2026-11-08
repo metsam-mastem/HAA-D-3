@@ -111,3 +111,9 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Enumerated 18 repositories accessible under `metsam-mastem` using a single paginated repository-list request. This is metadata inventory only; repository-by-repository content audit remains pending.
 - Policy linked from the docs navigation and catalog. It specifies serial requests, conservative mutation pacing, branch/path ownership, respecting rate-limit headers, and stopping/backing off after 403/429. It does not guarantee that GitHub will never limit requests.
 - Official guidance consulted: GitHub REST API rate limits and REST API best practices (see links in policy).
+
+
+## Reconcile recovered requirements with executable E2E release evidence — 2026-11-08
+- Appended a status correction to [Conversation Requirements and Gap Audit](../13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md): the latest recorded Quality Gate run [42465296924](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42465296924) provides a software-level E2E proof (simulation, SceneSpec, SVG frames, MIDI cue, ZIP manifest/package) with 31 tests and an uploaded artifact.
+- Reclassified CR-03/P3 from broad “E2E not implemented” wording to **PARTIAL / executable software proof; final media E2E NOT RUN**. Blender/human creative-scientific-accessibility-rights QC and finished episode release remain outside the evidence.
+- This status correction is on isolated draft PR #9 branch; it is not merged to main.
