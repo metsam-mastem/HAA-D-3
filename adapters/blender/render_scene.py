@@ -23,6 +23,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--scene", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--overwrite", action="store_true", help="replace existing HAA-D-3 outputs in the output directory")
     return parser.parse_args(argv)
 
 
