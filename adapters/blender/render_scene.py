@@ -43,16 +43,23 @@ def interpolate(keyframes, timestamp):
 
 
 def clear_scene():
-    bpy.ops.object.select_all(action="SELECT")
-    bpy.ops.object.delete(use_global=False)
+    """Remove only objects created by this adapter; preserve user scene content."""
+    scene = bpy.context.scene
+    active_camera = scene.camera
+    if active_camera is not None and active_camera.get("haa_d3_generated") is True:
+        scene.camera = None
+    for obj in list(bpy.data.objects):
+        if obj.get("haa_d3_generated") is True:
+            bpy.data.objects.remove(obj, do_unlink=True)
     for datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras, bpy.data.lights):
         for block in list(datablocks):
-            if block.users == 0:
+            if block.users == 0 and block.get("haa_d3_generated") is True:
                 datablocks.remove(block)
 
 
 def make_material(name, color, emission=0.0):
     material = bpy.data.materials.new(name)
+    material["haa_d3_generated"] = True
     material.diffuse_color = (*color, 1.0)
     material.use_nodes = True
     principled = material.node_tree.nodes.get("Principled BSDF")
@@ -66,18 +73,70 @@ def add_camera_and_light():
     bpy.ops.object.camera_add(location=(0.0, -0.2, 8.5))
     camera = bpy.context.object
     camera.name = "HAA-D3-Camera"
+    camera["haa_d3_generated"] = True
+    camera.data["haa_d3_generated"] = True
     camera.data.lens = 50
     camera.rotation_euler = (0.0, 0.0, 0.0)
     bpy.context.scene.camera = camera
     bpy.ops.object.light_add(type="AREA", location=(0.0, -2.0, 5.0))
     light = bpy.context.object
     light.name = "HAA-D3-Key-Light"
+    light["haa_d3_generated"] = True
+    light.data["haa_d3_generated"] = True
     light.data.energy = 1200
     light.data.shape = "DISK"
     light.data.size = 8
 
 
-def build_scene(spec, output_dir):
+def build_scene(spec, output_dir, *, overwrite=False):
+    if not isinstance(spec, dict):
+        raise ValueError("SceneSpec must be a JSON object")
+    required = ("scene_id", "frame_rate", "duration_seconds", "objects")
+    missing = [key for key in required if key not in spec]
+    if missing:
+        raise ValueError("SceneSpec missing required fields: " + ", ".join(missing))
+    if not isinstance(spec["scene_id"], str) or not spec["scene_id"].strip():
+        raise ValueError("scene_id must be a non-empty string")
+    fps = spec["frame_rate"]
+    duration = spec["duration_seconds"]
+    if isinstance(fps, bool) or not isinstance(fps, (int, float)) or not math.isfinite(fps) or fps < 1:
+        raise ValueError("frame_rate must be finite and positive")
+    if isinstance(duration, bool) or not isinstance(duration, (int, float)) or not math.isfinite(duration) or duration <= 0:
+        raise ValueError("duration_seconds must be finite and positive")
+    if fps > 120 or duration > 600 or fps * duration > 10000:
+        raise ValueError("SceneSpec exceeds Blender render budget")
+    if not isinstance(spec["objects"], list) or len(spec["objects"]) > 1000:
+        raise ValueError("SceneSpec objects must be an array with at most 1000 entries")
+    seen_ids = set()
+    for index, item in enumerate(spec["objects"]):
+        if not isinstance(item, dict) or not isinstance(item.get("id"), str) or not item["id"].strip():
+            raise ValueError(f"objects[{index}] must have a non-empty string id")
+        if item["id"] in seen_ids:
+            raise ValueError(f"duplicate object id: {item['id']}")
+        seen_ids.add(item["id"])
+        object_type = item.get("type")
+        if not isinstance(object_type, str) or object_type not in {"oscillator", "metric"}:
+            raise ValueError(f"objects[{index}] has unsupported type")
+        animation = item.get("animation", [])
+        if not isinstance(animation, list) or len(animation) > 100:
+            raise ValueError(f"objects[{index}].animation must be an array with at most 100 tracks")
+        for track_index, track in enumerate(animation):
+            if not isinstance(track, dict) or not isinstance(track.get("keyframes", []), list):
+                raise ValueError(f"objects[{index}].animation[{track_index}] is invalid")
+            if len(track.get("keyframes", [])) > 1000:
+                raise ValueError(f"objects[{index}].animation[{track_index}] exceeds keyframe limit")
+    output_dir = Path(output_dir)
+    if output_dir.exists() and not output_dir.is_dir():
+        raise NotADirectoryError(f"output path is not a directory: {output_dir}")
+    if output_dir.exists():
+        existing_outputs = [output_dir / "scene.blend", output_dir / "render-manifest.json"]
+        existing_outputs.extend(output_dir.glob("frame_*.png"))
+        existing_outputs = [path for path in existing_outputs if path.exists()]
+        if existing_outputs and not overwrite:
+            raise FileExistsError(f"output directory already contains HAA-D-3 outputs: {existing_outputs[0]}; pass --overwrite to replace them")
+        if overwrite:
+            for path in existing_outputs:
+                path.unlink()
     clear_scene()
     scene = bpy.context.scene
     fps = float(spec["frame_rate"])
@@ -99,6 +158,8 @@ def build_scene(spec, output_dir):
             bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=8, radius=0.075)
             obj = bpy.context.object
             obj.name = item["id"]
+            obj["haa_d3_generated"] = True
+            obj.data["haa_d3_generated"] = True
             obj.data.materials.append(cyan)
             track = next((x for x in item.get("animation", []) if x.get("property") == "transform.position"), None)
             if track:
@@ -112,6 +173,8 @@ def build_scene(spec, output_dir):
             bpy.ops.mesh.primitive_torus_add(major_radius=0.45, minor_radius=0.012, major_segments=96, minor_segments=8)
             obj = bpy.context.object
             obj.name = item["id"]
+            obj["haa_d3_generated"] = True
+            obj.data["haa_d3_generated"] = True
             obj.data.materials.append(amber)
             track = next((x for x in item.get("animation", []) if x.get("property") == "material.emission_intensity"), None)
             if track:
@@ -145,4 +208,4 @@ def build_scene(spec, output_dir):
 if __name__ == "__main__":
     arguments = parse_args()
     payload = json.loads(arguments.scene.read_text(encoding="utf-8"))
-    build_scene(payload, arguments.output)
+    build_scene(payload, arguments.output, overwrite=arguments.overwrite)

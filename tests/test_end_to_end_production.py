@@ -76,5 +76,117 @@ class EndToEndProductionTests(unittest.TestCase):
                 self.assertIn("sha256", manifest["artifacts"]["scene.json"])
 
 
+    def test_svg_renderer_rejects_excessive_pixel_budget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "pixel budget"):
+                render_scene_frames(self.scene, Path(directory), width=8192, height=8192)
+
+    def test_svg_renderer_rejects_excessive_object_count(self):
+        scene = dict(self.scene)
+        scene["objects"] = [dict(obj, id=f"safe-{index}") for index, obj in enumerate(self.scene["objects"] * 201)]
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "object limit"):
+                render_scene_frames(scene, Path(directory))
+
+
+    def test_blender_adapter_preserves_unowned_scene_objects(self):
+        adapter = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        source = adapter.read_text(encoding="utf-8")
+        self.assertIn('obj.get("haa_d3_generated") is True', source)
+        self.assertNotIn("bpy.ops.object.select_all", source)
+        self.assertNotIn("bpy.ops.object.delete", source)
+
+    def test_blender_adapter_has_render_budget_preflight(self):
+        adapter = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        source = adapter.read_text(encoding="utf-8")
+        self.assertIn("SceneSpec exceeds Blender render budget", source)
+        self.assertIn("at most 1000 entries", source)
+
+
+    def test_svg_renderer_rejects_boolean_and_non_numeric_timing(self):
+        for value in (True, "24"):
+            scene = dict(self.scene)
+            scene["frame_rate"] = value
+            with tempfile.TemporaryDirectory() as directory:
+                with self.assertRaises(ValueError):
+                    render_scene_frames(scene, Path(directory))
+
+
+    def test_blender_clear_scene_removes_only_tagged_objects(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        class FakeID(dict):
+            def __init__(self, *args, users=0, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.users = users
+
+        class FakeCollection(list):
+            def remove(self, item, **kwargs):
+                super().remove(item)
+
+        owned = FakeID(haa_d3_generated=True)
+        user_object = FakeID(name="user-object")
+        generated_camera = FakeID(haa_d3_generated=True)
+        user_mesh = FakeID(name="user-mesh", users=0)
+        generated_mesh = FakeID(haa_d3_generated=True, users=0)
+        fake_bpy = SimpleNamespace(
+            context=SimpleNamespace(scene=SimpleNamespace(camera=generated_camera)),
+            data=SimpleNamespace(
+                objects=FakeCollection([owned, user_object, generated_camera]),
+                meshes=FakeCollection([user_mesh, generated_mesh]),
+                curves=FakeCollection(), materials=FakeCollection(),
+                cameras=FakeCollection(), lights=FakeCollection(),
+            ),
+        )
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_adapter_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch.dict(sys.modules, {"bpy": fake_bpy}):
+            spec.loader.exec_module(module)
+            module.clear_scene()
+        self.assertEqual(fake_bpy.data.objects, [user_object])
+        self.assertEqual(fake_bpy.data.meshes, [user_mesh])
+        self.assertIsNone(fake_bpy.context.scene.camera)
+
+    def test_blender_preflight_rejects_bad_fps_before_scene_mutation(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        fake_bpy = SimpleNamespace()
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_preflight_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch.dict(sys.modules, {"bpy": fake_bpy}):
+            spec.loader.exec_module(module)
+            with self.assertRaisesRegex(ValueError, "frame_rate"):
+                module.build_scene({"scene_id":"bad","frame_rate":True,"duration_seconds":1,"objects":[]}, Path("/tmp/unused"))
+
+
+    def test_blender_adapter_refuses_to_overwrite_existing_outputs_by_default(self):
+        import importlib.util
+        import sys
+        import tempfile
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_overwrite_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "render"
+            output.mkdir()
+            (output / "scene.blend").write_bytes(b"preserve")
+            with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+                spec.loader.exec_module(module)
+                with self.assertRaisesRegex(FileExistsError, "already contains HAA-D-3 outputs"):
+                    module.build_scene({"scene_id":"demo","frame_rate":24,"duration_seconds":1,"objects":[]}, output)
+            self.assertEqual((output / "scene.blend").read_bytes(), b"preserve")
+
+
 if __name__ == "__main__":
     unittest.main()

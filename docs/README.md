@@ -3,6 +3,7 @@
 **Single navigation entry point.** Use this index rather than creating another README or parallel document catalog.
 
 ## Mandatory project control
+- [Security policy](../SECURITY.md)
 - [Project Charter](00-charter/PROJECT-CHARTER.md)
 - [Manifesto](00-charter/MANIFESTO.md)
 - [Program Operating Model](00-charter/PROGRAM-OPERATING-MODEL.md)

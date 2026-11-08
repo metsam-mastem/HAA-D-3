@@ -5,38 +5,187 @@
   "description": "Renderer-independent, evidence-aware scene contract. Draft 0.1.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "scene_id", "title", "duration_seconds", "frame_rate", "interpretation_mode", "evidence_refs", "objects"],
+  "required": [
+    "schema_version",
+    "scene_id",
+    "title",
+    "duration_seconds",
+    "frame_rate",
+    "interpretation_mode",
+    "evidence_refs",
+    "objects"
+  ],
   "properties": {
-    "schema_version": {"const": "0.1.0"},
-    "scene_id": {"type": "string", "minLength": 1},
-    "title": {"type": "string", "minLength": 1},
-    "duration_seconds": {"type": "number", "exclusiveMinimum": 0},
-    "frame_rate": {"type": "number", "exclusiveMinimum": 0},
-    "interpretation_mode": {"enum": ["LITERAL", "ANALYTICAL", "EXPLANATORY", "METAPHORICAL"]},
-    "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "coordinate_system": {"type": "string"},
-    "units": {"type": "string"},
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "scene_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "duration_seconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 600
+    },
+    "frame_rate": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 120
+    },
+    "interpretation_mode": {
+      "enum": [
+        "LITERAL",
+        "ANALYTICAL",
+        "EXPLANATORY",
+        "METAPHORICAL"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "maxItems": 1000
+    },
+    "coordinate_system": {
+      "type": "string"
+    },
+    "units": {
+      "type": "string"
+    },
     "objects": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "type"],
+        "required": [
+          "id",
+          "type"
+        ],
         "properties": {
-          "id": {"type": "string", "minLength": 1},
-          "type": {"type": "string", "minLength": 1},
-          "transform": {"type": "object"},
-          "material": {"type": "object"},
-          "geometry": {"type": "object"},
-          "animation": {"type": "array", "items": {"type": "object"}},
-          "data_binding": {"type": "object"},
-          "annotations": {"type": "array", "items": {"type": "object"}},
-          "asset_refs": {"type": "array", "items": {"type": "string"}},
-          "extensions": {"type": "object"}
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transform": {
+            "type": "object",
+            "properties": {
+              "position": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "scale": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number"
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          "material": {
+            "type": "object"
+          },
+          "geometry": {
+            "type": "object"
+          },
+          "animation": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "required": [
+                "property",
+                "keyframes"
+              ],
+              "properties": {
+                "property": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "keyframes": {
+                  "type": "array",
+                  "maxItems": 1000,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "time_seconds",
+                      "value"
+                    ],
+                    "properties": {
+                      "time_seconds": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "value": {
+                        "oneOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "array",
+                            "minItems": 3,
+                            "maxItems": 3,
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "data_binding": {
+            "type": "object"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "asset_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object"
+          }
         },
         "additionalProperties": false
+      },
+      "maxItems": 10000
+    },
+    "audio_cues": {
+      "type": "array",
+      "items": {
+        "type": "object"
       }
     },
-    "audio_cues": {"type": "array", "items": {"type": "object"}},
-    "metadata": {"type": "object"}
+    "metadata": {
+      "type": "object"
+    }
   }
 }

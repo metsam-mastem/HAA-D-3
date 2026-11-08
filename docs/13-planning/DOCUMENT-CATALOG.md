@@ -12,6 +12,7 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 | `AGENTS.md` | Repository guide |
 | `CONTRIBUTING.md` | Repository guide |
 | `README.md` | Repository guide |
+| `SECURITY.md` | Security policy |
 | `adapters/README.md` | Repository guide |
 | `adapters/blender/README.md` | Repository guide |
 | `artifacts/README.md` | Repository guide |

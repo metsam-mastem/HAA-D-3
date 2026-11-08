@@ -88,5 +88,14 @@ class KuramotoIndependentValidationTests(unittest.TestCase):
         self.assertGreater(errors[1] / errors[2], 3.2)
 
 
+    def test_rejects_simulation_exceeding_snapshot_budget(self):
+        with self.assertRaisesRegex(ValueError, "snapshot budget"):
+            simulate_kuramoto(nodes=1000, steps=1000)
+
+    def test_rejects_excessive_node_count(self):
+        with self.assertRaisesRegex(ValueError, "nodes must be <="):
+            simulate_kuramoto(nodes=10001, steps=1)
+
+
 if __name__ == "__main__":
     unittest.main()

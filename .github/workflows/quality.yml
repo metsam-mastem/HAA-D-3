@@ -21,8 +21,8 @@ jobs:
     if: github.event_name != 'workflow_dispatch' || inputs.scope == 'full' || inputs.scope == 'docs'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.11"
       - name: Enforce single-source repository structure
@@ -35,14 +35,27 @@ jobs:
     if: github.event_name != 'workflow_dispatch' || inputs.scope == 'full' || inputs.scope == 'python'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.11"
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install patched build tooling
+        run: python -m pip install --upgrade "setuptools>=84.1.0"
       - name: Install package and media dependencies
         run: python -m pip install -e ".[media]"
+      - name: Audit installed Python dependencies
+        run: |
+          python -m pip install pip-audit
+          pip-audit --skip-editable
+          pip-audit --skip-editable --format cyclonedx-json --output /tmp/haa-d3-sbom.json
+      - name: Upload dependency SBOM
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: haa-d3-python-sbom
+          path: /tmp/haa-d3-sbom.json
+          retention-days: 30
       - name: Run complete Python test suite
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Validate example SceneSpec
@@ -56,7 +69,7 @@ jobs:
           PYTHONPATH=src python -m haa_d3.cli build-release --nodes 8 --steps 4 --dt 0.1 --frame-rate 5 --video --output /tmp/haa-d3-release.zip
           python -c "import zipfile; z=zipfile.ZipFile('/tmp/haa-d3-release.zip'); assert 'manifest.json' in z.namelist(); assert 'frames/000000.svg' in z.namelist(); assert 'sonification/coherence.mid' in z.namelist(); assert 'sonification/coherence.wav' in z.namelist(); assert 'video/preview.mp4' in z.namelist()"
       - name: Upload generated vertical-slice release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: haa-d3-e2e-release
           path: /tmp/haa-d3-release.zip

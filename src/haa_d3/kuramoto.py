@@ -6,6 +6,9 @@ import random
 from typing import Any
 
 TAU = 2.0 * math.pi
+MAX_NODES = 10_000
+MAX_STEPS = 100_000
+MAX_SNAPSHOT_VALUES = 500_000
 
 
 def _derivative(phases: list[float], frequencies: list[float], coupling: float) -> list[float]:
@@ -43,8 +46,14 @@ def simulate_kuramoto(
     """
     if isinstance(nodes, bool) or not isinstance(nodes, int) or nodes < 2:
         raise ValueError("nodes must be an integer >= 2")
+    if isinstance(nodes, int) and not isinstance(nodes, bool) and nodes > MAX_NODES:
+        raise ValueError(f"nodes must be <= {MAX_NODES}")
     if isinstance(steps, bool) or not isinstance(steps, int) or steps < 1:
         raise ValueError("steps must be an integer >= 1")
+    if steps > MAX_STEPS:
+        raise ValueError(f"steps must be <= {MAX_STEPS}")
+    if isinstance(nodes, int) and isinstance(steps, int) and nodes * (steps + 1) > MAX_SNAPSHOT_VALUES:
+        raise ValueError(f"simulation exceeds snapshot budget ({MAX_SNAPSHOT_VALUES} phase values)")
     if isinstance(seed, bool) or not isinstance(seed, int):
         raise ValueError("seed must be an integer")
     for name, value in (("coupling", coupling), ("dt", dt), ("omega_mean", omega_mean), ("omega_std", omega_std)):

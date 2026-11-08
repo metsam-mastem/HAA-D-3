@@ -85,5 +85,67 @@ class KuramotoSimulationTests(unittest.TestCase):
         self.assertNotEqual(a["scene_id"], b["scene_id"])
 
 
+    def test_rejects_non_finite_scene_numbers_and_booleans(self):
+        for value in (float("nan"), float("inf"), True):
+            with self.subTest(value=value):
+                scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":value,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[]}
+                self.assertTrue(any("duration_seconds" in error for error in validate_scene(scene)))
+
+
+    def test_rejects_non_object_contract_roots(self):
+        self.assertTrue(validate_finding([]))
+        self.assertTrue(validate_scene([]))
+
+    def test_rejects_unhashable_enum_values_without_crashing(self):
+        finding = {"id":"f-1","statement":"Claim","evidence_class":[],"source_ids":[],"limitations":[]}
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":[],"evidence_refs":[],"objects":[]}
+        self.assertTrue(any("evidence_class" in error for error in validate_finding(finding)))
+        self.assertTrue(any("interpretation_mode" in error for error in validate_scene(scene)))
+
+
+    def test_rejects_malformed_animation_tracks(self):
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[{"id":"node-1","type":"point"}]}
+        scene["objects"][0]["animation"] = [{"property": "transform.position", "keyframes": "bad"}]
+        self.assertTrue(any("keyframes" in error for error in validate_scene(scene)))
+
+    def test_rejects_duplicate_or_non_finite_keyframe_times(self):
+        for times in ([0, 0], [0, float("nan")]):
+            with self.subTest(times=times):
+                scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[{"id":"node-1","type":"point"}]}
+                scene["objects"][0]["animation"] = [{
+                    "property": "transform.position",
+                    "keyframes": [
+                        {"time_seconds": times[0], "value": [0, 0, 0]},
+                        {"time_seconds": times[1], "value": [1, 1, 1]},
+                    ],
+                }]
+                self.assertTrue(any("time_seconds" in error for error in validate_scene(scene)))
+
+
+    def test_rejects_animation_values_with_property_shape_mismatch(self):
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[{"id":"node-1","type":"point","animation":[{"property":"transform.position","keyframes":[{"time_seconds":0,"value":1.0}]}]}]}
+        self.assertTrue(any("match the property" in error for error in validate_scene(scene)))
+
+
+    def test_rejects_scene_render_parameters_over_budget(self):
+        for duration, fps in ((601, 24), (10, 121), (600, 120)):
+            with self.subTest(duration=duration, fps=fps):
+                scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":duration,"frame_rate":fps,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[]}
+                self.assertTrue(any("render budget" in error for error in validate_scene(scene)))
+
+    def test_rejects_non_object_scene_metadata(self):
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[],"metadata":[]}
+        self.assertTrue(any("metadata" in error for error in validate_scene(scene)))
+
+
+    def test_rejects_scene_over_total_keyframe_budget(self):
+        keyframes = [{"time_seconds": index, "value": 0.5} for index in range(600)]
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":600,"frame_rate":1,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[
+            {"id":f"metric-{index}","type":"metric","animation":[{"property":"material.emission_intensity","keyframes":keyframes}]}
+            for index in range(84)
+        ]}
+        self.assertTrue(any("total keyframe budget" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
