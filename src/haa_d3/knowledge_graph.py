@@ -5,6 +5,11 @@ from typing import Any
 
 MAX_CONCEPTS = 10_000
 MAX_RELATIONS = 50_000
+MAX_TITLE_LENGTH = 1_024
+MAX_ID_LENGTH = 256
+MAX_LABEL_LENGTH = 512
+MAX_DOMAIN_LENGTH = 128
+MAX_RELATION_TYPE_LENGTH = 256
 
 def canonical_json(value: dict[str, Any]) -> bytes:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -18,6 +23,9 @@ def validate_graph(graph: dict[str, Any]) -> list[str]:
         return ["graph must be an object"]
     if graph.get("schema_version") != "0.1":
         errors.append("schema_version must be '0.1'")
+    title = graph.get("title", "HAA-D-3 graph")
+    if not isinstance(title, str) or len(title) > MAX_TITLE_LENGTH:
+        errors.append(f"title must be a string with length <= {MAX_TITLE_LENGTH}")
     concepts, relations = graph.get("concepts"), graph.get("relations")
     if not isinstance(concepts, list):
         errors.append("concepts must be an array"); concepts = []
@@ -34,14 +42,17 @@ def validate_graph(graph: dict[str, Any]) -> list[str]:
         if not isinstance(node, dict):
             errors.append(f"concepts[{index}] must be an object"); continue
         node_id, label = node.get("id"), node.get("label")
-        if not isinstance(node_id, str) or not node_id.strip():
-            errors.append(f"concepts[{index}].id must be a non-empty string")
+        if not isinstance(node_id, str) or not node_id.strip() or len(node_id) > MAX_ID_LENGTH:
+            errors.append(f"concepts[{index}].id must be a non-empty string with length <= {MAX_ID_LENGTH}")
         elif node_id in identifiers:
             errors.append(f"duplicate concept id: {node_id}")
         else:
             identifiers.add(node_id)
-        if not isinstance(label, str) or not label.strip():
-            errors.append(f"concepts[{index}].label must be a non-empty string")
+        if not isinstance(label, str) or not label.strip() or len(label) > MAX_LABEL_LENGTH:
+            errors.append(f"concepts[{index}].label must be a non-empty string with length <= {MAX_LABEL_LENGTH}")
+        domain = node.get("domain")
+        if domain is not None and (not isinstance(domain, str) or len(domain) > MAX_DOMAIN_LENGTH):
+            errors.append(f"concepts[{index}].domain must be a string with length <= {MAX_DOMAIN_LENGTH}")
         for axis in ("x", "y", "z"):
             coordinate = node.get(axis)
             if axis in node and (isinstance(coordinate, bool) or not isinstance(coordinate, (int, float)) or not math.isfinite(coordinate)):
@@ -59,8 +70,8 @@ def validate_graph(graph: dict[str, Any]) -> list[str]:
             errors.append(f"relations[{index}].target must be a non-empty string")
         elif target not in identifiers:
             errors.append(f"relations[{index}] target is unknown: {target}")
-        if not isinstance(edge.get("type"), str) or not edge["type"].strip():
-            errors.append(f"relations[{index}].type must be a non-empty string")
+        if not isinstance(edge.get("type"), str) or not edge["type"].strip() or len(edge["type"]) > MAX_RELATION_TYPE_LENGTH:
+            errors.append(f"relations[{index}].type must be a non-empty string with length <= {MAX_RELATION_TYPE_LENGTH}")
     return errors
 
 def _escape(value: Any) -> str:
