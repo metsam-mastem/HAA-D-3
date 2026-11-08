@@ -104,3 +104,12 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - The complete Python suite (31 tests), SceneSpec schema/semantic validation, Kuramoto SceneSpec generation, release ZIP build, ZIP content checks, artifact upload, knowledge-graph outputs, repository topology, Markdown inventory and local-link checks all passed.
 - Actions artifact `haa-d3-e2e-release` uploaded successfully: 6,143 bytes; SHA-256 `52e8661b8296634f20a28a08534a24d7e617965be6f2e2b1f6ad5ed9f57640e0`; expires 2026-11-22.
 - The archive is a generated software proof, not a finished episode or a scientifically/creatively approved public release.
+
+
+## MP4 media pipeline — 2026-11-08
+- Added deterministic PCM WAV sonification with a bounded sample rate, fade envelope and explicit MODEL_OUTPUT labeling.
+- Added SVG-to-PNG rasterization through optional CairoSVG and H.264/AAC MP4 assembly through FFmpeg.
+- CLI `build-release --video` now creates an MP4 preview and WAV alongside SVG frames and MIDI. Standard release remains dependency-light unless the video option is requested.
+- Quality Gate run [42465542376](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42465542376) passed all 33 tests, including WAV determinism and MP4 container checks; full ZIP build and artifact upload passed.
+- Generated Actions artifact: `haa-d3-e2e-release`, 37,717 bytes, SHA-256 `e6ce572d0ad04532aec76e3b19b0113f08bf9fa40771276c52fffdcb61fcc518`, expires 2026-11-22.
+- The output is a technical preview/sonification, not a finished film, original composed soundtrack, or scientifically approved interpretation.
