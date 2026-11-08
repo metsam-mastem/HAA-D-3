@@ -112,5 +112,60 @@ class EndToEndProductionTests(unittest.TestCase):
                     render_scene_frames(scene, Path(directory))
 
 
+    def test_blender_clear_scene_removes_only_tagged_objects(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        class FakeID(dict):
+            def __init__(self, *args, users=0, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.users = users
+
+        class FakeCollection(list):
+            def remove(self, item, **kwargs):
+                super().remove(item)
+
+        owned = FakeID(haa_d3_generated=True)
+        user_object = FakeID(name="user-object")
+        generated_camera = FakeID(haa_d3_generated=True)
+        user_mesh = FakeID(name="user-mesh", users=0)
+        generated_mesh = FakeID(haa_d3_generated=True, users=0)
+        fake_bpy = SimpleNamespace(
+            context=SimpleNamespace(scene=SimpleNamespace(camera=generated_camera)),
+            data=SimpleNamespace(
+                objects=FakeCollection([owned, user_object, generated_camera]),
+                meshes=FakeCollection([user_mesh, generated_mesh]),
+                curves=FakeCollection(), materials=FakeCollection(),
+                cameras=FakeCollection(), lights=FakeCollection(),
+            ),
+        )
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_adapter_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch.dict(sys.modules, {"bpy": fake_bpy}):
+            spec.loader.exec_module(module)
+            module.clear_scene()
+        self.assertEqual(fake_bpy.data.objects, [user_object])
+        self.assertEqual(fake_bpy.data.meshes, [user_mesh])
+        self.assertIsNone(fake_bpy.context.scene.camera)
+
+    def test_blender_preflight_rejects_bad_fps_before_scene_mutation(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        fake_bpy = SimpleNamespace()
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_preflight_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch.dict(sys.modules, {"bpy": fake_bpy}):
+            spec.loader.exec_module(module)
+            with self.assertRaisesRegex(ValueError, "frame_rate"):
+                module.build_scene({"scene_id":"bad","frame_rate":True,"duration_seconds":1,"objects":[]}, Path("/tmp/unused"))
+
+
 if __name__ == "__main__":
     unittest.main()
