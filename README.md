@@ -109,9 +109,13 @@ Requires Python 3.11+.
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests -v
 PYTHONPATH=src python -m haa_d3.cli validate-scene examples/scenes/synthetic-emergence.scene.json
+PYTHONPATH=src python -m haa_d3.cli simulate-kuramoto --nodes 64 --coupling 1.5 --dt 0.02 --steps 500 --seed 7 --output artifacts/kuramoto-demo.json
 ```
 
 The initial CLI performs dependency-free semantic checks. JSON Schema files are the canonical machine-readable contract; full JSON Schema runtime validation is a planned follow-up.
+
+## Vertical Slice 02 — Coupled Oscillators
+A deterministic, seeded Kuramoto mean-field simulation is available through the portable Python CLI. It uses Heun/RK2 integration and emits phase snapshots plus the order parameter r(t). Its scientific scope is generic coupled oscillators, not a biological brain model. See [VS-02 specification](docs/05-vertical-slice/VS-02-COUPLED-OSCILLATORS.md) and [baseline config](examples/experiments/kuramoto-baseline.json).
 
 ## Research and evidence integrity
 Every meaningful claim/visual distinguishes OBSERVED, REPRODUCED, MODEL_OUTPUT, HYPOTHESIS, INTERPRETATION, METAPHOR and UNKNOWN. A render is not scientific validation. A synthetic demo is not biological evidence. See the [claim and provenance policy](docs/11-governance/CLAIM-AND-PROVENANCE-POLICY.md).
