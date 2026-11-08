@@ -110,18 +110,18 @@ The accessible account inventory contained 18 repositories at the time of the au
 | `4` | Prior inspection identified SSG, Python reference core v0.5.0; deeper audit pending |
 | `HTH` | Empty repository |
 | `H2H` | Empty repository |
-| `-JRYAN` | Not yet content-audited |
+| `-JRYAN` | Empty repository |
 | `JRYAN` | Empty repository |
-| `RISMAAAN` | Not yet content-audited |
-| `SAEQE` | Not yet content-audited |
+| `RISMAAAN` | Empty repository |
+| `SAEQE` | Empty repository |
 | `KAAVAAK-` | Empty repository |
 | `KAAVAAK` | Empty repository |
 | `HAA-D-3` | Active project; recent main commit adds playable MP4 research-to-cinema preview |
 | `SHEED` | Empty repository |
-| `SssssssskiLLL` | Not yet content-audited |
+| `SssssssskiLLL` | Repository Intelligence Archive; README/docs index describe 8 upstream repositories across memory/context, benchmark, MCP, agent runtime, multi-agent IDE, local AI deployment and scoped-access security. Its README says code-flow deep dive and isolated test execution are not yet done in that archive. |
 | `RaYa` | Empty repository |
 | `STD` | Research-only media workbench baseline; MVP engine and local render validation open |
-| `VINT` | README path lookup returned 404; repository existence confirmed by inventory, contents/status remain unresolved |
+| `VINT` | Root contains `projects/reel-intelligence/WORK_REPORT_0001.md`; VINT describes Reel Intelligence as a platform-independent, local-first multimodal media analysis workbench. It is research/architecture proposal, not a production analyzer; its report prefers user-supplied media over platform URL dependence. |
 
 “Empty” above means the repository contents endpoint explicitly returned GitHub’s “repository is empty” response. A README 404 alone is not interpreted as repository-empty.
 
