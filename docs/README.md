@@ -10,6 +10,7 @@
 - [Source Map](SOURCE-MAP.md)
 - [End-to-End Lifecycle](END-TO-END-LIFECYCLE.md)
 - [Conversation Requirements and Gap Audit](13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md)
+- [Multi-Agent GitHub Coordination and Rate Safety](13-planning/MULTI-AGENT-GITHUB-COORDINATION-AND-RATE-SAFETY.md)
 - [Continuity and Knowledge Ingestion Protocol](13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md)
 - [Document Catalog](13-planning/DOCUMENT-CATALOG.md)
 - [Status and Changelog](11-governance/STATUS-CHANGELOG.md)
