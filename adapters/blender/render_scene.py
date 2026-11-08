@@ -130,14 +130,49 @@ def build_scene(spec, output_dir, *, overwrite=False):
         object_type = item.get("type")
         if not isinstance(object_type, str) or object_type not in {"oscillator", "metric"}:
             raise ValueError(f"objects[{index}] has unsupported type")
+        transform = item.get("transform", {})
+        if not isinstance(transform, dict):
+            raise ValueError(f"objects[{index}].transform must be an object")
+        position = transform.get("position", [0.0, 0.0, 0.0])
+        if (not isinstance(position, (list, tuple)) or len(position) != 3
+                or any(isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) for value in position)):
+            raise ValueError(f"objects[{index}].transform.position must contain three finite numbers")
         animation = item.get("animation", [])
         if not isinstance(animation, list) or len(animation) > 100:
             raise ValueError(f"objects[{index}].animation must be an array with at most 100 tracks")
         for track_index, track in enumerate(animation):
-            if not isinstance(track, dict) or not isinstance(track.get("keyframes", []), list):
-                raise ValueError(f"objects[{index}].animation[{track_index}] is invalid")
-            if len(track.get("keyframes", [])) > 1000:
+            if not isinstance(track, dict):
+                raise ValueError(f"objects[{index}].animation[{track_index}] must be an object")
+            prop = track.get("property")
+            if prop not in {"transform.position", "material.emission_intensity"}:
+                raise ValueError(f"objects[{index}].animation[{track_index}] has unsupported property")
+            keyframes = track.get("keyframes", [])
+            if not isinstance(keyframes, list):
+                raise ValueError(f"objects[{index}].animation[{track_index}].keyframes must be an array")
+            if len(keyframes) > 1000:
                 raise ValueError(f"objects[{index}].animation[{track_index}] exceeds keyframe limit")
+            previous_time = None
+            for key_index, keyframe in enumerate(keyframes):
+                if not isinstance(keyframe, dict):
+                    raise ValueError(f"objects[{index}].animation[{track_index}].keyframes[{key_index}] must be an object")
+                time_value = keyframe.get("time_seconds")
+                if (isinstance(time_value, bool) or not isinstance(time_value, (int, float))
+                        or not math.isfinite(time_value) or time_value < 0 or time_value > duration):
+                    raise ValueError(f"objects[{index}].animation[{track_index}] keyframe time must be finite and within scene duration")
+                if previous_time is not None and time_value <= previous_time:
+                    raise ValueError(f"objects[{index}].animation[{track_index}] keyframe times must be strictly increasing")
+                previous_time = time_value
+                value = keyframe.get("value")
+                if prop == "transform.position":
+                    valid_value = (isinstance(value, (list, tuple)) and len(value) == 3
+                                   and all(not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) for v in value))
+                else:
+                    valid_value = not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value)
+                if not valid_value:
+                    raise ValueError(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].value does not match property type")
+    metadata = spec.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise ValueError("metadata must be an object")
 
     output_dir = Path(output_dir)
     if output_dir.exists() and not output_dir.is_dir():
