@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haa-d-3.example/schemas/finding.schema.json",
+  "title": "HAA-D-3 Finding",
+  "type": "object",
+  "required": ["id", "statement", "evidence_class", "source_ids", "limitations"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "statement": {"type": "string", "minLength": 1},
+    "evidence_class": {"enum": ["OBSERVED", "REPRODUCED", "MODEL_OUTPUT", "HYPOTHESIS", "INTERPRETATION", "METAPHOR", "UNKNOWN"]},
+    "source_ids": {"type": "array", "items": {"type": "string"}},
+    "method": {"type": "string"},
+    "uncertainty": {"type": "string"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "version": {"type": "string"}
+  },
+  "additionalProperties": false
+}

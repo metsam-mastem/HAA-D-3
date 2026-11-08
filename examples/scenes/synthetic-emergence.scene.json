@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "scene_id": "synthetic-emergence-001",
+  "title": "Synthetic Emergence — Contract Example",
+  "duration_seconds": 12,
+  "frame_rate": 24,
+  "interpretation_mode": "METAPHORICAL",
+  "evidence_refs": ["finding-synthetic-demo"],
+  "coordinate_system": "2D_CARTESIAN",
+  "units": "arbitrary_scene_units",
+  "objects": [{"id": "field-center", "type": "point", "transform": {"position": [0, 0, 0], "scale": [1, 1, 1]}, "material": {"emission": "restrained-cyan"}}],
+  "audio_cues": [],
+  "metadata": {"evidence_class": "METAPHOR", "note": "Synthetic fixture; not a biological simulation."}
+}

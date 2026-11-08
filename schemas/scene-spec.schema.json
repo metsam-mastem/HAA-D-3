@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haa-d-3.example/schemas/scene-spec.schema.json",
+  "title": "HAA-D-3 SceneSpec",
+  "description": "Renderer-independent, evidence-aware scene contract. Draft 0.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scene_id", "title", "duration_seconds", "frame_rate", "interpretation_mode", "evidence_refs", "objects"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "scene_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "duration_seconds": {"type": "number", "exclusiveMinimum": 0},
+    "frame_rate": {"type": "number", "exclusiveMinimum": 0},
+    "interpretation_mode": {"enum": ["LITERAL", "ANALYTICAL", "EXPLANATORY", "METAPHORICAL"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "coordinate_system": {"type": "string"},
+    "units": {"type": "string"},
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "minLength": 1},
+          "transform": {"type": "object"},
+          "material": {"type": "object"},
+          "geometry": {"type": "object"},
+          "animation": {"type": "array", "items": {"type": "object"}},
+          "data_binding": {"type": "object"},
+          "annotations": {"type": "array", "items": {"type": "object"}},
+          "asset_refs": {"type": "array", "items": {"type": "string"}},
+          "extensions": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "audio_cues": {"type": "array", "items": {"type": "object"}},
+    "metadata": {"type": "object"}
+  }
+}
