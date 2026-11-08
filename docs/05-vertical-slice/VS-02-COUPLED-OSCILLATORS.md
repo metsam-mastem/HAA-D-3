@@ -6,7 +6,7 @@
 **Scope warning:** This is a generic mathematical oscillator model, not a biological brain or neural-circuit model.
 
 ## Objective
-Demonstrate a complete reproducible path from mathematical specification to simulation data and future visual/audio scene mapping.
+Demonstrate a reproducible path from mathematical specification to simulation data and an explicit renderer-independent analytical SceneSpec.
 
 ## Equation
 For oscillator i:
@@ -41,8 +41,8 @@ Each sample includes step, time_seconds, order_parameter r(t), and oscillator ph
 - Time grid has exactly steps + 1 samples.
 - Future work: convergence/time-step sensitivity, comparison with analytical special cases and published benchmark curves.
 
-## Scene and sound bridge
-A future SceneSpec may map each phase to angular position, phase coherence to visual density or light intensity, and r(t) to a clearly labeled global coherence indicator. Any mapping must record its formula and remain explanatory/analytical, not claim anatomical measurement. Music synchronization is an artistic mapping unless a separate scientific hypothesis is defined.
+## Research-to-scene bridge — implemented
+The `kuramoto-scene` CLI maps each phase to a 2D position using x=R*cos(theta), y=R*sin(theta), and maps r(t) to a global coherence indicator. The mapping records its formula, source model, parameters and MODEL_OUTPUT evidence class in SceneSpec metadata/data bindings. Music synchronization remains an artistic mapping unless a separate scientific hypothesis is defined.
 
 ## Non-goals
 No claim about consciousness, intelligence, cognition, brain-wide synchronization or therapeutic effects. No biological data are used.
