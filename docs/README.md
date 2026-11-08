@@ -9,6 +9,7 @@
 - [Governance and anti-sprawl rules](GOVERNANCE.md)
 - [Source Map](SOURCE-MAP.md)
 - [End-to-End Lifecycle](END-TO-END-LIFECYCLE.md)
+- [Conversation Requirements and Gap Audit](13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md)
 - [Continuity and Knowledge Ingestion Protocol](13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md)
 - [Document Catalog](13-planning/DOCUMENT-CATALOG.md)
 - [Status and Changelog](11-governance/STATUS-CHANGELOG.md)

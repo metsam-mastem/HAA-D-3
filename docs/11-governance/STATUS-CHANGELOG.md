@@ -75,10 +75,19 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - The current source map explicitly keeps runtime code under `src/haa_d3/` and independent numerical verification under `tests/`.
 
 
+## Conversation review and E2E requirements reconciliation — 2026-11-08
+- Reconciled retrieved conversation intent with canonical repository documents and created [Conversation Requirements and Gap Audit](../13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md), including CR-01…CR-20, soundtrack order, hidden/under-specified gaps, priority backlog and per-work-package anti-forgetting checklist.
+- Confirmed the canonical [End-to-End Lifecycle](../END-TO-END-LIFECYCLE.md) already exists (G0–G10); augmented it to link the recovered requirement register and specify that a lifecycle document/green CI alone is not evidence of full media E2E completion.
+- Updated the documentation navigation and exact Markdown catalog. The document catalog and local-link CI checks must be rerun against this commit; their result is not yet asserted here.
+- Key unresolved items remain: account-wide GitHub repository inventory, deeper GitHub/Nature and creative portal curation, VINT/comparable project diligence, MLMF-NX formalization and experiments, one renderer proof-of-concept, full media E2E/QC, soundtrack/asset rights, product/audience constraints and adjacent-project boundary ADR.
+
+- Final repository-governance and Python-core Quality Gate for the audit/index/catalog/changelog commit passed: run [42464971977](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42464971977), commit `9f565de2a5c6deacaed2c46423da408166e12da6`. The earlier intermediate run failed only the Markdown inventory gate before the catalog was synchronized; that discrepancy was corrected and verified in the final run.
+
+
 ## Executable production vertical slice — 2026-11-08
-- Branch `release/e2e-render-sonification-v1` adds runtime JSON Schema 2020-12 validation for SceneSpec and Finding, using the declared `jsonschema` dependency.
+- Implemented runtime JSON Schema 2020-12 validation for SceneSpec and Finding using the declared `jsonschema` dependency.
 - Added deterministic standard-library SVG frame rendering, MIDI data-sonification, and ZIP release assembly with per-artifact SHA-256 manifest. Generated bundles are explicitly `GENERATED_NOT_REVIEWED`.
 - Added optional Blender 4.2+ background adapter for editable .blend and PNG sequence; syntax is covered by CI, but Blender runtime rendering remains NOT RUN.
 - Added compressed delivery plan: Phase A contracts/numerics; Phase B executable media/release bundle; Phase C Blender render; Phase D human scientific/creative/accessibility/rights acceptance.
 - CI run [42464847359](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42464847359) passed all 28 Python tests, SceneSpec validation, Kuramoto SceneSpec generation, end-to-end release archive creation, graph artifact generation, repository structure, Markdown inventory and local-link checks.
-- An earlier CI run exposed scalar interpolation failure in the metric ring; the implementation was corrected and the subsequent complete run passed. The failed run is retained as regression evidence.
+- An earlier CI run exposed scalar interpolation failure in the metric ring; the implementation was corrected and the subsequent complete run passed.
