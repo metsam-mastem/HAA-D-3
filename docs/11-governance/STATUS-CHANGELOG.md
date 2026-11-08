@@ -141,3 +141,13 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Render evidence artifact: `haa-d3-blender-runtime-evidence`, artifact ID `13614135874`, 10,856,635 bytes. Run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42472362620
 - Python core Quality Gate: 63 tests PASS; dependency audit and SBOM upload PASS; repository governance PASS.
 - The render is still labeled `RENDERED_NOT_REVIEWED`. Human scientific, cinematic, audio, accessibility and rights approval remains NOT RUN. Manim runtime validation remains NOT RUN.
+
+
+## Phase C audiovisual render verification — 2026-11-08
+- Blender 4.0.2 / EEVEE rendered 11 frames at 1920×1080 from a Kuramoto SceneSpec.
+- Generated deterministic WAV order-parameter sonification and assembled H.264/AAC MP4.
+- FFprobe confirmed 11 video frames, 1920×1080, H.264/AAC streams; stream durations 1.10 s and 1.08 s (delta 0.02 s). Full FFmpeg decode passed.
+- PNG signatures, frame count, dimensions, SHA-256 inventory, .blend reopen and preservation/restoration of the original Cube/Camera/Light passed.
+- Python core: 63 tests PASS; dependency audit, CycloneDX SBOM and release pipeline PASS; Blender runtime job PASS.
+- Evidence: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473039140 — artifact ID `13614063107` (`haa-d3-blender-runtime-evidence`, 10,937,896 bytes).
+- Output is labeled `RENDERED_NOT_REVIEWED`; algorithmic sonification is not a composed soundtrack. Human creative, scientific, accessibility and rights approval remains NOT RUN; Manim runtime remains NOT RUN.
