@@ -123,3 +123,12 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added manual workflow dispatch scopes to the canonical `.github/workflows/quality.yml`: `full` (default), `docs`, and `python`. Push and pull-request triggers continue to run both validation jobs; scoped profiles only affect a manual run.
 - Added a prominent expandable “Run the Quality Gate” section near the top of README with exact GitHub UI steps, workflow/action links, profile descriptions and artifact download instructions (14-day retention).
 - Manual dispatch profile availability requires the workflow file to be present on the default branch; this change is proposed through a PR before it is available from main.
+
+
+## Phase A security and reliability hardening — 2026-11-08
+- Merged PR #14 to main as squash commit `3dc73a7`.
+- Hardened knowledge graph, SceneSpec, Kuramoto, SVG, CLI JSON ingestion and Blender adapter boundaries; added bounded resource budgets and explicit Blender output overwrite protection.
+- MP4 output now requires FFprobe H.264/AAC stream checks, audio/video duration alignment within one frame and a full FFmpeg decode pass.
+- Added SECURITY.md, Dependabot, CODEOWNERS, patched setuptools, pip-audit and CycloneDX SBOM artifact; pinned workflow actions to verified commit SHAs.
+- Pre-merge Quality Gate passed on branch head `efca1a5`: 61 Python tests, dependency audit, SBOM upload, SceneSpec validation, release bundle and knowledge-graph artifact checks. Post-merge main verification is tracked by the latest main Actions run.
+- Blender executable/runtime rendering remains NOT RUN; only adapter source compilation and stubbed preflight/ownership/overwrite tests passed. Human scientific, creative, accessibility and rights reviews remain outstanding.
