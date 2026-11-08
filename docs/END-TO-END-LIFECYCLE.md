@@ -61,7 +61,7 @@ Implemented but not fully runtime-verified: Blender background-render adapter. I
 
 Not implemented as complete production capabilities: full research/source/claim registry, complete automated scientific validation and uncertainty workflow, Manim adapter, synchronized multitrack audio timeline, full browser-to-media E2E workflow, professional editing/compositing, human creative/scientific/rights QC and production release approval.
 
-Current hardening branch additionally introduces bounded graph, simulation and SVG rendering budgets; stricter finite-value and root-type validation; Blender SceneSpec preflight and preservation of unowned Blender objects; security reporting guidance; Dependabot; CODEOWNERS routing; and commit-SHA-pinned Node 24 compatible workflow actions. These changes remain subject to PR review and full Quality Gate verification until merged.
+Current hardening branch additionally introduces bounded graph, simulation, SceneSpec keyframe and SVG rendering budgets; strict finite-value, enum, animation and root-type validation; Blender SceneSpec preflight and preservation of unowned Blender objects; FFprobe stream checks plus full MP4 decode verification; pip-audit and CycloneDX SBOM generation; patched setuptools build tooling; security reporting guidance; Dependabot; CODEOWNERS routing; and commit-SHA-pinned Node 24 compatible workflow actions. These changes remain subject to PR review and full Quality Gate verification until merged.
 
 
 ## Conversation-derived requirement traceability
