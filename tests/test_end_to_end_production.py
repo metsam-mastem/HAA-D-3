@@ -43,6 +43,12 @@ class EndToEndProductionTests(unittest.TestCase):
             self.assertGreater(metadata["event_count"], 0)
             self.assertEqual(metadata["evidence_class"], "MODEL_OUTPUT")
 
+    def test_release_bundle_is_byte_for_byte_reproducible(self):
+        with tempfile.TemporaryDirectory() as directory:
+            first = build_release_bundle(self.simulation, self.scene, Path(directory) / "first.zip")
+            second = build_release_bundle(self.simulation, self.scene, Path(directory) / "second.zip")
+            self.assertEqual(first.read_bytes(), second.read_bytes())
+
     def test_blender_adapter_source_is_valid_python(self):
         adapter = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
         compile(adapter.read_text(encoding="utf-8"), str(adapter), "exec")
