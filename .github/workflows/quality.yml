@@ -4,10 +4,21 @@ on:
     branches: [main, "work/**", "feat/**", "fix/**", "docs/**", "research/**", "creative/**", "foundation/**", "release/**"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      scope:
+        description: "Choose the smallest validation scope needed"
+        required: true
+        default: full
+        type: choice
+        options:
+          - full
+          - docs
+          - python
 permissions:
   contents: read
 jobs:
   repository-governance:
+    if: github.event_name != 'workflow_dispatch' || inputs.scope == 'full' || inputs.scope == 'docs'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +32,7 @@ jobs:
       - name: Check local Markdown links
         run: python scripts/check_markdown_links.py
   python-core:
+    if: github.event_name != 'workflow_dispatch' || inputs.scope == 'full' || inputs.scope == 'python'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
