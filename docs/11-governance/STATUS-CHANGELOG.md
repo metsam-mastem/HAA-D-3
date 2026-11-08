@@ -160,3 +160,10 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Saved .blend reopened; original Cube/Camera/Light and expected generated scene objects verified.
 - Evidence artifact: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672/artifacts/13613359974 (10,938,087 bytes; artifact ZIP SHA-256 e0e52993ba6e11487082569dd96c39b3fa911759697dd411dee0ded3d242a77a).
 - Important boundary: this is a short technical smoke preview, not a finished film, final soundtrack, or human-reviewed scientific/cinematic deliverable. Scientific, editorial, accessibility and rights gates remain NOT RUN; Manim runtime remains NOT RUN.
+
+
+## Phase C2 Manim adapter implementation — 2026-11-08
+- Added `adapters/manim/render_scene.py`, a constrained Manim Community renderer that reads the canonical Kuramoto-derived SceneSpec JSON and interpolates oscillator tracks; it does not execute embedded code.
+- Added a separately gated `manim-runtime` GitHub Actions job pinned to Manim Community 0.19.0, with system dependencies, canonical SceneSpec generation/validation, low-quality MP4 render, full decode, H.264/dimension checks, SHA-256 receipt and 14-day evidence artifact.
+- Added `phase-c/**` to push validation filters so this active delivery branch is no longer excluded from automatic push CI.
+- Updated delivery lifecycle and creative pipeline documentation. The first Manim runtime result remains pending; no PASS is claimed until CI evidence is available.
