@@ -98,8 +98,7 @@ class KuramotoSimulationTests(unittest.TestCase):
 
     def test_rejects_unhashable_enum_values_without_crashing(self):
         finding = {"id":"f-1","statement":"Claim","evidence_class":[],"source_ids":[],"limitations":[]}
-        scene = self.scene()
-        scene["interpretation_mode"] = []
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":[],"evidence_refs":[],"objects":[]}
         self.assertTrue(any("evidence_class" in error for error in validate_finding(finding)))
         self.assertTrue(any("interpretation_mode" in error for error in validate_scene(scene)))
 
