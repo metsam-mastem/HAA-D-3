@@ -56,3 +56,10 @@ Include media, source project/SceneSpec, research references, model/experiment c
 
 ## Current implementation boundary
 Implemented: Python contracts/CLI, Kuramoto prototype, research-to-scene mapping, deterministic knowledge-graph SVG projection and unit tests. Not implemented yet: full research registry, JSON Schema runtime engine, automated scientific validation suite, Blender/Manim adapters, audio timeline, full browser/media E2E workflow and release automation.
+
+
+## Conversation-derived requirement traceability
+
+The gate model above is the canonical process contract. The recovered user-intent register and current omissions are tracked separately in [Conversation Requirements and Gap Audit](13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md). Every substantial work package should reference one or more CR-xx requirement IDs from that audit and satisfy the continuity/handoff protocol. This avoids treating a lifecycle diagram or CI green status as evidence that the user's broader creative, research, account-wide repository, animation, soundtrack or release objectives are fulfilled.
+
+At minimum, reconcile the audit register at each milestone and release. If a requirement changes, record the source and decision; if it is deferred, assign a status and next action; if it is complete, link the evidence artifact and exact verification. The E2E production path is accepted only after a real representative item traverses research/formalization/experiment/validation/SceneSpec/story/renderer/QC with provenance and release evidence.
