@@ -122,5 +122,14 @@ class KuramotoSimulationTests(unittest.TestCase):
                 self.assertTrue(any("time_seconds" in error for error in validate_scene(scene)))
 
 
+    def test_rejects_animation_values_with_property_shape_mismatch(self):
+        scene = self.scene()
+        scene["objects"][0]["animation"] = [{
+            "property": "transform.position",
+            "keyframes": [{"time_seconds": 0, "value": 1.0}],
+        }]
+        self.assertTrue(any("3D vector" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
