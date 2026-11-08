@@ -78,6 +78,7 @@
 - `prototype/src/haa_d3/` — graph validation, SVG projection, provenance receipt
 - `tests/`, `prototype/tests/` — test suites
 - `examples/`, `prototype/data/` — examples and experiment configurations
+- `scripts/check_document_catalog.py`, `scripts/check_markdown_links.py` — automated documentation completeness and local-link checks
 - `demo/neural-odyssey/` — browser illustrative demo
 - `.github/workflows/quality.yml`, `.github/workflows/ci.yml` — CI pipelines
 - `scenes/`, `creative/`, `adapters/`, `research/`, `artifacts/`, `releases/` — canonical workspaces
