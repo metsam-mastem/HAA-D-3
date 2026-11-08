@@ -138,5 +138,14 @@ class KuramotoSimulationTests(unittest.TestCase):
         self.assertTrue(any("metadata" in error for error in validate_scene(scene)))
 
 
+    def test_rejects_scene_over_total_keyframe_budget(self):
+        keyframes = [{"time_seconds": index, "value": 0.5} for index in range(600)]
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":600,"frame_rate":1,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[
+            {"id":f"metric-{index}","type":"metric","animation":[{"property":"material.emission_intensity","keyframes":keyframes}]}
+            for index in range(84)
+        ]}
+        self.assertTrue(any("total keyframe budget" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
