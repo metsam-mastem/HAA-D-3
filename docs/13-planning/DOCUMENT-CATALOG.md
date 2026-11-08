@@ -60,7 +60,7 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 | `docs/14-platform/PLATFORM-PORTABILITY.md` | Project document |
 | `docs/15-operations/RELEASE-AND-QUALITY.md` | Project document |
 | `docs/16-decisions/ADR-0001-portable-core-adapter-first.md` | Project document |
-| `docs/16-decisions/README.md` | Project document |
+| `docs/16-decisions/README.md` | Project document |\n| `docs/17-delivery/PHASED-DELIVERY-PLAN.md` | Project document |
 | `docs/END-TO-END-LIFECYCLE.md` | Project document |
 | `docs/GOVERNANCE.md` | Project document |
 | `docs/README.md` | Project document |
@@ -81,7 +81,7 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 - `python scripts/check_document_catalog.py` — exact Markdown inventory.
 - `python scripts/check_markdown_links.py` — local Markdown link destinations.
 - `PYTHONPATH=src python -m unittest discover -s tests -v` — complete Python test suite.
-- Quality Gate validates the sample SceneSpec, generates a Kuramoto SceneSpec, and produces graph JSON/SVG/provenance receipt.
+- Quality Gate validates JSON Schema and semantic contracts, generates a Kuramoto SceneSpec, builds an end-to-end ZIP release (simulation, SceneSpec, SVG frames, MIDI cue and SHA-256 manifest), and produces graph JSON/SVG/provenance receipt.
 
 ## Interpretation
 A green catalog check means only that tracked Markdown paths are enumerated. It does not validate document truth, approval, scientific claims or completeness of planned work.
