@@ -7,23 +7,29 @@ from xml.sax.saxutils import escape
 from typing import Any
 
 
-def _interpolate(keyframes: list[dict[str, Any]], time_seconds: float) -> list[float]:
+def _interpolate(keyframes: list[dict[str, Any]], time_seconds: float) -> Any:
     if not keyframes:
         return [0.0, 0.0, 0.0]
     ordered = sorted(keyframes, key=lambda item: float(item["time_seconds"]))
+    first_value = ordered[0]["value"]
+    if not isinstance(first_value, (list, tuple)):
+        if time_seconds <= float(ordered[0]["time_seconds"]):
+            return float(first_value)
     if time_seconds <= float(ordered[0]["time_seconds"]):
-        return list(ordered[0]["value"])
+        return list(first_value)
     if time_seconds >= float(ordered[-1]["time_seconds"]):
-        return list(ordered[-1]["value"])
+        last_value = ordered[-1]["value"]
+        return float(last_value) if not isinstance(last_value, (list, tuple)) else list(last_value)
     for left, right in zip(ordered, ordered[1:]):
         start, end = float(left["time_seconds"]), float(right["time_seconds"])
         if start <= time_seconds <= end:
             ratio = (time_seconds - start) / (end - start)
-            return [
-                float(a) + (float(b) - float(a)) * ratio
-                for a, b in zip(left["value"], right["value"])
-            ]
-    return list(ordered[-1]["value"])
+            left_value, right_value = left["value"], right["value"]
+            if not isinstance(left_value, (list, tuple)):
+                return float(left_value) + (float(right_value) - float(left_value)) * ratio
+            return [float(a) + (float(b) - float(a)) * ratio for a, b in zip(left_value, right_value)]
+    last_value = ordered[-1]["value"]
+    return float(last_value) if not isinstance(last_value, (list, tuple)) else list(last_value)
 
 
 def _object_position(obj: dict[str, Any], time_seconds: float) -> list[float]:
@@ -76,7 +82,7 @@ def render_scene_frames(
                 value = 0.0
                 for track in obj.get("animation", []):
                     if track.get("property") == "material.emission_intensity":
-                        value = _interpolate(track.get("keyframes", []), timestamp)[0]
+                        value = _interpolate(track.get("keyframes", []), timestamp)
                 radius = 18 + max(0.0, min(1.0, value)) * 46
                 parts.append(f'<circle cx="{cx}" cy="{cy}" r="{radius:.3f}" fill="none" stroke="#f6b85d" stroke-width="3" opacity="0.72"/>')
         parts.append("</svg>")
