@@ -1,53 +1,46 @@
-# Agent and Contributor Operating Rules — HAA-D-3
+# HAA-D-3 — Mandatory Agent and Contributor Rules
 
-This file is mandatory context for every human contributor, coding agent, research agent and creative-production agent working in this repository.
+This is the single source of operating rules for every human, coding agent, research agent and creative-production agent in this repository. Read it before acting.
 
-## 1. Mission
-HAA-D-3 is a platform-independent scientific research, computational engineering, knowledge and cinematic-production program. It is not tied to one LLM, vendor, operating system, renderer, simulator or frontend framework.
+## Mission
+HAA-D-3 is one interdisciplinary research-to-cinema system: evidence → formal models → reproducible experiments → validated findings → scene contracts → storytelling → media production. It is not a collection of unrelated demos.
 
-## 2. Before changing anything
-1. Read README.md and docs/README.md.
-2. Read docs/00-charter/PROGRAM-OPERATING-MODEL.md.
-3. Read docs/03-architecture/REFERENCE-ARCHITECTURE.md and docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md.
-4. Inspect the relevant code, tests, schemas, decisions and recent commits.
-5. State the task scope, files to be changed, risks and acceptance checks.
-6. Never assume an undocumented feature exists.
+## Mandatory startup sequence
+1. Read README.md, docs/README.md, docs/SOURCE-MAP.md and docs/GOVERNANCE.md.
+2. Read docs/END-TO-END-LIFECYCLE.md and docs/00-charter/PROGRAM-OPERATING-MODEL.md.
+3. Inspect the active branch, current tree, relevant source, tests, schemas, ADRs and latest CI.
+4. Write a bounded task brief: owner, objective, non-goals, affected paths, acceptance checks and risks.
+5. Continue existing work; do not create a parallel implementation because a file is unfamiliar.
 
-## 3. Non-destructive change policy
-- Never delete, rename, overwrite or relocate existing user work without an explicit task and a migration plan.
-- Prefer additive changes and focused commits.
-- Do not rewrite the whole README or a document to make a small correction.
-- Preserve provenance, author attribution, citations, original source material and history.
-- Generated output belongs in artifacts/ or an external artifact store, not mixed into source directories.
-- Do not commit secrets, credentials, private user data, huge renders, caches or temporary files.
-- Do not silently change public contracts. Version schemas and document migrations.
+## Canonical ownership
+- Python runtime: src/haa_d3/ only.
+- Python tests: tests/ only.
+- Documentation navigation: docs/README.md only.
+- Markdown inventory: docs/13-planning/DOCUMENT-CATALOG.md only.
+- Quality workflow: .github/workflows/quality.yml only.
+- Sample inputs: examples/; renderer-neutral scenes: scenes/.
+- Optional integrations: adapters/; browser demonstration: demo/neural-odyssey/.
+- Generated output: artifacts/ or releases/, never source/test folders.
 
-## 4. Evidence and scientific integrity
-Use only these evidence labels: OBSERVED, REPRODUCED, MODEL_OUTPUT, HYPOTHESIS, INTERPRETATION, METAPHOR, UNKNOWN. A visual render is not scientific validation. A synthetic demo is not a biological simulation. Record sources, dates, versions, licenses, assumptions, uncertainty and limitations.
+Do not create another package root, prototype root, test root, competing index, policy or contract. Extend the canonical owner or add a documented adapter.
 
-## 5. Architecture rules
-- Core domain logic must not import a specific LLM SDK, cloud vendor, GUI, renderer or operating-system API.
-- Integrations belong behind adapters and capability contracts.
-- Prefer open formats and documented interchange contracts.
-- Keep computation, research provenance, scene specification and presentation separate.
-- Use a modular monolith until measured scale or deployment requirements justify services.
-- CPU-first and offline-capable paths are preferred; GPU and remote execution are optional capabilities.
-- No mandatory paid service or account is allowed in the core.
+## Non-destructive changes
+Preserve user work, provenance, original references and historical handoffs. No unrelated deletion, forced rewrite, unrequested dependency, paid service, license selection or main-branch push. Structural moves require a migration map and complete link updates. Do not claim an uninspected file is obsolete.
 
-## 6. Cross-platform requirements
-Every capability declares its execution requirements and supported environments. Support headless CLI and library use first; then web, desktop, mobile and render-farm adapters. Avoid platform-specific paths, assumptions about case sensitivity, shell syntax or installed codecs. Keep portable data formats and explicit export contracts.
+## Architecture boundaries
+Core domain modules must not import provider SDKs, cloud services, GUI frameworks, renderer SDKs or OS-specific APIs. Adapters depend on public core contracts; core never depends on adapters. Prefer open formats, CPU-first/offline paths and modular monolith architecture until measured requirements justify services.
 
-## 7. Engineering workflow
-For behavior changes: write or update tests first, implement the smallest coherent change, run tests, inspect the diff, update docs and record evidence. Do not claim tests passed unless actually run. Status values: PASS, FAIL, NOT RUN, BLOCKED.
+## Evidence discipline
+Evidence classes: OBSERVED, REPRODUCED, MODEL_OUTPUT, HYPOTHESIS, INTERPRETATION, METAPHOR, UNKNOWN. Work statuses: PASS, FAIL, NOT RUN, BLOCKED, DRAFT, IN REVIEW. PASS requires executed evidence at a specific commit. A visual render is not scientific validation; a synthetic graph is not a connectome.
 
-## 8. Research workflow
-Capture a source before recording a claim. Claims link to sources and methods. Research notes must distinguish primary literature, reviews, preprints, software documentation and opinion. Never invent DOIs, results, benchmark numbers or citations.
+## Engineering workflow
+For behavior changes use RED → GREEN → REFACTOR. Run focused tests and the full repository suite. Update contracts, examples, docs, source map and catalog together. Inspect the diff. Never report tests passed unless Actions or a local run proves it.
 
-## 9. Creative workflow
-Every scene records its evidence class, data bindings, visual interpretation, rights/provenance, duration, frame rate and render settings. Music and media must be original, licensed or explicitly cleared. Artistic metaphors must not be presented as measured data.
+## Research and creative workflow
+Capture sources before claims. Record methods, dates, licenses, uncertainty and limitations. Every scene mapping records source field/unit, transform/version, target property and evidence class. Metaphor must be labeled. Media rights must be cleared before release.
 
-## 10. Task handoff
-Every non-trivial task must leave: objective, scope, changed files, decisions, test results, remaining risks, next steps and links to artifacts. Update docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md when new durable project knowledge or workflow changes are introduced.
+## Decision and handoff
+Owner approval is required for mission, scope, license, paid services, sensitive data and irreversible architecture decisions. Record architecture decisions as ADRs. Every substantial task leaves objective, changes, decisions, tests, risks, artifacts and next steps.
 
-## 11. Definition of done
-A task is complete only when its acceptance criteria are met, evidence is recorded, docs are synchronized, no unrelated user work was damaged and remaining NOT RUN/BLOCKED items are explicit.
+## Definition of done
+Acceptance criteria pass; affected tests and CI pass; documentation is synchronized; provenance and rights are recorded; unrelated work remains intact; and a future contributor can continue without hidden context.

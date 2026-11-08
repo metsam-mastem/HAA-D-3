@@ -1,25 +1,28 @@
 # Contributing to HAA-D-3
 
 ## Start here
-Read [AGENTS.md](AGENTS.md), [the documentation index](docs/README.md), and [the continuity protocol](docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md).
+Read AGENTS.md, README.md, docs/README.md, docs/SOURCE-MAP.md, docs/GOVERNANCE.md and docs/END-TO-END-LIFECYCLE.md.
 
-## Contribution types
-- Research: source-backed question, claim ledger, methods, limitations and reproducibility.
-- Engineering: issue, interface/contract, tests, implementation and compatibility notes.
-- Creative: brief, storyboard/shot specification, asset rights, scene files and QC evidence.
-- Documentation: owner, status, scope, references and update date.
+## One project, one source of truth
+Do not create parallel package roots, prototypes, test directories, documentation indexes or workflows. Extend src/haa_d3/ for core behavior; place tests in tests/; examples in examples/; optional integrations in adapters/; scenes in scenes/; generated output in artifacts/ or releases/.
 
 ## Branches and commits
-Use focused branches: `docs/<topic>`, `feat/<topic>`, `fix/<topic>`, `research/<topic>`, `creative/<topic>`. Never push experimental work directly to main. Use conventional commit prefixes such as docs:, feat:, fix:, test:, research:, creative:, chore:.
+Use focused branches: feat/<topic>, fix/<topic>, research/<topic>, creative/<topic>, docs/<topic>, foundation/<topic>. Never push directly to main. Use conventional commit prefixes: feat:, fix:, test:, docs:, research:, creative:, chore:.
 
-## Pull requests
-A PR must state problem, proposed change, scope, non-goals, affected contracts, evidence, test commands/results, risks, licensing and migration/rollback notes. Keep PRs small enough to review. Large research/creative contributions may be split into linked PRs.
+## Work-package brief
+Every non-trivial PR states problem/value, owner, scope, non-goals, affected contracts, dependencies, acceptance criteria, verification commands, risks, rights/provenance and rollback/migration notes.
 
-## Tests
-Run `python -m unittest discover -s tests -v` for the initial Python core. Add tests for every new behavior and schema change. If a toolchain is unavailable, mark the check NOT RUN and explain why.
+## Tests and quality
+Use RED → GREEN → REFACTOR for behavior changes. Run:
+~~~bash
+PYTHONPATH=src python -m unittest discover -s tests -v
+PYTHONPATH=src python -m haa_d3.cli validate-scene examples/scenes/synthetic-emergence.scene.json
+PYTHONPATH=src python -m haa_d3.cli render-knowledge-graph examples/knowledge/seed-graph.json --out /tmp/haa-d3-graph
+~~~
+The GitHub Quality Gate runs these checks on PRs. If an environment is unavailable, mark it NOT RUN and explain.
 
 ## Assets and licensing
-Do not assume repository content is open-source licensed. Until a root license is explicitly chosen, treat copyright and reuse rights as unresolved. Add attribution and license records for external code, datasets, models, images, fonts, audio and video. Do not add large binary renders to Git by default.
+The project license is undecided. Public visibility does not grant reuse rights. Track license and attribution for external code, datasets, models, images, fonts, audio and video. Do not commit credentials, private datasets or large generated renders.
 
-## No destructive cleanup
-Never remove apparently unused files without checking history, references, ownership and user intent. Propose migrations before restructuring existing content.
+## Review discipline
+Keep PRs focused. Update README, source map, docs index and document catalog when structure changes. Do not merge a PR unless the project owner explicitly authorizes it.
