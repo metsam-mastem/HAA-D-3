@@ -92,5 +92,17 @@ class KuramotoSimulationTests(unittest.TestCase):
                 self.assertTrue(any("duration_seconds" in error for error in validate_scene(scene)))
 
 
+    def test_rejects_non_object_contract_roots(self):
+        self.assertTrue(validate_finding([]))
+        self.assertTrue(validate_scene([]))
+
+    def test_rejects_unhashable_enum_values_without_crashing(self):
+        finding = {"id":"f-1","statement":"Claim","evidence_class":[],"source_ids":[],"limitations":[]}
+        scene = self.scene()
+        scene["interpretation_mode"] = []
+        self.assertTrue(any("evidence_class" in error for error in validate_finding(finding)))
+        self.assertTrue(any("interpretation_mode" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
