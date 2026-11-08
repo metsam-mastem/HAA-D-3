@@ -85,6 +85,7 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
             errors.append("scene object limit exceeded (10000)")
             return errors
         seen: set[str] = set()
+        total_keyframes = 0
         for index, obj in enumerate(objects):
             if not isinstance(obj, dict):
                 errors.append(f"objects[{index}] must be an object")
@@ -114,7 +115,6 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
             if len(animation) > 100:
                 errors.append(f"objects[{index}].animation track limit exceeded (100)")
                 continue
-            total_keyframes = 0
             for track_index, track in enumerate(animation):
                 if not isinstance(track, dict):
                     errors.append(f"objects[{index}].animation[{track_index}] must be an object")
@@ -160,6 +160,6 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
                         errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].value must match the property and contain finite numbers")
                     if valid_scene_duration and isinstance(time_value, (int, float)) and not isinstance(time_value, bool) and math.isfinite(time_value) and time_value > scene_duration:
                         errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].time_seconds exceeds scene duration")
-            if total_keyframes > 50_000:
-                errors.append("scene total keyframe budget exceeded (50000)")
+        if total_keyframes > 50_000:
+            errors.append("scene total keyframe budget exceeded (50000)")
     return errors
