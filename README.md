@@ -85,6 +85,8 @@ The Python package has one canonical root: src/haa_d3/. The test suite has one r
 - Scene contract validation rejects non-finite values, booleans in numeric fields, malformed root types and unhashable enum values.
 - Kuramoto simulation and SVG rendering enforce snapshot, frame, object, pixel and work budgets.
 - Blender adapter preserves unowned scene objects and performs SceneSpec render-budget preflight; actual Blender runtime verification remains pending.
+- MP4 generation now requires FFprobe stream validation and a full FFmpeg decode pass before returning a verification PASS.
+- CI audits installed third-party Python dependencies and publishes a CycloneDX SBOM artifact.
 - Browser-based Neural Odyssey illustrative demo.
 
 Graph and Kuramoto outputs remain computational/model outputs, not empirical scientific validation. The Kuramoto numerical implementation passes independent-formulation, analytical-special-case and convergence checks; external scientific review and experimental-data comparison remain pending. It is a generic coupled-oscillator system, not a biological brain model.
