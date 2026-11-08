@@ -1,0 +1,25 @@
+name: HAA-D-3 CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prototype-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run unit tests
+        run: PYTHONPATH=prototype/src python -m unittest discover -s prototype/tests -v
+      - name: Generate graph SVG and receipt
+        run: PYTHONPATH=prototype/src python -m haa_d3.cli prototype/data/knowledge-graph.json --out build
+      - name: Upload generated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: haa-d3-knowledge-graph-artifacts
+          path: build/
