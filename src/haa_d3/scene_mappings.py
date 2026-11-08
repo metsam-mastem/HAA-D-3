@@ -40,7 +40,12 @@ def kuramoto_to_scene(
         if "time_seconds" not in sample or "order_parameter" not in sample:
             raise ValueError(f"samples[{index}] is missing time_seconds or order_parameter")
 
-    run_payload = json.dumps(params, sort_keys=True, separators=(",", ":"))
+    run_payload = json.dumps({
+        "model": simulation.get("model"),
+        "model_version": simulation.get("model_version"),
+        "integration_method": simulation.get("integration_method"),
+        "parameters": params,
+    }, sort_keys=True, separators=(",", ":"))
     run_id = hashlib.sha256(run_payload.encode("utf-8")).hexdigest()[:16]
 
     objects: list[dict[str, Any]] = []
