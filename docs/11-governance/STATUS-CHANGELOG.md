@@ -47,3 +47,5 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Adds the canonical source map, governance standard and end-to-end lifecycle. Root README, manifesto, docs index and catalog are synchronized.
 - Root index.html intentionally not added: the root is a source repository; the existing browser demo owns demo/neural-odyssey/index.html.
 - Scientific independent validation, JSON Schema runtime validation, renderer adapters, audio pipeline and full media E2E remain NOT RUN.
+
+- Added scripts/check_repository_structure.py and a CI gate that rejects duplicate Python package roots, test roots, or quality workflows; this makes the anti-sprawl rules executable rather than advisory.

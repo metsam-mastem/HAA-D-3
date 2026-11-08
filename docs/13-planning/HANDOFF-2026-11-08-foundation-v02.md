@@ -30,7 +30,7 @@ At the audit snapshot the recursive main tree contained 82 tracked files. It had
 ## Verification
 - RED test-first commit: 025fac876922113d766d2cfbaff59cde2bdf03ec.
 - Expected failing Quality run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42462293966 (Python tests failed because implementation was not yet added; documentation checks passed).
-- GREEN and full suite: pending implementation commit and subsequent GitHub Actions run.
+- GREEN: consolidated Quality Gate run 42462509735 succeeded. The complete Python test suite, example SceneSpec validation, generated Kuramoto SceneSpec validation, graph JSON/SVG/receipt generation, Markdown catalog and local-link checks all passed. A follow-up commit adds an automated single-source topology guard; its final CI run is the latest verification gate.
 
 ## Boundaries
 No changes to main. No project license selected. No PR merge authorized. No claim of scientific validation or renderer/audio implementation.

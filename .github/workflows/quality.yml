@@ -7,13 +7,15 @@ on:
 permissions:
   contents: read
 jobs:
-  documentation:
+  repository-governance:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Enforce single-source repository structure
+        run: python scripts/check_repository_structure.py
       - name: Check tracked Markdown inventory
         run: python scripts/check_document_catalog.py
       - name: Check local Markdown links
