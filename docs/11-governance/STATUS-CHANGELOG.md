@@ -97,3 +97,10 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - MIDI output now writes explicit 120 BPM and 4/4 metadata, rejects non-monotonic sample times, and bounds note lengths to avoid overlapping same-pitch note-offs.
 - Release builder validates SceneSpec JSON Schema and semantic constraints even when called as a Python API, not only through the CLI.
 - CI now asserts MIDI tempo metadata and monotonic input rejection; deterministic ZIP bytes remain an acceptance criterion.
+
+
+## Final executable vertical-slice verification — 2026-11-08
+- Quality Gate run [42465296924](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42465296924) passed both jobs on commit `03f21a0c29ec8cd0113de81268b9a97a6c346b90`.
+- The complete Python suite (31 tests), SceneSpec schema/semantic validation, Kuramoto SceneSpec generation, release ZIP build, ZIP content checks, artifact upload, knowledge-graph outputs, repository topology, Markdown inventory and local-link checks all passed.
+- Actions artifact `haa-d3-e2e-release` uploaded successfully: 6,143 bytes; SHA-256 `52e8661b8296634f20a28a08534a24d7e617965be6f2e2b1f6ad5ed9f57640e0`; expires 2026-11-22.
+- The archive is a generated software proof, not a finished episode or a scientifically/creatively approved public release.
