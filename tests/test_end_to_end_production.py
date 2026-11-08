@@ -138,7 +138,7 @@ class EndToEndProductionTests(unittest.TestCase):
                 objects=FakeCollection([owned, user_object, generated_camera]),
                 meshes=FakeCollection([user_mesh, generated_mesh]),
                 curves=FakeCollection(), materials=FakeCollection(),
-                cameras=FakeCollection(), lights=FakeCollection(),
+                cameras=FakeCollection(), lights=FakeCollection(), worlds=FakeCollection(),
             ),
         )
         adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
