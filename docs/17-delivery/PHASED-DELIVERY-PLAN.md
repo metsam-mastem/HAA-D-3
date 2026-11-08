@@ -17,13 +17,13 @@
 - Bundle simulation, SceneSpec, frames, cue and SHA-256 artifact inventory.
 - Gate: release archive opens, required artifacts exist, tests pass, checksums are recorded.
 
-**State:** implemented; CI verification pending for this branch.
+**State:** PASS — Quality Gate run 42465163781 built and inspected the release ZIP, ran the full Python suite, and uploaded the archive artifact.
 
 ## Phase C — Optional 3D production adapter
 - Blender background adapter creates editable scene, animated oscillator objects, coherence ring and PNG sequence.
 - Gate: execute in a pinned Blender version, compare frame count and render manifest, inspect frames and confirm no unsupported scientific depiction.
 
-**State:** code implemented; Blender runtime NOT RUN.
+**State:** code implemented; syntax check PASS; Blender runtime NOT RUN.
 
 ## Phase D — Production acceptance and release
 - Scientific review of model assumptions and selected source/data.
