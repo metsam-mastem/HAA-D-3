@@ -155,6 +155,14 @@ def render_scene_mp4(
     format_duration = float(probe_data.get("format", {}).get("duration", 0))
     if not math.isfinite(format_duration) or format_duration <= 0:
         raise RuntimeError("MP4 duration metadata is invalid")
+    video_duration = float(video_stream.get("duration", 0))
+    audio_duration = float(audio_stream.get("duration", 0))
+    if (not math.isfinite(video_duration) or video_duration <= 0
+            or not math.isfinite(audio_duration) or audio_duration <= 0):
+        raise RuntimeError("MP4 audio/video stream duration metadata is missing or invalid")
+    duration_delta = abs(video_duration - audio_duration)
+    if duration_delta > max(1.0 / fps, 0.05):
+        raise RuntimeError("MP4 audio/video duration mismatch exceeds one frame")
     decoded = subprocess.run(
         [ffmpeg, "-v", "error", "-xerror", "-i", str(output_path), "-f", "null", "-"],
         capture_output=True, text=True, timeout=120,
@@ -170,6 +178,9 @@ def render_scene_mp4(
         "width": video_stream["width"],
         "height": video_stream["height"],
         "container_duration_seconds": format_duration,
+        "video_duration_seconds": video_duration,
+        "audio_duration_seconds": audio_duration,
+        "audio_video_duration_delta_seconds": round(duration_delta, 6),
     }
     return {
         "status": "RENDERED_NOT_REVIEWED",
