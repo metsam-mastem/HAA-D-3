@@ -57,9 +57,20 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
         number = value.get(key)
         if isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(number) or number <= 0:
             errors.append(f"{key} must be a finite positive number")
+    duration_value = value.get("duration_seconds")
+    fps_value = value.get("frame_rate")
+    if (not isinstance(duration_value, bool) and isinstance(duration_value, (int, float))
+            and math.isfinite(duration_value) and duration_value > 0
+            and not isinstance(fps_value, bool) and isinstance(fps_value, (int, float))
+            and math.isfinite(fps_value) and fps_value > 0):
+        if duration_value > 600 or fps_value > 120 or duration_value * fps_value > 10_000:
+            errors.append("scene exceeds render budget (600 seconds, 120 FPS, 10000 frames)")
     interpretation_mode = value.get("interpretation_mode")
     if not isinstance(interpretation_mode, str) or interpretation_mode not in INTERPRETATION_MODES:
         errors.append("interpretation_mode is not supported")
+    metadata = value.get("metadata", {})
+    if not isinstance(metadata, dict):
+        errors.append("metadata must be an object")
     refs = value.get("evidence_refs")
     if not isinstance(refs, list) or not all(isinstance(x, str) for x in refs):
         errors.append("evidence_refs must be an array of strings")
