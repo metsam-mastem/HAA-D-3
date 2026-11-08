@@ -1,0 +1,41 @@
+# HAA-D-3 — Compressed Delivery Plan
+
+**Delivery target:** a reproducible, reviewable scientific-to-cinematic vertical slice, not a claim that a feature-film production is complete.
+
+## Phase A — Reproducible contracts and numerical core
+- JSON Schema validation at runtime and in CLI.
+- Deterministic Kuramoto simulation.
+- Independent pairwise implementation, analytical K=0 case and convergence checks.
+- Provenance-aware SceneSpec.
+- Gate: full test suite and CI pass.
+
+**State:** PASS in current implementation.
+
+## Phase B — Executable media vertical slice
+- Renderer-neutral SceneSpec to deterministic SVG frame sequence.
+- Explicit MIDI data-sonification mapping from the order parameter.
+- Bundle simulation, SceneSpec, frames, cue and SHA-256 artifact inventory.
+- Gate: release archive opens, required artifacts exist, tests pass, checksums are recorded.
+
+**State:** implemented; CI verification pending for this branch.
+
+## Phase C — Optional 3D production adapter
+- Blender background adapter creates editable scene, animated oscillator objects, coherence ring and PNG sequence.
+- Gate: execute in a pinned Blender version, compare frame count and render manifest, inspect frames and confirm no unsupported scientific depiction.
+
+**State:** code implemented; Blender runtime NOT RUN.
+
+## Phase D — Production acceptance and release
+- Scientific review of model assumptions and selected source/data.
+- Creative, accessibility, audio and rights review.
+- Cross-platform render smoke tests and reproducibility check.
+- Versioned release with credits, license decisions, source pack, checksums and known limitations.
+- Gate: signed review checklist and immutable release artifact.
+
+**State:** NOT RUN. Human review and project-owner licensing decisions are required.
+
+## Critical path
+A → B → C → D. Phases A and B are software gates. Phase C depends on an available Blender runtime. Phase D cannot be auto-approved by CI; it requires domain review and rights decisions.
+
+## Status semantics
+PASS means evidence exists. IMPLEMENTED means code exists but its runtime gate has not necessarily run. NOT RUN means no execution evidence. BLOCKED means an external dependency or approval is missing.
