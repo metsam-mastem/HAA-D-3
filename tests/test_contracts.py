@@ -127,5 +127,16 @@ class KuramotoSimulationTests(unittest.TestCase):
         self.assertTrue(any("3D vector" in error for error in validate_scene(scene)))
 
 
+    def test_rejects_scene_render_parameters_over_budget(self):
+        for duration, fps in ((601, 24), (10, 121), (600, 120)):
+            with self.subTest(duration=duration, fps=fps):
+                scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":duration,"frame_rate":fps,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[]}
+                self.assertTrue(any("render budget" in error for error in validate_scene(scene)))
+
+    def test_rejects_non_object_scene_metadata(self):
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[],"metadata":[]}
+        self.assertTrue(any("metadata" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
