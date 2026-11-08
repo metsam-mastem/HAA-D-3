@@ -14,10 +14,10 @@
 ## Phase B — Executable media vertical slice
 - Renderer-neutral SceneSpec to deterministic SVG frame sequence.
 - Explicit MIDI data-sonification mapping from the order parameter.
-- Bundle simulation, SceneSpec, frames, cue and SHA-256 artifact inventory.
+- Synthesize deterministic WAV data-sonification; encode an H.264/AAC MP4 preview from SVG frames with FFmpeg/CairoSVG.\n- Bundle simulation, SceneSpec, SVG/MP4/WAV/MIDI outputs and SHA-256 artifact inventory.
 - Gate: release archive opens, required artifacts exist, tests pass, checksums are recorded.
 
-**State:** PASS — Quality Gate run 42465296924 built and inspected the release ZIP, ran the full Python suite, and uploaded the archive artifact.
+**State:** PASS — Quality Gate run 42465542376 ran 33 tests, encoded and checked an MP4/WAV/MIDI release bundle, and uploaded the ZIP artifact.
 
 ## Phase C — Optional 3D production adapter
 - Blender background adapter creates editable scene, animated oscillator objects, coherence ring and PNG sequence.
