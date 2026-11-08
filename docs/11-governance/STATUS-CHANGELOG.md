@@ -29,6 +29,7 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Recursive `main` tree reviewed: 123 paths; all tracked Markdown files (including this catalog) are enumerated and checked by CI.
 - Found and corrected root README's stale statement that foundation branch was unmerged.
 - Expanded `docs/README.md` across governance, architecture, research, planning, creative and workspace docs.
-- Added `docs/13-planning/DOCUMENT-CATALOG.md` and `scripts/check_document_catalog.py`; Quality workflow now has a dedicated document-catalog job. Its first run result is pending verification.
+- Added `docs/13-planning/DOCUMENT-CATALOG.md` and `scripts/check_document_catalog.py`; Quality workflow now has a dedicated document-catalog job. The catalog job passed in Quality run `42461219275`; the link-checker job also passed.
 - Added reconciliation appendices to two historical handoffs; original dated context preserved rather than rewritten.
-- Markdown link target checking and JSON Schema engine validation remain follow-up tasks; scientific/creative reviews remain NOT RUN.
+- Local Markdown link destination checking is now enforced by `scripts/check_markdown_links.py` and passed in Quality run `42461219275`. JSON Schema engine validation remains a follow-up; scientific/creative reviews remain NOT RUN.
+- Created follow-up issue [#2](https://github.com/metsam-mastem/HAA-D-3/issues/2) to track licensing, schema validation, scientific checks, renderer, cue-sheet rights, reference curation, owner review and cross-platform matrix.
