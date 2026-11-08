@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 
 from manim import (
-    BLUE_C, Circle, Dot, FadeIn, FadeOut, MathTex, ORIGIN, Scene,
+    BLUE_C, Circle, Dot, FadeIn, FadeOut, ORIGIN, Scene,
     Text, VGroup, WHITE, YELLOW, DOWN, UP,
 )
 
