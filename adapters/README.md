@@ -6,4 +6,4 @@ Integrations for model providers, renderers, simulators, storage, search and com
 - [Blender adapter](blender/README.md): optional background renderer for SceneSpec to editable `.blend` plus PNG frame sequence. Blender 4.2+ required; runtime execution is NOT RUN in default CI.
 
 ## Portable render path
-The core renderer in `src/haa_d3/render_svg.py` uses only Python standard library and is exercised by the required CI suite. It is the default low-dependency preview/export path.
+The core renderer in `src/haa_d3/render_svg.py` uses only Python standard library and is exercised by the required CI suite. Optional `src/haa_d3/media.py` rasterizes SVG with CairoSVG, synthesizes WAV sonification and assembles H.264/AAC MP4 with FFmpeg. The MP4 path is exercised in CI; it is not a final edited episode.

@@ -78,6 +78,14 @@ PYTHONPATH=src python -m haa_d3.cli render-knowledge-graph examples/knowledge/se
 PYTHONPATH=src python -m haa_d3.cli build-release --nodes 24 --steps 100 --dt 0.05 --frame-rate 24 --output artifacts/haa-d3-release.zip
 ~~~
 
+### Optional MP4 export
+Install FFmpeg on the host and the media extra:
+```bash
+python -m pip install -e ".[media]"
+PYTHONPATH=src python -m haa_d3.cli build-release --nodes 24 --steps 100 --dt 0.05 --frame-rate 24 --video --output artifacts/haa-d3-release.zip
+```
+The bundle then includes H.264/AAC MP4 preview, PCM WAV sonification, MIDI cue, SVG frames, source data and SHA-256 manifest. The WAV is algorithmic data sonification, not a composed soundtrack.
+
 ## Delivery plan
 The compressed execution gates and acceptance criteria are in [Phased Delivery Plan](docs/17-delivery/PHASED-DELIVERY-PLAN.md).
 

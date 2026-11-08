@@ -12,6 +12,7 @@ from .contracts import validate_scene
 from .schema_validation import validate_json_schema
 from .render_svg import render_scene_frames
 from .sonification import write_sonification_midi
+from .media import write_sonification_wav, render_scene_mp4
 
 
 def _sha256(path: Path) -> str:
@@ -26,6 +27,8 @@ def build_release_bundle(
     simulation: dict[str, Any],
     scene: dict[str, Any],
     output_path: Path,
+    *,
+    include_video: bool = False,
 ) -> Path:
     """Create ZIP with simulation, SceneSpec, SVG frames, MIDI and hash manifest."""
     schema_errors = validate_json_schema(scene, "scene-spec.schema.json")
@@ -45,6 +48,11 @@ def build_release_bundle(
         )
         render_scene_frames(scene, root / "frames")
         sonification = write_sonification_midi(simulation, root / "sonification" / "coherence.mid")
+        wav_metadata = None
+        video_metadata = {"status": "NOT_REQUESTED"}
+        if include_video:
+            wav_metadata = write_sonification_wav(simulation, root / "sonification" / "coherence.wav")
+            video_metadata = render_scene_mp4(scene, root / "sonification" / "coherence.wav", root / "video" / "preview.mp4")
         (root / "sonification" / "README.txt").write_text(
             "MIDI data-sonification cue. It maps Kuramoto order parameter to pitch and velocity. "
             "It is not a composed soundtrack and carries no claim about emotional response.\n",
@@ -52,8 +60,7 @@ def build_release_bundle(
         )
         (root / "README.md").write_text(
             "# HAA-D-3 generated vertical slice\n\n"
-            "Contents: source simulation, renderer-neutral SceneSpec, deterministic SVG frames, "
-            "MIDI data-sonification cue and SHA-256 manifest.\n\n"
+            "Contents: source simulation, renderer-neutral SceneSpec, SVG frames, MP4 preview, WAV/MIDI sonification, "
             "Status: GENERATED_NOT_REVIEWED. Numerical software checks do not establish empirical "
             "or biological validity. Human scientific, creative, accessibility and rights review "
             "is required before public release.\n",
@@ -77,6 +84,8 @@ def build_release_bundle(
             "scene_id": scene.get("scene_id"),
             "frame_count": len(list((root / "frames").glob("*.svg"))),
             "sonification": sonification,
+            "wav_sonification": wav_metadata,
+            "video": video_metadata,
             "artifacts": artifacts,
             "required_reviews": ["scientific", "creative", "accessibility", "rights"],
             "limitations": [

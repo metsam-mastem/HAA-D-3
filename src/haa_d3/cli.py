@@ -26,6 +26,7 @@ def main() -> int:
     finding = sub.add_parser("validate-finding", help="validate a Finding JSON file"); finding.add_argument("path", type=Path)
     render = sub.add_parser("render-scene", help="render a SceneSpec as deterministic SVG frames"); render.add_argument("path", type=Path); render.add_argument("--out", type=Path, default=Path("artifacts/frames")); render.add_argument("--frame-rate", type=float, default=None)
     release = sub.add_parser("build-release", help="build simulation, SceneSpec, SVG and MIDI release bundle")
+    release.add_argument("--video", action="store_true", help="render MP4 preview; requires ffmpeg and haa-d3[media]")
     release.add_argument("--nodes", type=int, default=24); release.add_argument("--coupling", type=float, default=1.5); release.add_argument("--dt", type=float, default=0.05); release.add_argument("--steps", type=int, default=100); release.add_argument("--seed", type=int, default=7); release.add_argument("--frame-rate", type=float, default=24.0); release.add_argument("--output", type=Path, default=Path("artifacts/haa-d3-release.zip"))
     graph = sub.add_parser("render-knowledge-graph", help="validate graph JSON and generate SVG plus provenance receipt")
     graph.add_argument("path", type=Path); graph.add_argument("--out", type=Path, default=Path("artifacts/knowledge-graph"))
@@ -65,7 +66,7 @@ def main() -> int:
             if errors:
                 for error in errors: print(f"FAIL: {error}")
                 return 1
-            archive = build_release_bundle(simulation, scene_payload, args.output)
+            archive = build_release_bundle(simulation, scene_payload, args.output, include_video=args.video)
         except (ValueError, OSError) as exc:
             print(f"ERROR: {exc}", file=sys.stderr); return 2
         print(json.dumps({"status":"GENERATED_NOT_REVIEWED","release_bundle":str(archive)}, indent=2))
