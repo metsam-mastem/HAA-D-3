@@ -34,9 +34,18 @@ src/haa_d3/
 ├── contracts.py         # Finding and SceneSpec semantic checks
 ├── kuramoto.py          # numerical coupled-oscillator prototype
 ├── knowledge_graph.py   # graph validation, SVG projection, hash receipt
-└── scene_mappings.py    # model-output to SceneSpec transforms
+├── scene_mappings.py    # model-output to SceneSpec transforms
+├── schema_validation.py # JSON Schema 2020-12 validation
+├── render_svg.py        # deterministic SVG frame renderer
+├── sonification.py      # MIDI data sonification
+└── release.py           # ZIP release and SHA-256 manifest
 
-tests/test_kuramoto_validation.py  # independent pairwise/analytical/convergence checks
+adapters/blender/render_scene.py # optional Blender 4.2+ renderer
+tests/
+├── test_contracts.py
+├── test_knowledge_graph.py
+├── test_kuramoto_validation.py
+└── test_end_to_end_production.py
 ~~~
 
 Dependency direction:
