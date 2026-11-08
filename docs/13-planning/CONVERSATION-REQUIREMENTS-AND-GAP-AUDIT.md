@@ -131,3 +131,14 @@ These are risks of omission discovered by reconciling the intent against current
 Use `docs/END-TO-END-LIFECYCLE.md` as the process/gate specification G0–G10. Use this document as the conversation-derived requirement and gap register. Use `docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md` to ingest each result and `docs/13-planning/DOCUMENT-CATALOG.md` to keep the inventory exact.
 
 The E2E lifecycle is not “complete” merely because this document exists. Completion requires evidence from a real work package traversing the relevant gates, including end-to-end media QC for the production path.
+
+
+## 8. Reconciliation against latest executable vertical-slice evidence — 2026-11-08
+
+A later changelog entry records Quality Gate run [42465296924](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42465296924) passing both jobs on commit `03f21a0c29ec8cd0113de81268b9a97a6c346b90`. Evidence reported: 31 Python tests, SceneSpec schema/semantic validation, Kuramoto SceneSpec generation, release ZIP build and content checks, artifact upload, knowledge-graph outputs, topology, Markdown inventory and local-link checks. The generated `haa-d3-e2e-release` artifact was 6,143 bytes with SHA-256 `52e8661b8296634f20a28a08534a24d7e617965be6f2e2b1f6ad5ed9f57640e0` (reported expiry 2026-11-22).
+
+**Status correction:** CR-03 and the P3 production proof are not “no E2E implementation.” A reproducible software-level E2E release proof now exists for simulation → SceneSpec → SVG frames → MIDI cue → ZIP manifest/package. This materially advances the pipeline and constitutes a runnable vertical slice.
+
+**Remaining boundary:** the recorded artifact is explicitly not a finished cinematic episode or a scientifically/creatively approved public release. Blender rendering integration, human scientific/creative/accessibility/rights acceptance, soundtrack rights and final media QC remain pending unless separately evidenced. The status should therefore be **PARTIAL / executable software proof; final media E2E NOT RUN**.
+
+This correction supersedes the earlier broad wording in this audit that implied no runnable E2E production path. Keep the historical finding intact for provenance and use this reconciliation as the current status.
