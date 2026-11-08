@@ -3,7 +3,7 @@
 > **مهندسی هنر، هنر مهندسی** — an evidence-led system that transforms interdisciplinary research and mathematical models into reproducible explanations and cinematic experiences.
 
 **Persian identity:** اودیسهٔ هوش — از هندسهٔ ذهن تا معماری دانش  
-**Baseline:** 0.2.0 foundation consolidation in review  
+**Baseline:** 0.2.0 consolidated foundation on main  
 **Repository:** https://github.com/metsam-mastem/HAA-D-3
 
 ## Mission
@@ -40,7 +40,7 @@ See [End-to-End Lifecycle](docs/END-TO-END-LIFECYCLE.md) for gates, required rec
 
 | Layer | Canonical home | Responsibility |
 |---|---|---|
-| Research and evidence | docs/02-knowledge/, docs/06-research/, research/ | Sources, questions, claims, methods and findings |
+| Research and evidence | docs/02-knowledge/, docs/06-research/, docs/10-references/, research/ | Sources, questions, claims, methods and findings |
 | Portable computational core | src/haa_d3/ | Contracts, numerical models, graph tools, transformations and CLI |
 | Contracts and examples | schemas/, examples/ | Versioned interchange formats and reproducible inputs |
 | Scene and creative production | scenes/, creative/, adapters/ | Renderer-neutral scenes and replaceable creative backends |
@@ -55,10 +55,11 @@ The Python package has one canonical root: src/haa_d3/. The test suite has one r
 - Portable Finding and SceneSpec semantic checks.
 - Capability descriptors and deterministic adapter selection.
 - Seeded Kuramoto coupled-oscillator prototype and research-to-scene mapping.
+- Independent numerical checks: O(N²) pairwise reference, analytical K=0 solution and Heun second-order convergence (CI run 42463415737: PASS).
 - Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt.
 - Browser-based Neural Odyssey illustrative demo.
 
-Graph and Kuramoto outputs are computational/model outputs, not independent scientific validation. Kuramoto is a generic coupled-oscillator system, not a biological brain model.
+Graph and Kuramoto outputs remain computational/model outputs, not empirical scientific validation. The Kuramoto numerical implementation passes independent-formulation, analytical-special-case and convergence checks; external scientific review and experimental-data comparison remain pending. It is a generic coupled-oscillator system, not a biological brain model.
 
 ## Quick start
 Requires Python 3.11+.
@@ -81,4 +82,4 @@ Work statuses: PASS, FAIL, NOT RUN, BLOCKED, DRAFT, IN REVIEW. Evidence classes:
 The repository owner has not selected a project license. Public visibility does not grant reuse rights. Do not reuse external code, data, models, fonts, images, music or video without checking applicable terms.
 
 ## Current change
-Foundation consolidation is proposed in [PR #4](https://github.com/metsam-mastem/HAA-D-3/pull/4). It is intentionally not merged. Main remains unchanged by this consolidation work until review and owner authorization.
+Foundation consolidation [PR #4](https://github.com/metsam-mastem/HAA-D-3/pull/4) is merged. Numerical verification [PR #5](https://github.com/metsam-mastem/HAA-D-3/pull/5) is also merged. Current main baseline: `ce4e421b630179900ccd1e18f13bae61e37e29eb`.
