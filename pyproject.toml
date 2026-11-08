@@ -9,7 +9,10 @@ description = "Portable scientific-to-cinematic research and scene contracts"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "HAA-D-3 contributors" }]
-dependencies = ["jsonschema>=4.20,<5"]\n\n[project.optional-dependencies]\nmedia = ["CairoSVG>=2.7,<3"]
+dependencies = ["jsonschema>=4.20,<5"]
+
+[project.optional-dependencies]
+media = ["CairoSVG>=2.7,<3"]
 
 [tool.setuptools.data-files]
 "share/haa-d3/schemas" = ["schemas/*.json"]
