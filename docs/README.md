@@ -25,6 +25,7 @@ This is the authoritative navigation index. A document not listed as implemented
 - [Nature and GitHub Landscape](10-references/GITHUB-NATURE-LANDSCAPE.md)
 - [Creative Direction Bible](12-production/CREATIVE-DIRECTION-BIBLE.md)
 - [Vertical Slice 01](05-vertical-slice/VS-01-NEURAL-EMERGENCE.md)
+- [Vertical Slice 02 — Coupled Oscillators](05-vertical-slice/VS-02-COUPLED-OSCILLATORS.md)
 
 ## Delivery and quality
 - [Release and Quality Gates](15-operations/RELEASE-AND-QUALITY.md)
