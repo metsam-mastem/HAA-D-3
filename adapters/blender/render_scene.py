@@ -144,7 +144,7 @@ def build_scene(spec, output_dir, *, overwrite=False):
             if not isinstance(track, dict):
                 raise ValueError(f"objects[{index}].animation[{track_index}] must be an object")
             prop = track.get("property")
-            if prop not in {"transform.position", "material.emission_intensity"}:
+            if not isinstance(prop, str) or prop not in {"transform.position", "material.emission_intensity"}:
                 raise ValueError(f"objects[{index}].animation[{track_index}] has unsupported property")
             keyframes = track.get("keyframes", [])
             if not isinstance(keyframes, list):
