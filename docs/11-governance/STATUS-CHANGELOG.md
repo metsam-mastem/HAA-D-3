@@ -104,3 +104,10 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - The complete Python suite (31 tests), SceneSpec schema/semantic validation, Kuramoto SceneSpec generation, release ZIP build, ZIP content checks, artifact upload, knowledge-graph outputs, repository topology, Markdown inventory and local-link checks all passed.
 - Actions artifact `haa-d3-e2e-release` uploaded successfully: 6,143 bytes; SHA-256 `52e8661b8296634f20a28a08534a24d7e617965be6f2e2b1f6ad5ed9f57640e0`; expires 2026-11-22.
 - The archive is a generated software proof, not a finished episode or a scientifically/creatively approved public release.
+
+
+## Multi-agent GitHub coordination and API safety — 2026-11-08
+- Added [Multi-Agent GitHub Coordination and Rate Safety Policy](../13-planning/MULTI-AGENT-GITHUB-COORDINATION-AND-RATE-SAFETY.md) on isolated branch `agent-audit/coordination-policy-20261108` to reduce overlapping writes, API bursts, duplicate issue creation, and unsafe retries while another ChatGPT agent works on the same account.
+- Enumerated 18 repositories accessible under `metsam-mastem` using a single paginated repository-list request. This is metadata inventory only; repository-by-repository content audit remains pending.
+- Policy linked from the docs navigation and catalog. It specifies serial requests, conservative mutation pacing, branch/path ownership, respecting rate-limit headers, and stopping/backing off after 403/429. It does not guarantee that GitHub will never limit requests.
+- Official guidance consulted: GitHub REST API rate limits and REST API best practices (see links in policy).
