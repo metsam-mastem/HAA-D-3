@@ -1,7 +1,7 @@
 name: HAA-D-3 Quality Gate
 on:
   push:
-    branches: [main, "work/**", "feat/**", "fix/**", "docs/**", "research/**", "creative/**", "foundation/**", "release/**"]
+    branches: [main, "work/**", "feat/**", "fix/**", "docs/**", "research/**", "creative/**", "foundation/**", "release/**", "phase-c/**"]
   pull_request:
   workflow_dispatch:
     inputs:
@@ -200,4 +200,58 @@ jobs:
         with:
           name: haa-d3-blender-runtime-evidence
           path: /tmp/haa-d3-blender/
+          retention-days: 14
+
+  manim-runtime:
+    needs: python-core
+    if: github.event_name != 'workflow_dispatch' || inputs.scope == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.11"
+      - name: Install Manim system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libcairo2-dev libpango1.0-dev ffmpeg
+      - name: Install HAA-D-3 and Manim Community
+        run: |
+          python -m pip install --upgrade "setuptools>=84.1.0"
+          python -m pip install -e .
+          python -m pip install "manim==0.19.0"
+          manim --version
+      - name: Generate canonical SceneSpec fixture
+        run: |
+          PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 8 --steps 10 --dt 0.1 --frame-rate 10 --seed 17 --output /tmp/haa-d3-manim-scene.json
+          PYTHONPATH=src python -m haa_d3.cli validate-scene /tmp/haa-d3-manim-scene.json
+      - name: Render SceneSpec through Manim adapter
+        run: |
+          HAA_D3_SCENE_FILE=/tmp/haa-d3-manim-scene.json manim -ql --disable_caching --media_dir /tmp/haa-d3-manim -o haa-d3-manim-preview.mp4 adapters/manim/render_scene.py HaaD3SceneSpecSmoke
+          VIDEO="$(find /tmp/haa-d3-manim -type f -name '*.mp4' -size +1k -print -quit)"
+          test -n "$VIDEO"
+      - name: Decode and record Manim preview
+        run: |
+          VIDEO="$(find /tmp/haa-d3-manim -type f -name '*.mp4' -size +1k -print -quit)"
+          ffmpeg -v error -xerror -i "$VIDEO" -f null -
+          ffprobe -v error -show_entries stream=codec_name,width,height,nb_frames,duration -of json "$VIDEO" > /tmp/haa-d3-manim-probe.json
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('/tmp/haa-d3-manim')
+          video = next(root.rglob('*.mp4'))
+          probe = json.loads(Path('/tmp/haa-d3-manim-probe.json').read_text())
+          stream = next(s for s in probe['streams'] if s.get('codec_name') == 'h264')
+          assert int(stream['width']) >= 640 and int(stream['height']) >= 360
+          assert video.stat().st_size > 1000
+          receipt = {'status':'RENDERED_NOT_REVIEWED','renderer':'Manim Community','renderer_version':'0.19.0','scene_spec':'/tmp/haa-d3-manim-scene.json','video':video.name,'sha256':hashlib.sha256(video.read_bytes()).hexdigest(),'size_bytes':video.stat().st_size,'stream':stream,'evidence_class':'MODEL_OUTPUT','limitations':['Smoke render only; not a human-approved cinematic master.']}
+          (root / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+      - name: Upload Manim runtime evidence
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: haa-d3-manim-runtime-evidence
+          path: /tmp/haa-d3-manim/
           retention-days: 14
