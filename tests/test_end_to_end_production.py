@@ -76,5 +76,18 @@ class EndToEndProductionTests(unittest.TestCase):
                 self.assertIn("sha256", manifest["artifacts"]["scene.json"])
 
 
+    def test_svg_renderer_rejects_excessive_pixel_budget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "pixel budget"):
+                render_scene_frames(self.scene, Path(directory), width=8192, height=8192)
+
+    def test_svg_renderer_rejects_excessive_object_count(self):
+        scene = dict(self.scene)
+        scene["objects"] = self.scene["objects"] * 2000
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "object limit"):
+                render_scene_frames(scene, Path(directory))
+
+
 if __name__ == "__main__":
     unittest.main()
