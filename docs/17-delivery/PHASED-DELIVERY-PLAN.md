@@ -35,7 +35,17 @@
 **State:** NOT RUN. Human review and project-owner licensing decisions are required.
 
 ## Critical path
-A → B → C → D. Phases A and B are software gates. Phase C depends on an available Blender runtime. Phase D cannot be auto-approved by CI; it requires domain review and rights decisions.
+A → B → C (Blender + Manim adapters) → D. Phase C has independent renderer jobs over the same SceneSpec contract. Phase D cannot be auto-approved by CI; it requires domain review and rights decisions.
 
 ## Status semantics
 PASS means evidence exists. IMPLEMENTED means code exists but its runtime gate has not necessarily run. NOT RUN means no execution evidence. BLOCKED means an external dependency or approval is missing.
+
+
+## Phase C2 — Manim scientific animation adapter
+- Consume the same validated Kuramoto SceneSpec used by the Blender adapter.
+- Render a deterministic, low-quality explanatory smoke preview using pinned Manim Community 0.19.0.
+- Decode the MP4, verify H.264 dimensions and file integrity, and upload a receipt with SHA-256.
+- Gate: the Manim runtime job passes independently after Python core; output remains RENDERED_NOT_REVIEWED.
+
+**State:** IMPLEMENTED; CI execution pending on branch `phase-c/blender-runtime-20261108`.
+
