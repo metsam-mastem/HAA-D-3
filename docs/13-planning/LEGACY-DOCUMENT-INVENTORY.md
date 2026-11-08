@@ -1,37 +1,36 @@
 # Legacy Documentation Inventory and Recovery Plan
 
-**Created:** 2026-11-08  
-**Purpose:** Preserve the original README's documentation map and prevent planned/referenced material from being silently lost during repository reorganization.
+**Created:** 2026-11-08 · **Updated:** 2026-11-08
+**Purpose:** Preserve the original README's map and distinguish missing original documents from newly recreated drafts.
 
 ## Audit finding
-The original README on `main` referenced the documents below. The inspected `main` Git tree contained only `README.md`; the referenced document files were not present in that tree at the time of inspection. Therefore, their contents cannot be presumed or reconstructed as if they were recovered originals.
+At initial inspection, main contained only README.md; the README's referenced legacy documents were not then present. Their original contents are not claimed as recovered. The following docs have since been recreated as new drafts from the visible conversation's project planning/research and newly conducted GitHub review. They are not verbatim recovery of files from a lost commit.
 
-This inventory preserves their names, intended purpose and recovery status. It does not mark them as deleted by this work. Recreate them only from recoverable source material or as clearly labeled new drafts.
-
-## Legacy references
-
-| Original path | Intended content | Status |
+## Migration inventory
+| Legacy path | Intended content | Current path/status |
 |---|---|---|
-| docs/00-charter/PROJECT-CHARTER.md | Mission, vision, scope, governance, deliverables | NOT FOUND in inspected main tree |
-| docs/00-charter/MANIFESTO.md | Principles and program philosophy | NOT FOUND |
-| docs/01-creative/THREE-CHAPTERS-SERIES-BIBLE.md | Narrative structure, soundtrack references, episodic potential | NOT FOUND; narrative references preserved in README |
-| docs/02-knowledge/KNOWLEDGE-UNIVERSE.md | Multidisciplinary taxonomy and research paths | NOT FOUND |
-| docs/02-knowledge/RESEARCH-PLAN.md | Discovery protocol, source and claim handling | NOT FOUND; new research operations draft exists |
-| docs/03-architecture/CONCEPT-ARCHITECTURE.md | Planes, components, data/control flows | NOT FOUND; new reference architecture draft exists |
-| docs/04-engineering-spec/ES-DRAFT-0.1.md | Preliminary requirements, interfaces, verification | NOT FOUND |
-| docs/05-vertical-slice/VERTICAL-SLICE-FEASIBILITY.md | Thin end-to-end prototype scope and evaluation | NOT FOUND; new VS-01 specification exists |
-| docs/06-planning/WBS-ROADMAP.md | Work breakdown, phases, gates, dependencies | NOT FOUND; new roadmap draft exists |
-| docs/07-reuse/REPOSITORY-REUSE-AUDIT.md | VINT, SSG, research patterns and reuse boundaries | NOT FOUND; do not invent the audit findings |
-| docs/08-evaluation/COMPETITOR-LANDSCAPE.md | Comparison categories and differentiated value | NOT FOUND |
-| docs/08-evaluation/RESOURCE-BENCHMARK-PLAN.md | Metrics, resource accounting and evaluation protocol | NOT FOUND |
-| docs/09-creative-tech/VISUAL-ANIMATION-PIPELINE.md | Code/prompt workflows, storyboard and render pipeline | NOT FOUND; new scientific-to-cinema pipeline exists |
-| docs/10-references/SOURCES.md | Initial source registry | NOT FOUND; new Nature/GitHub landscape exists |
-| docs/11-governance/RISK-REGISTER.md | Risks and mitigations | NOT FOUND |
-| docs/11-governance/STATUS-CHANGELOG.md | Truthful project status and changes | NOT FOUND; Git history and handoff records are now authoritative |
+| docs/00-charter/PROJECT-CHARTER.md | Mission, scope, governance | Same path: recreated new draft from conversation |
+| docs/00-charter/MANIFESTO.md | Principles and philosophy | Same path: recreated new draft from conversation |
+| docs/01-creative/THREE-CHAPTERS-SERIES-BIBLE.md | Chapters, soundtrack, episodic arc | Same path: recreated new draft from user's playlist and conversation |
+| docs/02-knowledge/KNOWLEDGE-UNIVERSE.md | Interdisciplinary taxonomy | Same path: recreated seed taxonomy |
+| docs/02-knowledge/RESEARCH-PLAN.md | Method/source/evidence handling | Same path: recreated research protocol draft |
+| docs/03-architecture/CONCEPT-ARCHITECTURE.md | Planes, modules, flows | Same path: recreated concept draft |
+| docs/04-engineering-spec/ES-DRAFT-0.1.md | Requirements/contracts/verification | Same path: recreated preliminary ES |
+| docs/05-vertical-slice/VERTICAL-SLICE-FEASIBILITY.md | Feasibility/acceptance | Same path: recreated feasibility analysis |
+| docs/06-planning/WBS-ROADMAP.md | WBS, phases, gates | Same path: recreated planning baseline |
+| docs/07-reuse/REPOSITORY-REUSE-AUDIT.md | VINT, SSG, account repo reuse | Same path: new audit from inspected repository sources; not original text |
+| docs/08-evaluation/COMPETITOR-LANDSCAPE.md | Categories/differentiation | Same path: new preliminary landscape |
+| docs/08-evaluation/RESOURCE-BENCHMARK-PLAN.md | Metrics/resources/experiment plan | Same path: new plan; actual measurements NOT RUN |
+| docs/09-creative-tech/VISUAL-ANIMATION-PIPELINE.md | Code/prompt/storyboard/render | Same path: recreated new workflow draft |
+| docs/10-references/SOURCES.md | Seed source registry | Same path: newly authored reference list |
+| docs/11-governance/RISK-REGISTER.md | Risks/mitigations | Same path: newly authored register |
+| docs/11-governance/STATUS-CHANGELOG.md | Status/change record | Same path: newly authored, current main status |
+
+Additional foundation docs and contracts were integrated via PR #1; see [documentation map](../README.md).
 
 ## Recovery rules
-1. Search all branches, tags, commits, backups and user-provided archives before declaring a legacy document unrecoverable.
-2. If the original is recovered, preserve it and record its source commit or archive.
-3. If a new document replaces the old concept, record a migration map and label it as a new draft; do not claim it is the original.
-4. Never fabricate the contents of the VINT/SSG reuse audit, competitor analysis, benchmark plan or source registry.
-5. Update this inventory and docs/README.md when a document is recovered or recreated.
+1. Search all branches, tags, commits, backups and user archives before asserting an original is unrecoverable.
+2. If an original is recovered, preserve it and cite its source commit/archive.
+3. Mark recreated docs as new drafts; do not call them original recovery.
+4. Never invent research results, benchmarks, citations or repo audit facts.
+5. Update this inventory and docs/README.md when durable docs are added, moved, recovered or retired.
