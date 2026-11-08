@@ -44,5 +44,22 @@ class KnowledgeGraphTests(unittest.TestCase):
         self.assertEqual(receipt["scientific_validation"], "NOT_RUN")
 
 
+    def test_rejects_non_string_relation_endpoints_without_crashing(self):
+        for endpoint in (["math.graph"], {"id": "math.graph"}, 7):
+            with self.subTest(endpoint=endpoint):
+                graph = dict(self.graph)
+                graph["relations"] = [dict(self.graph["relations"][0], source=endpoint)]
+                errors = validate_graph(graph)
+                self.assertTrue(any("source" in error and "string" in error for error in errors))
+
+    def test_rejects_non_string_relation_targets_without_crashing(self):
+        for endpoint in (["math.graph"], {"id": "math.graph"}, 7):
+            with self.subTest(endpoint=endpoint):
+                graph = dict(self.graph)
+                graph["relations"] = [dict(self.graph["relations"][0], target=endpoint)]
+                errors = validate_graph(graph)
+                self.assertTrue(any("target" in error and "string" in error for error in errors))
+
+
 if __name__ == "__main__":
     unittest.main()
