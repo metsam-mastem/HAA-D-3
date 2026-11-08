@@ -88,8 +88,7 @@ class KuramotoSimulationTests(unittest.TestCase):
     def test_rejects_non_finite_scene_numbers_and_booleans(self):
         for value in (float("nan"), float("inf"), True):
             with self.subTest(value=value):
-                scene = self.scene()
-                scene["duration_seconds"] = value
+                scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":value,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[]}
                 self.assertTrue(any("duration_seconds" in error for error in validate_scene(scene)))
 
 
