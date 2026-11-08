@@ -203,5 +203,30 @@ class EndToEndProductionTests(unittest.TestCase):
         self.assertEqual(module.eevee_engine_for_version((4, 2, 0)), "BLENDER_EEVEE_NEXT")
 
 
+    def test_blender_preflight_rejects_invalid_animation_before_scene_mutation(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_animation_preflight_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        invalid_scene = {
+            "scene_id":"bad-animation","frame_rate":24,"duration_seconds":1,
+            "objects":[{"id":"osc-1","type":"oscillator","animation":[{
+                "property":"transform.position",
+                "keyframes":[
+                    {"time_seconds":0,"value":[0,0,0]},
+                    {"time_seconds":0,"value":[1,1,1]},
+                ],
+            }]}],
+        }
+        with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+            spec.loader.exec_module(module)
+            with self.assertRaisesRegex(ValueError, "strictly increasing"):
+                module.build_scene(invalid_scene, Path("/tmp/unused"))
+
+
 if __name__ == "__main__":
     unittest.main()
