@@ -1,0 +1,16 @@
+{
+  "model": "kuramoto_mean_field",
+  "model_version": "0.1.0",
+  "parameters": {
+    "nodes": 64,
+    "coupling": 1.5,
+    "dt_seconds": 0.02,
+    "steps": 500,
+    "seed": 7,
+    "omega_mean_rad_per_second": 1.0,
+    "omega_std_rad_per_second": 0.25
+  },
+  "integration_method": "Heun_RK2",
+  "evidence_class": "MODEL_OUTPUT",
+  "scope_note": "Generic coupled-oscillator model; not a biological neural model."
+}
