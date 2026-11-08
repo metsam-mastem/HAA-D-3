@@ -83,7 +83,7 @@ This file is an inventory, not an approval or assertion that all planned work is
 - [x] Documentation index reorganized by discipline/workflow.
 - [x] Outdated README merge-state statement identified for correction.
 - [x] Historical handoff notes reconciled by appended current-status notes.
-- [ ] Markdown link destination checker is not yet enforced.
+- [x] Markdown catalog consistency script added to CI (link target checking remains separate and not yet enforced).
 - [ ] Dedicated JSON Schema engine in CI remains planned.
 - [ ] Owner approval of the full documentation suite remains pending.
 - [ ] Project license remains undecided.
