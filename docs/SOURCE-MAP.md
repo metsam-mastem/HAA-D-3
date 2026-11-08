@@ -34,7 +34,8 @@ src/haa_d3/
 ├── contracts.py         # Finding and SceneSpec semantic checks
 ├── kuramoto.py          # numerical coupled-oscillator prototype
 ├── knowledge_graph.py   # graph validation, SVG projection, hash receipt
-└── scene_mappings.py    # model-output to SceneSpec transforms
+├── scene_mappings.py    # model-output to SceneSpec transforms
+└── (tests/test_kuramoto_validation.py) # independent pairwise/analytical/convergence checks
 ~~~
 
 Dependency direction:
