@@ -1,6 +1,7 @@
 """Optional MP4 assembly and deterministic WAV data-sonification."""
 from __future__ import annotations
 
+import json
 import math
 import shutil
 import subprocess
@@ -101,7 +102,10 @@ def render_scene_mp4(
         raise RuntimeError("CairoSVG is required for MP4 export; install haa-d3[media]") from exc
     if not audio_path.is_file():
         raise FileNotFoundError(f"audio file not found: {audio_path}")
-    fps = float(frame_rate if frame_rate is not None else scene["frame_rate"])
+    raw_fps = frame_rate if frame_rate is not None else scene["frame_rate"]
+    if isinstance(raw_fps, bool) or not isinstance(raw_fps, (int, float)) or not math.isfinite(raw_fps) or raw_fps <= 0 or raw_fps > 120:
+        raise ValueError("frame_rate must be finite and in (0, 120]")
+    fps = float(raw_fps)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="haa-d3-mp4-") as temporary:
         root = Path(temporary)
@@ -123,6 +127,50 @@ def render_scene_mp4(
             raise RuntimeError(f"FFmpeg failed: {completed.stderr[-2000:]}")
     if not output_path.is_file() or output_path.stat().st_size < 1000:
         raise RuntimeError("FFmpeg did not produce a valid MP4 output")
+
+    ffprobe = shutil.which("ffprobe")
+    if not ffprobe:
+        raise RuntimeError("FFprobe is required to verify MP4 stream metadata")
+    probe = subprocess.run(
+        [ffprobe, "-v", "error", "-show_entries",
+         "format=duration:stream=codec_type,codec_name,width,height,duration",
+         "-of", "json", str(output_path)],
+        capture_output=True, text=True, timeout=60,
+    )
+    if probe.returncode != 0:
+        raise RuntimeError(f"FFprobe failed: {probe.stderr[-2000:]}")
+    try:
+        probe_data = json.loads(probe.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("FFprobe returned invalid JSON") from exc
+    streams = probe_data.get("streams", [])
+    video_stream = next((item for item in streams if item.get("codec_type") == "video"), None)
+    audio_stream = next((item for item in streams if item.get("codec_type") == "audio"), None)
+    if video_stream is None or audio_stream is None:
+        raise RuntimeError("MP4 must contain both video and audio streams")
+    if video_stream.get("codec_name") != "h264" or audio_stream.get("codec_name") != "aac":
+        raise RuntimeError("MP4 codecs do not match the required H.264/AAC profile")
+    if not isinstance(video_stream.get("width"), int) or not isinstance(video_stream.get("height"), int):
+        raise RuntimeError("MP4 video dimensions are missing")
+    format_duration = float(probe_data.get("format", {}).get("duration", 0))
+    if not math.isfinite(format_duration) or format_duration <= 0:
+        raise RuntimeError("MP4 duration metadata is invalid")
+    decoded = subprocess.run(
+        [ffmpeg, "-v", "error", "-xerror", "-i", str(output_path), "-f", "null", "-"],
+        capture_output=True, text=True, timeout=120,
+    )
+    if decoded.returncode != 0:
+        raise RuntimeError(f"MP4 decode verification failed: {decoded.stderr[-2000:]}")
+    verification = {
+        "decode": "PASS",
+        "has_video": True,
+        "has_audio": True,
+        "video_codec": video_stream["codec_name"],
+        "audio_codec": audio_stream["codec_name"],
+        "width": video_stream["width"],
+        "height": video_stream["height"],
+        "container_duration_seconds": format_duration,
+    }
     return {
         "status": "RENDERED_NOT_REVIEWED",
         "container": "MP4",
@@ -130,6 +178,7 @@ def render_scene_mp4(
         "audio_codec": "AAC",
         "frame_rate": fps,
         "frame_count": len(svg_paths),
+        "verification": verification,
         "evidence_class": scene.get("metadata", {}).get("evidence_class", "UNKNOWN"),
         "output": "video/preview.mp4",
     }
