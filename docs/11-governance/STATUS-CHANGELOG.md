@@ -151,3 +151,12 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Python core: 63 tests PASS; dependency audit, CycloneDX SBOM and release pipeline PASS; Blender runtime job PASS.
 - Evidence: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473039140 — artifact ID `13614063107` (`haa-d3-blender-runtime-evidence`, 10,937,896 bytes).
 - Output is labeled `RENDERED_NOT_REVIEWED`; algorithmic sonification is not a composed soundtrack. Human creative, scientific, accessibility and rights approval remains NOT RUN; Manim runtime remains NOT RUN.
+
+
+## Phase C final audiovisual CI pass — 2026-11-08
+- Latest run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672 — repository-governance, python-core and blender-runtime all PASS.
+- Blender 4.0.2 / EEVEE: 11 frames, 1920×1080, 10 fps; MP4 H.264 + AAC; FFprobe and full FFmpeg decode PASS.
+- Video duration 1.10 s; WAV-derived audio duration 1.08 s; A/V delta 0.02 s (within 0.10 s gate).
+- Saved .blend reopened; original Cube/Camera/Light and expected generated scene objects verified.
+- Evidence artifact: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672/artifacts/13613359974 (10,938,087 bytes; artifact ZIP SHA-256 e0e52993ba6e11487082569dd96c39b3fa911759697dd411dee0ded3d242a77a).
+- Important boundary: this is a short technical smoke preview, not a finished film, final soundtrack, or human-reviewed scientific/cinematic deliverable. Scientific, editorial, accessibility and rights gates remain NOT RUN; Manim runtime remains NOT RUN.
