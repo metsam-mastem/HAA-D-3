@@ -51,3 +51,10 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added scripts/check_repository_structure.py and a CI gate that rejects duplicate Python package roots, test roots, or quality workflows; this makes the anti-sprawl rules executable rather than advisory.
 
 - Final topology-guard Quality Gate run 42462583716 completed SUCCESS: repository structure guard, Markdown catalog, local-link checker, full Python suite, SceneSpec validation, Kuramoto scene generation/validation and knowledge-graph JSON/SVG/receipt generation all passed.
+
+
+## Foundation merge and numerical verification — 2026-11-08
+- PR #4 was marked ready and squash-merged after its branch Quality Gate passed both `python-core` and `repository-governance`: merge commit `4098ba5042b4adc53d3dc77795ca8989489c922c`.
+- Canonical runtime, tests, single CI workflow, topology guard, source map, governance and end-to-end lifecycle are now on `main`. PR #4 is CLOSED / MERGED.
+- Follow-up branch `research/kuramoto-independent-validation-v1` adds tests for an independently coded O(N²) pairwise solver, the analytical K=0 solution and second-order time-step convergence. These checks are NOT considered PASS until the corresponding GitHub Actions run completes successfully.
+- External scientific review, biological interpretation, experimental-data comparison, renderer adapters and original audio production remain NOT RUN.
