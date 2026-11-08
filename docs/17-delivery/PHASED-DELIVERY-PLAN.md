@@ -17,7 +17,7 @@
 - Bundle simulation, SceneSpec, frames, cue and SHA-256 artifact inventory.
 - Gate: release archive opens, required artifacts exist, tests pass, checksums are recorded.
 
-**State:** PASS — Quality Gate run 42465163781 built and inspected the release ZIP, ran the full Python suite, and uploaded the archive artifact.
+**State:** PASS — Quality Gate run 42465296924 built and inspected the release ZIP, ran the full Python suite, and uploaded the archive artifact.
 
 ## Phase C — Optional 3D production adapter
 - Blender background adapter creates editable scene, animated oscillator objects, coherence ring and PNG sequence.
