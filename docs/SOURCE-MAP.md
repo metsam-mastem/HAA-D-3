@@ -13,7 +13,7 @@
 | Product/architecture/domain | docs/02-product/, docs/03-architecture/, docs/04-domain/ | Product scope and stable design |
 | Research/knowledge | docs/02-knowledge/, docs/06-research/, research/ | Source-backed inquiry and findings |
 | Data/provenance/contracts | docs/07-data/, schemas/ | Lineage and machine-readable contracts |
-| Python runtime | src/haa_d3/ | Single canonical package |
+| Python runtime | src/haa_d3/ | Single canonical package, schema validation, simulation, render and release tools |
 | Tests | tests/ | Single canonical Python test root |
 | Example inputs | examples/ | Small, versioned, non-sensitive fixtures |
 | External integrations | adapters/ | Optional provider/renderer/compute bridges |
@@ -50,7 +50,7 @@ Dependency direction:
 ~~~text
 .
 ├── .github/workflows/   # quality gates
-├── adapters/            # optional integrations
+├── adapters/            # optional integrations (including Blender renderer)
 ├── artifacts/           # generated output policy/manifests
 ├── creative/             # authored creative plans
 ├── demo/neural-odyssey/ # browser illustrative experience
