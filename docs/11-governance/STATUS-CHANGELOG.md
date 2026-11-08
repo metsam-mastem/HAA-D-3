@@ -82,3 +82,25 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Key unresolved items remain: account-wide GitHub repository inventory, deeper GitHub/Nature and creative portal curation, VINT/comparable project diligence, MLMF-NX formalization and experiments, one renderer proof-of-concept, full media E2E/QC, soundtrack/asset rights, product/audience constraints and adjacent-project boundary ADR.
 
 - Final repository-governance and Python-core Quality Gate for the audit/index/catalog/changelog commit passed: run [42464971977](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42464971977), commit `9f565de2a5c6deacaed2c46423da408166e12da6`. The earlier intermediate run failed only the Markdown inventory gate before the catalog was synchronized; that discrepancy was corrected and verified in the final run.
+
+
+## Executable production vertical slice — 2026-11-08
+- Implemented runtime JSON Schema 2020-12 validation for SceneSpec and Finding using the declared `jsonschema` dependency.
+- Added deterministic standard-library SVG frame rendering, MIDI data-sonification, and ZIP release assembly with per-artifact SHA-256 manifest. Generated bundles are explicitly `GENERATED_NOT_REVIEWED`.
+- Added optional Blender 4.2+ background adapter for editable .blend and PNG sequence; syntax is covered by CI, but Blender runtime rendering remains NOT RUN.
+- Added compressed delivery plan: Phase A contracts/numerics; Phase B executable media/release bundle; Phase C Blender render; Phase D human scientific/creative/accessibility/rights acceptance.
+- CI run [42464847359](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42464847359) passed all 28 Python tests, SceneSpec validation, Kuramoto SceneSpec generation, end-to-end release archive creation, graph artifact generation, repository structure, Markdown inventory and local-link checks.
+- An earlier CI run exposed scalar interpolation failure in the metric ring; the implementation was corrected and the subsequent complete run passed.
+
+
+## Release pipeline hardening — 2026-11-08
+- MIDI output now writes explicit 120 BPM and 4/4 metadata, rejects non-monotonic sample times, and bounds note lengths to avoid overlapping same-pitch note-offs.
+- Release builder validates SceneSpec JSON Schema and semantic constraints even when called as a Python API, not only through the CLI.
+- CI now asserts MIDI tempo metadata and monotonic input rejection; deterministic ZIP bytes remain an acceptance criterion.
+
+
+## Final executable vertical-slice verification — 2026-11-08
+- Quality Gate run [42465296924](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42465296924) passed both jobs on commit `03f21a0c29ec8cd0113de81268b9a97a6c346b90`.
+- The complete Python suite (31 tests), SceneSpec schema/semantic validation, Kuramoto SceneSpec generation, release ZIP build, ZIP content checks, artifact upload, knowledge-graph outputs, repository topology, Markdown inventory and local-link checks all passed.
+- Actions artifact `haa-d3-e2e-release` uploaded successfully: 6,143 bytes; SHA-256 `52e8661b8296634f20a28a08534a24d7e617965be6f2e2b1f6ad5ed9f57640e0`; expires 2026-11-22.
+- The archive is a generated software proof, not a finished episode or a scientifically/creatively approved public release.

@@ -34,6 +34,10 @@
 - [Sources](10-references/SOURCES.md)
 - [GitHub and Nature Landscape](10-references/GITHUB-NATURE-LANDSCAPE.md)
 
+## Delivery and executable production
+- [Compressed phased delivery plan](17-delivery/PHASED-DELIVERY-PLAN.md)
+- [Blender renderer adapter](../adapters/blender/README.md)
+
 ## Engineering and contracts
 - [Vertical Slice Feasibility](05-vertical-slice/VERTICAL-SLICE-FEASIBILITY.md)
 - [VS-01 Neural Emergence](05-vertical-slice/VS-01-NEURAL-EMERGENCE.md)

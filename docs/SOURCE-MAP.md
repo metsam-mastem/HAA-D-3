@@ -13,7 +13,7 @@
 | Product/architecture/domain | docs/02-product/, docs/03-architecture/, docs/04-domain/ | Product scope and stable design |
 | Research/knowledge | docs/02-knowledge/, docs/06-research/, research/ | Source-backed inquiry and findings |
 | Data/provenance/contracts | docs/07-data/, schemas/ | Lineage and machine-readable contracts |
-| Python runtime | src/haa_d3/ | Single canonical package |
+| Python runtime | src/haa_d3/ | Single canonical package, schema validation, simulation, render and release tools |
 | Tests | tests/ | Single canonical Python test root |
 | Example inputs | examples/ | Small, versioned, non-sensitive fixtures |
 | External integrations | adapters/ | Optional provider/renderer/compute bridges |
@@ -34,9 +34,18 @@ src/haa_d3/
 ├── contracts.py         # Finding and SceneSpec semantic checks
 ├── kuramoto.py          # numerical coupled-oscillator prototype
 ├── knowledge_graph.py   # graph validation, SVG projection, hash receipt
-└── scene_mappings.py    # model-output to SceneSpec transforms
+├── scene_mappings.py    # model-output to SceneSpec transforms
+├── schema_validation.py # JSON Schema 2020-12 validation
+├── render_svg.py        # deterministic SVG frame renderer
+├── sonification.py      # MIDI data sonification
+└── release.py           # ZIP release and SHA-256 manifest
 
-tests/test_kuramoto_validation.py  # independent pairwise/analytical/convergence checks
+adapters/blender/render_scene.py # optional Blender 4.2+ renderer
+tests/
+├── test_contracts.py
+├── test_knowledge_graph.py
+├── test_kuramoto_validation.py
+└── test_end_to_end_production.py
 ~~~
 
 Dependency direction:
@@ -50,7 +59,7 @@ Dependency direction:
 ~~~text
 .
 ├── .github/workflows/   # quality gates
-├── adapters/            # optional integrations
+├── adapters/            # optional integrations (including Blender renderer)
 ├── artifacts/           # generated output policy/manifests
 ├── creative/             # authored creative plans
 ├── demo/neural-odyssey/ # browser illustrative experience
