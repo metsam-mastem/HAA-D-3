@@ -40,10 +40,16 @@ def validate_graph(graph: dict[str, Any]) -> list[str]:
     for index, edge in enumerate(relations):
         if not isinstance(edge, dict):
             errors.append(f"relations[{index}] must be an object"); continue
-        if edge.get("source") not in identifiers:
-            errors.append(f"relations[{index}] source is unknown: {edge.get('source')}")
-        if edge.get("target") not in identifiers:
-            errors.append(f"relations[{index}] target is unknown: {edge.get('target')}")
+        source = edge.get("source")
+        target = edge.get("target")
+        if not isinstance(source, str) or not source.strip():
+            errors.append(f"relations[{index}].source must be a non-empty string")
+        elif source not in identifiers:
+            errors.append(f"relations[{index}] source is unknown: {source}")
+        if not isinstance(target, str) or not target.strip():
+            errors.append(f"relations[{index}].target must be a non-empty string")
+        elif target not in identifiers:
+            errors.append(f"relations[{index}] target is unknown: {target}")
         if not isinstance(edge.get("type"), str) or not edge["type"].strip():
             errors.append(f"relations[{index}].type must be a non-empty string")
     return errors
