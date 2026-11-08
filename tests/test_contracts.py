@@ -104,7 +104,7 @@ class KuramotoSimulationTests(unittest.TestCase):
 
 
     def test_rejects_malformed_animation_tracks(self):
-        scene = self.scene()
+        scene = {"schema_version":"0.1.0","scene_id":"demo","title":"Demo","duration_seconds":12,"frame_rate":24,"interpretation_mode":"METAPHORICAL","evidence_refs":[],"objects":[{"id":"node-1","type":"point"}]}
         scene["objects"][0]["animation"] = [{"property": "transform.position", "keyframes": "bad"}]
         self.assertTrue(any("keyframes" in error for error in validate_scene(scene)))
 
