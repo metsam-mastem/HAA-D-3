@@ -88,7 +88,7 @@ def add_camera_and_light():
     light.data.size = 8
 
 
-def build_scene(spec, output_dir):
+def build_scene(spec, output_dir, *, overwrite=False):
     if not isinstance(spec, dict):
         raise ValueError("SceneSpec must be a JSON object")
     required = ("scene_id", "frame_rate", "duration_seconds", "objects")
@@ -125,6 +125,18 @@ def build_scene(spec, output_dir):
                 raise ValueError(f"objects[{index}].animation[{track_index}] is invalid")
             if len(track.get("keyframes", [])) > 1000:
                 raise ValueError(f"objects[{index}].animation[{track_index}] exceeds keyframe limit")
+    output_dir = Path(output_dir)
+    if output_dir.exists() and not output_dir.is_dir():
+        raise NotADirectoryError(f"output path is not a directory: {output_dir}")
+    if output_dir.exists():
+        existing_outputs = [output_dir / "scene.blend", output_dir / "render-manifest.json"]
+        existing_outputs.extend(output_dir.glob("frame_*.png"))
+        existing_outputs = [path for path in existing_outputs if path.exists()]
+        if existing_outputs and not overwrite:
+            raise FileExistsError(f"output directory already contains HAA-D-3 outputs: {existing_outputs[0]}; pass --overwrite to replace them")
+        if overwrite:
+            for path in existing_outputs:
+                path.unlink()
     clear_scene()
     scene = bpy.context.scene
     fps = float(spec["frame_rate"])
@@ -196,4 +208,4 @@ def build_scene(spec, output_dir):
 if __name__ == "__main__":
     arguments = parse_args()
     payload = json.loads(arguments.scene.read_text(encoding="utf-8"))
-    build_scene(payload, arguments.output)
+    build_scene(payload, arguments.output, overwrite=arguments.overwrite)
