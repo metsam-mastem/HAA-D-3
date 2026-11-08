@@ -28,5 +28,14 @@ class CliJsonInputTests(unittest.TestCase):
             self.assertEqual(_read_json(path), {"schema_version":"0.1","title":"safe"})
 
 
+    def test_rejects_json_files_over_input_size_budget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "oversized.json"
+            with path.open("wb") as stream:
+                stream.truncate(16 * 1024 * 1024 + 1)
+            with self.assertRaisesRegex(ValueError, "file size limit"):
+                _read_json(path)
+
+
 if __name__ == "__main__":
     unittest.main()
