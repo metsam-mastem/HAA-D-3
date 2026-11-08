@@ -1,6 +1,7 @@
 # HAA-D-3 Reference Architecture
 
-**Status:** Proposed architecture; not a complete implemented platform.
+**Status:** Proposed architecture; not a complete implemented platform.  
+**Canonical repository topology:** [Source Map](../SOURCE-MAP.md) · [Governance](../GOVERNANCE.md).
 
 ## Principles
 - Modular monolith first; split services only when evidence justifies it.
@@ -45,7 +46,7 @@ Accept only approved findings, model outputs, hypotheses or explicitly marked me
 These are candidates, not adopted dependencies. Verify license, maintenance, compatibility and hardware needs before integration.
 
 ## Repository boundaries
-docs/, research/, schemas/, src/haa_d3/, adapters/, examples/, demo/, tests/, artifacts/, decisions/ and .github/workflows/. Keep large renders outside Git unless there is a specific reason.
+Canonical homes: docs/ for governed knowledge; research/ for source-backed research packs; schemas/ for contracts; src/haa_d3/ for runtime; tests/ for tests; adapters/ for optional integrations; examples/ for fixtures; scenes/ for renderer-neutral scenes; demo/ for illustrative web demo; artifacts/ and releases/ for outputs/manifests; .github/workflows/quality.yml for CI. The repository root is not a frontend package. See Source Map for the complete ownership rules.
 
 ## Security
 Validate imported files, schemas, sizes and paths. Do not execute arbitrary generated Python. Prefer constrained scene specifications and approved renderer operations. Keep credentials outside version control.

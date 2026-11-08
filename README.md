@@ -1,131 +1,84 @@
 # HAA-D-3 — The Neural Odyssey
 
-> An interdisciplinary scientific research, systems-engineering and creative-production platform: from evidence and mathematical models to interactive explanation and cinematic media.
+> **مهندسی هنر، هنر مهندسی** — an evidence-led system that transforms interdisciplinary research and mathematical models into reproducible explanations and cinematic experiences.
 
-**Persian title:** اودیسهٔ هوش — از هندسهٔ ذهن تا معماری دانش  
-**Project codename:** HAA-D-3 · **Narrative title:** The Neural Odyssey  
-**Foundation baseline:** 0.1.0  
-**Status:** Research planning, documentation foundation and illustrative vertical slice  
+**Persian identity:** اودیسهٔ هوش — از هندسهٔ ذهن تا معماری دانش  
+**Baseline:** 0.2.0 foundation consolidation in review  
 **Repository:** https://github.com/metsam-mastem/HAA-D-3
 
 ## Mission
-Build a traceable, modular and platform-independent system to research, model, simulate, explain, visualize and turn selected scientific/engineering findings into high-quality audiovisual experiences. The program connects neuroscience, mathematics, physics, computer science, scientific visualization, interaction design, animation, cinematography and original sound design.
+HAA-D-3 connects research, mathematics, computational engineering, knowledge representation, scientific visualization, animation, cinematography and original sound design in one governed production lifecycle. It is not a pile of disconnected tools, demos or agent-specific projects: every capability must contribute to a traceable path from a question to a validated and reviewable output.
 
-This repository does not claim a validated novel neural architecture, measured performance gain or biologically accurate simulation.
+The project does not claim a validated novel neural architecture, biological brain simulation, measured performance advantage or universal model of intelligence.
 
-## Three-chapter creative frame
-1. **The Genesis / پیدایش:** foundations, questions, mathematical language and concept formation.
-2. **The Convergence / همگرایی:** architecture, relationships, feedback, modeling and the research-to-scene bridge.
-3. **The Emergence / ظهور:** validation, synthesis, visual storytelling and cinematic presentation.
+## The single project spine
+~~~text
+QUESTION
+  → SOURCE & CLAIM LEDGER
+  → FORMAL MODEL
+  → REPRODUCIBLE EXPERIMENT
+  → INDEPENDENT VALIDATION
+  → VERSIONED SCENE SPECIFICATION
+  → STORYBOARD & SHOT PLAN
+  → RENDER / SOUND / EDIT
+  → SCIENTIFIC + CREATIVE + RIGHTS QC
+  → RELEASE PACKAGE
+  → RETROSPECTIVE & NEXT QUESTION
+~~~
 
+See [End-to-End Lifecycle](docs/END-TO-END-LIFECYCLE.md) for gates, required records, evidence, failure handling and release criteria.
 
-## Preserved original research and narrative baseline
+## Start here — mandatory reading order
+1. [Repository rules for every contributor and AI agent](AGENTS.md)
+2. [Project governance and anti-sprawl controls](docs/GOVERNANCE.md)
+3. [Source map and ownership of every major path](docs/SOURCE-MAP.md)
+4. [End-to-end lifecycle and release gates](docs/END-TO-END-LIFECYCLE.md)
+5. [Documentation index](docs/README.md)
+6. [Contribution workflow](CONTRIBUTING.md)
 
-The initial program baseline focused on investigating hybrid neural architectures and their research questions. This track remains part of the project; it is not a claim that any proposed architecture has been validated:
+## Architecture: one owner per responsibility
 
-- Spatially embedded neural graphs.
-- Modular computation and multi-path processing.
-- Recurrent and multi-path feedback mechanisms.
-- Foundation-model integration through replaceable adapters.
-- Local learning and resource-aware execution.
-- Scientific visualization and measurable benchmark comparisons.
+| Layer | Canonical home | Responsibility |
+|---|---|---|
+| Research and evidence | docs/02-knowledge/, docs/06-research/, research/ | Sources, questions, claims, methods and findings |
+| Portable computational core | src/haa_d3/ | Contracts, numerical models, graph tools, transformations and CLI |
+| Contracts and examples | schemas/, examples/ | Versioned interchange formats and reproducible inputs |
+| Scene and creative production | scenes/, creative/, adapters/ | Renderer-neutral scenes and replaceable creative backends |
+| Browser demo | demo/neural-odyssey/ | Lightweight illustrative experience |
+| Verification | tests/, .github/workflows/quality.yml | One test root and one quality gate |
+| Generated artifacts | artifacts/, releases/ | Outputs, checksums, manifests and release evidence |
+| Governance and decisions | docs/, AGENTS.md, CONTRIBUTING.md | Policies, ADRs, handoffs and project memory |
 
-The original research cautions remain active:
-- Spatial embedding is a research direction; placing neurons in 3D is not by itself evidence of improved intelligence.
-- Feedback requires explicit objectives, stability controls and ablation benchmarks.
-- A pretrained foundation model is a pragmatic baseline; a custom spatial/feedback network should begin as a bounded, testable subsystem or adapter.
-- Sparse topology, low-rank methods, quantization, selective execution and profiling are candidate interventions, not promised gains.
-- A vertical slice must prove a small end-to-end workflow before scope expands.
+The Python package has one canonical root: src/haa_d3/. The test suite has one root: tests/. See [Source Map](docs/SOURCE-MAP.md).
 
-### Original three-chapter soundtrack references
+## Current implemented slices
+- Portable Finding and SceneSpec semantic checks.
+- Capability descriptors and deterministic adapter selection.
+- Seeded Kuramoto coupled-oscillator prototype and research-to-scene mapping.
+- Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt.
+- Browser-based Neural Odyssey illustrative demo.
 
-These links are preserved as creative references from the initial README. They are not bundled audio, endorsements, or permission to reproduce the works.
+Graph and Kuramoto outputs are computational/model outputs, not independent scientific validation. Kuramoto is a generic coupled-oscillator system, not a biological brain model.
 
-1. **Chapter I — The Genesis / پیدایش:** [Aaron — Endless Song by Musigen](https://on.soundcloud.com/Mqv1P2Fsc8lwdTUagf)
-2. **Chapter II — The Convergence / همگرایی:** [Welcome G — Khali G x Shayan Roohi](https://on.soundcloud.com/XmVrz9jdq75DlWBpGZ) · [The Look — Metronomy](https://on.soundcloud.com/ZZhZ90sOMj4V2kG8Rl)
-3. **Chapter III — The Emergence / ظهور:** [Pain in my Heart — Schrotthagen](https://on.soundcloud.com/tSLUbmBdLv76rPaWto) · [Life — Kako Band](https://on.soundcloud.com/m26dzgMfvZUyarB2xC) · [Balthazar — bunker](https://on.soundcloud.com/ch2TtqmDfgVGQcnbVt)
-
-Final episode sequencing, tempo, mood and synchronization remain subject to the creator's brief and rights review. No audio files, lyrics or copyrighted media are redistributed.
-
-### Original success criteria — retained
-
-1. Every major claim is linked to evidence or marked as a hypothesis.
-2. Research branches have explicit scope, dependencies and outputs.
-3. Architecture modules have stable contracts and acceptance tests.
-4. A reproducible vertical slice has baseline comparisons and resource measurements.
-5. Creative visualizations remain faithful to scientific sources and distinguish metaphor from measurement.
-6. Rights, licenses, provenance and data privacy are documented.
-
-### Legacy documentation recovery
-
-The original README also listed a larger documentation map. The inspected original `main` tree did not contain those referenced files. Their names and intended purposes are preserved in [Legacy Documentation Inventory](docs/13-planning/LEGACY-DOCUMENT-INVENTORY.md). This inventory distinguishes missing originals from newly authored replacement drafts and prevents fabricated recovery claims.
-
-## Product architecture
-- **Research Engine:** sources, claims, datasets, models, experiments, validation and benchmarks.
-- **Computational Core:** portable domain logic, contracts, deterministic transforms and CLI.
-- **Knowledge & Scene Bridge:** versioned transformation from approved evidence/model outputs to scene specifications.
-- **Creative Engine:** storyboard, shots, camera, lighting, animation, sound, rendering and QC.
-- **Adapters:** replaceable model providers, renderers, simulators, storage, search and compute backends.
-- **Interfaces:** CLI first; web, desktop, mobile and service API as optional surfaces.
-
-No LLM, cloud provider, renderer, operating system or frontend framework is mandatory for the core. Read [AGENTS.md](AGENTS.md) before contributing.
-
-## Start here
-- [Contributor rules](AGENTS.md)
-- [Contribution guide](CONTRIBUTING.md)
-- [Documentation map](docs/README.md)
-- [Mandatory continuity and knowledge-ingestion protocol](docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md)
-- [Platform portability strategy](docs/14-platform/PLATFORM-PORTABILITY.md)
-- [Adapter capability contract](docs/03-architecture/ADAPTER-CAPABILITY-CONTRACT.md)
-- [Architecture decision records](docs/16-decisions/README.md)
-
-## Repository map
-| Path | Purpose |
-|---|---|
-| docs/ | Governance, architecture, research, product, production and operational documentation |
-| research/ | Durable source-backed research packs and findings |
-| schemas/ | Machine-readable versioned contracts |
-| src/haa_d3/ | Portable Python core and CLI |
-| adapters/ | Provider, renderer, simulator, storage and compute integrations |
-| tests/ | Contract and behavior tests |
-| examples/ | Reproducible sample inputs and workflows |
-| creative/ | Creative briefs, storyboard and production planning |
-| scenes/ | Canonical renderer-independent scene specifications |
-| demo/ | Small runnable prototypes |
-| artifacts/ | Manifests and pointers for large generated outputs |
-| releases/ | Release manifests and quality evidence |
-| .github/ | CI workflows |
-
-## Initial vertical slice — Neural Emergence
-A lightweight browser scene explores Genesis → Convergence → Emergence using a deterministic synthetic graph, chapter controls, play/pause and a timeline scrubber.
-
-**Scientific status:** illustrative synthetic graph only. It is not a neural simulation, connectome, anatomical reconstruction or measured dataset. No copyrighted audio, lyrics or media are bundled.
-
-[Open the demo source](demo/neural-odyssey/) · [Read the slice specification](docs/05-vertical-slice/VS-01-NEURAL-EMERGENCE.md)
-
-## Portable core: quick start
+## Quick start
 Requires Python 3.11+.
 
-```bash
+~~~bash
 PYTHONPATH=src python -m unittest discover -s tests -v
 PYTHONPATH=src python -m haa_d3.cli validate-scene examples/scenes/synthetic-emergence.scene.json
-PYTHONPATH=src python -m haa_d3.cli simulate-kuramoto --nodes 64 --coupling 1.5 --dt 0.02 --steps 500 --seed 7 --output artifacts/kuramoto-demo.json
-PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 64 --steps 250 --seed 7 --output artifacts/kuramoto-scene.json
-```
+PYTHONPATH=src python -m haa_d3.cli simulate-kuramoto --nodes 64 --coupling 1.5 --dt 0.02 --steps 500 --seed 7 --output /tmp/kuramoto.json
+PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 64 --steps 250 --seed 7 --output /tmp/kuramoto-scene.json
+PYTHONPATH=src python -m haa_d3.cli render-knowledge-graph examples/knowledge/seed-graph.json --out /tmp/haa-d3-graph
+~~~
 
-The initial CLI performs dependency-free semantic checks. JSON Schema files are the canonical machine-readable contract; full JSON Schema runtime validation is a planned follow-up.
+## Creative identity
+The narrative frame has three chapters: **The Genesis / پیدایش**, **The Convergence / همگرایی**, and **The Emergence / ظهور**. Original music references and creative direction remain in the series bible and creative reference map. They are inspiration only; no copyrighted audio is bundled or assumed cleared.
 
-## Vertical Slice 02 — Coupled Oscillators
-A deterministic, seeded Kuramoto mean-field simulation is available through the portable Python CLI. It uses Heun/RK2 integration and emits phase snapshots plus the order parameter r(t). Its scientific scope is generic coupled oscillators, not a biological brain model. See [VS-02 specification](docs/05-vertical-slice/VS-02-COUPLED-OSCILLATORS.md) and [baseline config](examples/experiments/kuramoto-baseline.json).
-
-## Research-to-scene bridge
-The first explicit mapping converts Kuramoto phase snapshots to 2D oscillator positions and maps the order parameter r(t) to a global coherence indicator. The mapping formula, source model and MODEL_OUTPUT evidence class are recorded in SceneSpec metadata. See [mapping contract](docs/08-contracts/RESEARCH-TO-SCENE-MAPPING.md). This is an analytical visualization, not anatomical reconstruction.
-
-## Research and evidence integrity
-Every meaningful claim/visual distinguishes OBSERVED, REPRODUCED, MODEL_OUTPUT, HYPOTHESIS, INTERPRETATION, METAPHOR and UNKNOWN. A render is not scientific validation. A synthetic demo is not biological evidence. See the [claim and provenance policy](docs/11-governance/CLAIM-AND-PROVENANCE-POLICY.md).
+## Quality and evidence
+Work statuses: PASS, FAIL, NOT RUN, BLOCKED, DRAFT, IN REVIEW. Evidence classes: OBSERVED, REPRODUCED, MODEL_OUTPUT, HYPOTHESIS, INTERPRETATION, METAPHOR, UNKNOWN. Green CI proves only the checks it runs. Scientific review, rights clearance and creative QC are separate release gates.
 
 ## Licensing
-The project license has not yet been selected by the repository owner. Do not assume that public visibility grants reuse rights. External dependencies, datasets, models, fonts, images, audio and video require individual license/provenance review.
+The repository owner has not selected a project license. Public visibility does not grant reuse rights. Do not reuse external code, data, models, fonts, images, music or video without checking applicable terms.
 
-## Development status
-The foundation PR #1 was squash-merged into `main` on 2026-11-08 (merge commit `64807c5d554900ba8055e321cd4e1b59fcfb09a7`). The portable core and Kuramoto research-to-scene slice are implemented with GitHub Actions checks passing. The separate graph-to-SVG prototype CI also passes. Scientific independent review, JSON Schema runtime validation, cross-platform matrix, renderer adapter, visual QA and full animation/audio synchronization remain NOT RUN or planned. See [Status & Changelog](docs/11-governance/STATUS-CHANGELOG.md), [Document Catalog](docs/13-planning/DOCUMENT-CATALOG.md), and Actions for current evidence.
+## Current change
+Foundation consolidation is proposed in [PR #4](https://github.com/metsam-mastem/HAA-D-3/pull/4). It is intentionally not merged. Main remains unchanged by this consolidation work until review and owner authorization.

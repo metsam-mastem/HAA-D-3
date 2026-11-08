@@ -1,7 +1,7 @@
 {
-  "schema_version":"0.1",
-  "title":"HAA-D-3 Seed Knowledge Graph",
-  "concepts":[
+  "schema_version": "0.1",
+  "title": "HAA-D-3 Seed Knowledge Graph",
+  "concepts": [
     {"id":"math.graph","label":"Graph Theory","domain":"mathematics","x":80,"y":110},
     {"id":"arch.spatial","label":"Spatial Embedding","domain":"neural architecture","x":300,"y":70},
     {"id":"learn.feedback","label":"Feedback Learning","domain":"learning","x":300,"y":230},
@@ -9,7 +9,7 @@
     {"id":"research.evidence","label":"Evidence Ledger","domain":"knowledge engineering","x":520,"y":70},
     {"id":"visual.science","label":"Scientific Visualization","domain":"creative technology","x":740,"y":150}
   ],
-  "relations":[
+  "relations": [
     {"source":"math.graph","target":"arch.spatial","type":"formalizes"},
     {"source":"arch.spatial","target":"learn.feedback","type":"interacts-with"},
     {"source":"learn.feedback","target":"control.stability","type":"requires"},

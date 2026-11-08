@@ -1,28 +1,37 @@
-# Manifesto — The Neural Odyssey
-**HAA-D-3 · v0.1.0**
+# Manifesto — HAA-D-3 / The Neural Odyssey
 
-We unite rigorous engineering, open-ended research, and scientific art.
+**مهندسی هنر، هنر مهندسی**  
+**Version:** 0.2.0 · **Status:** Governing principles
+
+We build one coherent system in which rigorous inquiry, computational engineering and creative expression strengthen one another. We do not build a pile of disconnected tools, demos, documents or agent-specific projects.
 
 ## Principles
 1. Evidence before claims; hypotheses before implementation.
-2. Modularity before monolith; measurement before optimization.
-3. Traceability across source, concept, decision, code, and result.
-4. Progressive complexity: each mechanism must earn its place.
-5. Reversible decisions, explicit trade-offs, and resource-aware design.
-6. Reproducibility is a feature, not a finishing touch.
-7. Visuals should clarify, not masquerade as proof.
-8. Human review at uncertainty boundaries.
-9. Negative and null results remain part of the record.
-10. Creative translation may use metaphor but must label it.
+2. One source of truth for every responsibility.
+3. Traceability from question to source, model, decision, code, result and scene.
+4. Measurement before optimization; validation before interpretation.
+5. Complexity must earn its place through demonstrated value.
+6. Reproducibility is a product feature, not a finishing step.
+7. Visuals clarify evidence; they never impersonate proof.
+8. Metaphor is welcome when explicitly labeled.
+9. Negative, null and failed results remain in the record.
+10. Open standards and replaceable adapters protect long-term independence.
+11. Human ownership governs mission, rights, irreversible decisions and uncertainty.
+12. Every contribution must leave the project more coherent than it found it.
 
-## Research lifecycle
-Clue → source → extraction → classification → evidence → hypothesis → formalization → prototype → experiment → decision → document → visual narrative.
+## The single lifecycle
+Question → source → claim → formalization → experiment → validation → scene contract → storyboard → production → quality review → release → learning.
 
-## Program posture
-3D neuron placement alone does not imply better intelligence. Use strong existing models where appropriate; custom neural components should address isolated, measurable questions.
+## What we refuse
+- Parallel cores, duplicate test roots and competing documentation indexes.
+- Unsupported claims of intelligence, biological fidelity or performance gains.
+- Mandatory vendor lock-in or paid dependencies in the core.
+- Unlicensed media/code/data reuse.
+- Completion claims without acceptance evidence.
+- Unreviewed autonomous scope expansion.
 
-## Music and art
-Soundtrack shapes pacing and emotional arc, not scientific conclusions. Rights and sync permissions are separately verified.
+## Creative doctrine
+Science sets the boundaries of factual representation. Art shapes explanation, emotion, pacing and meaning. Music supports the narrative arc; it does not prove a scientific claim. Rights and synchronization permissions are independently verified.
 
 ## Definition of done
-Scope, version, source/provenance, status, acceptance criteria, limitations, and next action are explicit.
+A deliverable has bounded scope, accountable owner, version, provenance, acceptance criteria, executed evidence, limitations, synchronized documentation and a handoff another contributor can continue without hidden context.

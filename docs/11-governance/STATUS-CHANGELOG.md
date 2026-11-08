@@ -37,3 +37,17 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 ## Recovery of original architecture thread — 2026-11-08
 - GitHub code search for `MLMF-NX` and related terms showed the exact working label was absent from the tracked files. Added `docs/03-architecture/MLMF-NX-RESEARCH-BRIEF.md` to capture the original hypothesis, modular/spatial/denoising/feedback facets, research questions, baseline/ablation plan, gates and explicit UNKNOWNs.
 - The brief is a preservation/research draft; it does not imply the architecture has been implemented or empirically validated.
+
+
+## Foundation consolidation — 2026-11-08
+- Full recursive main tree inspected (82 tracked files at audit snapshot); identified two Python package roots, two test roots, two CI workflows and overlapping numbered documentation categories.
+- Opened draft PR #4 on branch foundation/cohesion-e2e-v0.2. Main remains unchanged pending review.
+- Added a RED-stage knowledge-graph test suite first. Quality run 42462293966 failed at the Python test step because the canonical graph module and fixture did not yet exist; documentation checks passed. This is the expected RED proof, not a regression in main.
+- Consolidation moves graph validation, deterministic SVG projection and hash receipt into src/haa_d3/; fixture into examples/knowledge/; tests into tests/; removes the duplicate prototype package and its independent CI workflow.
+- Adds the canonical source map, governance standard and end-to-end lifecycle. Root README, manifesto, docs index and catalog are synchronized.
+- Root index.html intentionally not added: the root is a source repository; the existing browser demo owns demo/neural-odyssey/index.html.
+- Scientific independent validation, JSON Schema runtime validation, renderer adapters, audio pipeline and full media E2E remain NOT RUN.
+
+- Added scripts/check_repository_structure.py and a CI gate that rejects duplicate Python package roots, test roots, or quality workflows; this makes the anti-sprawl rules executable rather than advisory.
+
+- Final topology-guard Quality Gate run 42462583716 completed SUCCESS: repository structure guard, Markdown catalog, local-link checker, full Python suite, SceneSpec validation, Kuramoto scene generation/validation and knowledge-graph JSON/SVG/receipt generation all passed.

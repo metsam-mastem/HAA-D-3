@@ -1,28 +1,24 @@
-name: HAA-D-3 Quality
+name: HAA-D-3 Quality Gate
 on:
   push:
-    branches: [main, "work/**", "feat/**", "fix/**", "docs/**", "research/**", "creative/**"]
+    branches: [main, "work/**", "feat/**", "fix/**", "docs/**", "research/**", "creative/**", "foundation/**"]
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  document-catalog:
+  repository-governance:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
+      - name: Enforce single-source repository structure
+        run: python scripts/check_repository_structure.py
       - name: Check tracked Markdown inventory
         run: python scripts/check_document_catalog.py
-  markdown-links:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Check local Markdown link destinations
+      - name: Check local Markdown links
         run: python scripts/check_markdown_links.py
   python-core:
     runs-on: ubuntu-latest
@@ -31,11 +27,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Run unit tests
+      - name: Run complete Python test suite
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Validate example SceneSpec
         run: PYTHONPATH=src python -m haa_d3.cli validate-scene examples/scenes/synthetic-emergence.scene.json
-      - name: Generate analytical SceneSpec from Kuramoto simulation
-        run: PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 12 --steps 5 --seed 11 --output /tmp/kuramoto-scene.json
-      - name: Validate generated SceneSpec
-        run: PYTHONPATH=src python -m haa_d3.cli validate-scene /tmp/kuramoto-scene.json
+      - name: Generate and validate Kuramoto SceneSpec
+        run: |
+          PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 12 --steps 5 --seed 11 --output /tmp/kuramoto-scene.json
+          PYTHONPATH=src python -m haa_d3.cli validate-scene /tmp/kuramoto-scene.json
+      - name: Generate knowledge graph, SVG and provenance receipt
+        run: PYTHONPATH=src python -m haa_d3.cli render-knowledge-graph examples/knowledge/seed-graph.json --out /tmp/knowledge-graph
+      - name: Verify generated graph artifacts
+        run: |
+          test -s /tmp/knowledge-graph/graph.json
+          test -s /tmp/knowledge-graph/graph.svg
+          test -s /tmp/knowledge-graph/receipt.json
