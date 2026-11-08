@@ -73,3 +73,12 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Quality Gate run [42463486089](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42463486089) passed `python-core` and `repository-governance`.
 - README, source map and foundation handoff now agree on merged status and verification scope.
 - The current source map explicitly keeps runtime code under `src/haa_d3/` and independent numerical verification under `tests/`.
+
+
+## Executable production vertical slice — 2026-11-08
+- Branch `release/e2e-render-sonification-v1` adds runtime JSON Schema 2020-12 validation for SceneSpec and Finding, using the declared `jsonschema` dependency.
+- Added deterministic standard-library SVG frame rendering, MIDI data-sonification, and ZIP release assembly with per-artifact SHA-256 manifest. Generated bundles are explicitly `GENERATED_NOT_REVIEWED`.
+- Added optional Blender 4.2+ background adapter for editable .blend and PNG sequence; syntax is covered by CI, but Blender runtime rendering remains NOT RUN.
+- Added compressed delivery plan: Phase A contracts/numerics; Phase B executable media/release bundle; Phase C Blender render; Phase D human scientific/creative/accessibility/rights acceptance.
+- CI run [42464847359](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42464847359) passed all 28 Python tests, SceneSpec validation, Kuramoto SceneSpec generation, end-to-end release archive creation, graph artifact generation, repository structure, Markdown inventory and local-link checks.
+- An earlier CI run exposed scalar interpolation failure in the metric ring; the implementation was corrected and the subsequent complete run passed. The failed run is retained as regression evidence.
