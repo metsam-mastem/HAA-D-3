@@ -51,7 +51,7 @@ jobs:
           pip-audit --skip-editable
           pip-audit --skip-editable --format cyclonedx-json --output /tmp/haa-d3-sbom.json
       - name: Upload dependency SBOM
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: haa-d3-python-sbom
           path: /tmp/haa-d3-sbom.json
@@ -69,7 +69,7 @@ jobs:
           PYTHONPATH=src python -m haa_d3.cli build-release --nodes 8 --steps 4 --dt 0.1 --frame-rate 5 --video --output /tmp/haa-d3-release.zip
           python -c "import zipfile; z=zipfile.ZipFile('/tmp/haa-d3-release.zip'); assert 'manifest.json' in z.namelist(); assert 'frames/000000.svg' in z.namelist(); assert 'sonification/coherence.mid' in z.namelist(); assert 'sonification/coherence.wav' in z.namelist(); assert 'video/preview.mp4' in z.namelist()"
       - name: Upload generated vertical-slice release
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: haa-d3-e2e-release
           path: /tmp/haa-d3-release.zip
