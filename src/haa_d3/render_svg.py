@@ -54,16 +54,26 @@ def render_scene_frames(
         raise ValueError("frame_rate must be finite and positive")
     if not math.isfinite(duration) or duration <= 0:
         raise ValueError("duration_seconds must be finite and positive")
+    if isinstance(width, bool) or not isinstance(width, int) or isinstance(height, bool) or not isinstance(height, int):
+        raise ValueError("render dimensions must be integers")
     if width < 160 or height < 120:
         raise ValueError("render dimensions are too small")
+    if width * height > 16_000_000:
+        raise ValueError("render pixel budget exceeded (16000000)")
     frame_count = int(math.floor(duration * fps + 1e-9)) + 1
     if frame_count > 10000:
         raise ValueError("frame count exceeds safety limit (10000)")
+    objects = scene.get("objects", [])
+    if not isinstance(objects, list):
+        raise ValueError("scene objects must be an array")
+    if len(objects) > 1000:
+        raise ValueError("scene object limit exceeded (1000)")
+    if frame_count * len(objects) > 2_000_000:
+        raise ValueError("render work budget exceeded (2000000 frame-object operations)")
     output_dir.mkdir(parents=True, exist_ok=True)
     paths = []
     cx, cy = width / 2, height / 2
     scale = min(width, height) * 0.32
-    objects = scene.get("objects", [])
     for frame in range(frame_count):
         timestamp = min(frame / fps, duration)
         parts = [
