@@ -118,7 +118,7 @@ jobs:
           LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender --background --factory-startup --python adapters/blender/render_scene.py -- --scene /tmp/haa-d3-blender-scene.json --output /tmp/haa-d3-blender
       - name: Assemble and decode Blender audiovisual preview
         run: |
-          ffmpeg -y -hide_banner -loglevel error -framerate 10 -start_number 1 -i /tmp/haa-d3-blender/frame_%04d.png -i /tmp/haa-d3-blender/coherence.wav -c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p -c:a aac -b:a 128k -shortest -movflags +faststart /tmp/haa-d3-blender/blender-preview.mp4
+          ffmpeg -y -hide_banner -loglevel error -framerate 10 -start_number 1 -i /tmp/haa-d3-blender/frame_%04d.png -i /tmp/haa-d3-blender/coherence.wav -c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart /tmp/haa-d3-blender/blender-preview.mp4
           ffprobe -v error -count_frames -show_entries stream=codec_type,codec_name,width,height,nb_read_frames,duration,r_frame_rate:format=duration -of json /tmp/haa-d3-blender/blender-preview.mp4 > /tmp/haa-d3-blender/mp4-probe.json
           ffmpeg -v error -xerror -i /tmp/haa-d3-blender/blender-preview.mp4 -f null -
           python - <<'PY'
@@ -133,10 +133,11 @@ jobs:
           audio = next(s for s in streams if s["codec_type"] == "audio")
           assert video["codec_name"] == "h264" and audio["codec_name"] == "aac"
           assert int(video["width"]) == 1920 and int(video["height"]) == 1080
-          assert int(video["nb_read_frames"]) == manifest["frame_count"]
+          assert int(video["nb_read_frames"]) == manifest["frame_count"], (video, manifest["frame_count"])
           video_duration = float(video["duration"])
           audio_duration = float(audio["duration"])
           delta = abs(video_duration - audio_duration)
+          print("MP4_STREAMS", json.dumps({"video":video,"audio":audio}, indent=2))
           assert math.isfinite(delta) and delta <= 0.1, (video_duration, audio_duration, delta)
           for name in ("coherence.wav", "blender-preview.mp4"):
               path = root / name
