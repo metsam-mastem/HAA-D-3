@@ -17,6 +17,7 @@ This is the authoritative navigation index. A document not listed as implemented
 - [Adapter Capability Contract](03-architecture/ADAPTER-CAPABILITY-CONTRACT.md)
 - [Domain Model](04-domain/DOMAIN-MODEL.md)
 - [Scene Contract](08-contracts/SCENE-SPEC-CONTRACT.md)
+- [Research-to-Scene Mapping](08-contracts/RESEARCH-TO-SCENE-MAPPING.md)
 - [Platform Portability](14-platform/PLATFORM-PORTABILITY.md)
 
 ## Research and production
