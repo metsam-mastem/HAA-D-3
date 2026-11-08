@@ -53,6 +53,7 @@
 - [Creative Direction Bible](12-production/CREATIVE-DIRECTION-BIBLE.md)
 - [Creative Reference Map](10-references/CREATIVE-REFERENCE-MAP.md)
 - [Creative, Educational, and Cinematic Content Pipeline](13-planning/CREATIVE-EDUCATIONAL-CINEMA-PIPELINE.md)
+- [Portfolio Deep-Audit Snapshot](13-planning/PORTFOLIO-DEEP-AUDIT-2026-11-08.md)
 
 ## Planning, operations and handoffs
 - [WBS Roadmap](06-planning/WBS-ROADMAP.md)
