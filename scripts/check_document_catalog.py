@@ -5,7 +5,7 @@ import re
 import subprocess
 import sys
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "docs/13-planning/DOCUMENT-CATALOG.md"
 text = CATALOG.read_text(encoding="utf-8")
 listed = set(re.findall(r"^\|\s+`([^\`]+\.md)`\s+\|", text, flags=re.MULTILINE))
