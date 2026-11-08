@@ -119,6 +119,7 @@ jobs:
           assert manifest["status"] == "RENDERED_NOT_REVIEWED"
           assert manifest["frame_count"] == expected == len(frames), (manifest, len(frames))
           assert manifest["effective_fps"] > 0
+          assert manifest["unowned_objects_preserved"] == 3
           assert (root / "scene.blend").is_file() and (root / "scene.blend").stat().st_size > 1000
           assert set(manifest["artifact_inventory"]) == {"scene.blend", *(p.name for p in frames)}
           for frame in frames:
@@ -135,7 +136,7 @@ jobs:
           PY
       - name: Reopen saved Blender project
         run: |
-          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender --background /tmp/haa-d3-blender/scene.blend --python-expr "import bpy; assert bpy.context.scene.camera is not None; assert sum(1 for obj in bpy.data.objects if obj.get('haa_d3_generated') is True) >= 10; print('BLEND_REOPEN_PASS', bpy.app.version_string)"
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender --background /tmp/haa-d3-blender/scene.blend --python-expr "import bpy; assert bpy.context.scene.camera.name == 'Camera'; assert bpy.data.objects.get('Cube') is not None; assert bpy.data.objects['Cube'].hide_render is False; assert bpy.data.objects.get('HAA-D3-Camera') is not None; assert sum(1 for obj in bpy.data.objects if obj.get('haa_d3_generated') is True) >= 10; print('BLEND_REOPEN_PASS', bpy.app.version_string)"
       - name: Upload Blender render evidence
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
