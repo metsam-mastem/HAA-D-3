@@ -133,12 +133,12 @@ class EndToEndProductionTests(unittest.TestCase):
         user_mesh = FakeID(name="user-mesh", users=0)
         generated_mesh = FakeID(haa_d3_generated=True, users=0)
         fake_bpy = SimpleNamespace(
-            context=SimpleNamespace(scene=SimpleNamespace(camera=generated_camera)),
+            context=SimpleNamespace(scene=SimpleNamespace(camera=generated_camera, world=None)),
             data=SimpleNamespace(
                 objects=FakeCollection([owned, user_object, generated_camera]),
                 meshes=FakeCollection([user_mesh, generated_mesh]),
                 curves=FakeCollection(), materials=FakeCollection(),
-                cameras=FakeCollection(), lights=FakeCollection(),
+                cameras=FakeCollection(), lights=FakeCollection(), worlds=FakeCollection(),
             ),
         )
         adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
@@ -186,6 +186,46 @@ class EndToEndProductionTests(unittest.TestCase):
                 with self.assertRaisesRegex(FileExistsError, "already contains HAA-D-3 outputs"):
                     module.build_scene({"scene_id":"demo","frame_rate":24,"duration_seconds":1,"objects":[]}, output)
             self.assertEqual((output / "scene.blend").read_bytes(), b"preserve")
+
+
+    def test_blender_adapter_selects_available_eevee_engine(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_engine_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+            spec.loader.exec_module(module)
+        self.assertEqual(module.eevee_engine_for_version((4, 0, 0)), "BLENDER_EEVEE")
+        self.assertEqual(module.eevee_engine_for_version((4, 2, 0)), "BLENDER_EEVEE_NEXT")
+
+
+    def test_blender_preflight_rejects_invalid_animation_before_scene_mutation(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_animation_preflight_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        invalid_scene = {
+            "scene_id":"bad-animation","frame_rate":24,"duration_seconds":1,
+            "objects":[{"id":"osc-1","type":"oscillator","animation":[{
+                "property":"transform.position",
+                "keyframes":[
+                    {"time_seconds":0,"value":[0,0,0]},
+                    {"time_seconds":0,"value":[1,1,1]},
+                ],
+            }]}],
+        }
+        with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+            spec.loader.exec_module(module)
+            with self.assertRaisesRegex(ValueError, "strictly increasing"):
+                module.build_scene(invalid_scene, Path("/tmp/unused"))
 
 
 if __name__ == "__main__":

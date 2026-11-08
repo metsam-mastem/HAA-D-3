@@ -132,3 +132,38 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Added SECURITY.md, Dependabot, CODEOWNERS, patched setuptools, pip-audit and CycloneDX SBOM artifact; pinned workflow actions to verified commit SHAs.
 - Pre-merge Quality Gate passed on branch head `efca1a5`: 61 Python tests, dependency audit, SBOM upload, SceneSpec validation, release bundle and knowledge-graph artifact checks. Post-merge main verification is tracked by the latest main Actions run.
 - Blender executable/runtime rendering remains NOT RUN; only adapter source compilation and stubbed preflight/ownership/overwrite tests passed. Human scientific, creative, accessibility and rights reviews remain outstanding.
+
+
+## Phase C Blender runtime verification — 2026-11-08
+- Added a real Blender runtime CI job, not merely a source compile or bpy stub.
+- Blender 4.0.2 / BLENDER_EEVEE rendered 11 PNG frames at 1920×1080 from a generated Kuramoto SceneSpec under Xvfb/software OpenGL.
+- Verified PNG signatures/dimensions/count, SHA-256 inventory, frame metadata, saved .blend reopening, and preservation/restoration of the factory-startup Cube, Camera and Light.
+- Render evidence artifact: `haa-d3-blender-runtime-evidence`, artifact ID `13614135874`, 10,856,635 bytes. Run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42472362620
+- Python core Quality Gate: 63 tests PASS; dependency audit and SBOM upload PASS; repository governance PASS.
+- The render is still labeled `RENDERED_NOT_REVIEWED`. Human scientific, cinematic, audio, accessibility and rights approval remains NOT RUN. Manim runtime validation remains NOT RUN.
+
+
+## Phase C audiovisual render verification — 2026-11-08
+- Blender 4.0.2 / EEVEE rendered 11 frames at 1920×1080 from a Kuramoto SceneSpec.
+- Generated deterministic WAV order-parameter sonification and assembled H.264/AAC MP4.
+- FFprobe confirmed 11 video frames, 1920×1080, H.264/AAC streams; stream durations 1.10 s and 1.08 s (delta 0.02 s). Full FFmpeg decode passed.
+- PNG signatures, frame count, dimensions, SHA-256 inventory, .blend reopen and preservation/restoration of the original Cube/Camera/Light passed.
+- Python core: 63 tests PASS; dependency audit, CycloneDX SBOM and release pipeline PASS; Blender runtime job PASS.
+- Evidence: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473039140 — artifact ID `13614063107` (`haa-d3-blender-runtime-evidence`, 10,937,896 bytes).
+- Output is labeled `RENDERED_NOT_REVIEWED`; algorithmic sonification is not a composed soundtrack. Human creative, scientific, accessibility and rights approval remains NOT RUN; Manim runtime remains NOT RUN.
+
+
+## Phase C final audiovisual CI pass — 2026-11-08
+- Latest run: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672 — repository-governance, python-core and blender-runtime all PASS.
+- Blender 4.0.2 / EEVEE: 11 frames, 1920×1080, 10 fps; MP4 H.264 + AAC; FFprobe and full FFmpeg decode PASS.
+- Video duration 1.10 s; WAV-derived audio duration 1.08 s; A/V delta 0.02 s (within 0.10 s gate).
+- Saved .blend reopened; original Cube/Camera/Light and expected generated scene objects verified.
+- Evidence artifact: https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672/artifacts/13613359974 (10,938,087 bytes; artifact ZIP SHA-256 e0e52993ba6e11487082569dd96c39b3fa911759697dd411dee0ded3d242a77a).
+- Important boundary: this is a short technical smoke preview, not a finished film, final soundtrack, or human-reviewed scientific/cinematic deliverable. Scientific, editorial, accessibility and rights gates remain NOT RUN; Manim runtime remains NOT RUN.
+
+
+## Phase C2 Manim adapter implementation — 2026-11-08
+- Added `adapters/manim/render_scene.py`, a constrained Manim Community renderer that reads the canonical Kuramoto-derived SceneSpec JSON and interpolates oscillator tracks; it does not execute embedded code.
+- Added a separately gated `manim-runtime` GitHub Actions job pinned to Manim Community 0.19.0, with system dependencies, canonical SceneSpec generation/validation, low-quality MP4 render, full decode, H.264/dimension checks, SHA-256 receipt and 14-day evidence artifact.
+- Added `phase-c/**` to push validation filters so this active delivery branch is no longer excluded from automatic push CI.
+- Updated delivery lifecycle and creative pipeline documentation. The first Manim runtime result remains pending; no PASS is claimed until CI evidence is available.
