@@ -9,6 +9,7 @@ This adapter is optional and requires Blender's bundled Python/bpy runtime.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import sys
@@ -53,10 +54,12 @@ def clear_scene():
     active_camera = scene.camera
     if active_camera is not None and active_camera.get("haa_d3_generated") is True:
         scene.camera = None
+    if scene.world is not None and scene.world.get("haa_d3_generated") is True:
+        scene.world = None
     for obj in list(bpy.data.objects):
         if obj.get("haa_d3_generated") is True:
             bpy.data.objects.remove(obj, do_unlink=True)
-    for datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras, bpy.data.lights):
+    for datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras, bpy.data.lights, bpy.data.worlds):
         for block in list(datablocks):
             if block.users == 0 and block.get("haa_d3_generated") is True:
                 datablocks.remove(block)
@@ -202,14 +205,28 @@ def build_scene(spec, output_dir, *, overwrite=False):
     scene.render.use_file_extension = True
     bpy.ops.wm.save_as_mainfile(filepath=str((output_dir / "scene.blend").resolve()))
     bpy.ops.render.render(animation=True)
+    rendered_frames = sorted(output_dir.glob("frame_*.png"))
+    artifacts = [output_dir / "scene.blend", *rendered_frames]
+    artifact_inventory = {
+        path.name: {
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "size_bytes": path.stat().st_size,
+        }
+        for path in artifacts if path.is_file()
+    }
     manifest = {
         "status": "RENDERED_NOT_REVIEWED",
         "scene_id": spec["scene_id"],
         "blender_version": bpy.app.version_string,
+        "render_engine": scene.render.engine,
         "frame_start": scene.frame_start,
         "frame_end": scene.frame_end,
+        "frame_count": len(rendered_frames),
         "fps": scene.render.fps,
+        "fps_base": scene.render.fps_base,
+        "effective_fps": scene.render.fps / scene.render.fps_base,
         "resolution": [scene.render.resolution_x, scene.render.resolution_y],
+        "artifact_inventory": artifact_inventory,
         "evidence_class": spec.get("metadata", {}).get("evidence_class", "UNKNOWN"),
         "scientific_scope": spec.get("metadata", {}).get("scientific_scope"),
         "limitations": ["Renderer output requires scientific, creative, accessibility and rights review."],
