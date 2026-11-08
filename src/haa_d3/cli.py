@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .contracts import validate_finding, validate_scene
 from .kuramoto import simulate_kuramoto
+from .scene_mappings import kuramoto_to_scene
 
 
 def _read_json(path: Path) -> dict:
@@ -44,9 +45,20 @@ def main() -> int:
     simulation.add_argument("--format", choices=("json", "csv"), default="json")
     simulation.add_argument("--output", type=Path, default=None)
 
+    scene = sub.add_parser("kuramoto-scene", help="run Kuramoto and compile an analytical SceneSpec")
+    scene.add_argument("--nodes", type=int, default=64)
+    scene.add_argument("--coupling", type=float, default=1.5)
+    scene.add_argument("--dt", type=float, default=0.02)
+    scene.add_argument("--steps", type=int, default=250)
+    scene.add_argument("--seed", type=int, default=7)
+    scene.add_argument("--omega-mean", type=float, default=1.0)
+    scene.add_argument("--omega-std", type=float, default=0.25)
+    scene.add_argument("--frame-rate", type=float, default=24.0)
+    scene.add_argument("--output", type=Path, default=None)
+
     args = parser.parse_args()
 
-    if args.command == "simulate-kuramoto":
+    if args.command in ("simulate-kuramoto", "kuramoto-scene"):
         try:
             result = simulate_kuramoto(
                 nodes=args.nodes, coupling=args.coupling, dt=args.dt,
@@ -69,7 +81,7 @@ def main() -> int:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(rendered, encoding="utf-8")
-            print(f"PASS: wrote {args.format.upper()} simulation output to {args.output}")
+            print(f"PASS: wrote {"SCENE" if args.command == "kuramoto-scene" else args.format.upper()} output to {args.output}")
         else:
             sys.stdout.write(rendered)
         return 0
