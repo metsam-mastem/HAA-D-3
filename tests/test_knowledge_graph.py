@@ -61,5 +61,16 @@ class KnowledgeGraphTests(unittest.TestCase):
                 self.assertTrue(any("target" in error and "string" in error for error in errors))
 
 
+    def test_rejects_graphs_over_resource_limits(self):
+        graph = dict(self.graph)
+        graph["concepts"] = [{"id": f"n{i}", "label": f"Node {i}"} for i in range(10001)]
+        self.assertTrue(any("concept limit" in error for error in validate_graph(graph)))
+
+    def test_rejects_relation_count_over_resource_limit(self):
+        graph = dict(self.graph)
+        graph["relations"] = [{"source": "math.graph", "target": "math.graph", "type": "related"}] * 50001
+        self.assertTrue(any("relation limit" in error for error in validate_graph(graph)))
+
+
 if __name__ == "__main__":
     unittest.main()
