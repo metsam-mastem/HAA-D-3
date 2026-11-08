@@ -1,8 +1,10 @@
 """Explicit, renderer-neutral mappings from research outputs to SceneSpec."""
 from __future__ import annotations
 
-from typing import Any
+import hashlib
+import json
 import math
+from typing import Any
 
 
 def kuramoto_to_scene(
@@ -22,16 +24,24 @@ def kuramoto_to_scene(
     params = simulation.get("parameters", {})
     samples = simulation.get("samples", [])
     nodes = params.get("nodes")
-    if not isinstance(nodes, int) or nodes < 2 or not samples:
-        raise ValueError("simulation must contain at least two nodes and one sample")
-    if isinstance(frame_rate, bool) or not isinstance(frame_rate, (int, float)) or frame_rate <= 0:
-        raise ValueError("frame_rate must be a positive number")
-    if isinstance(orbit_radius, bool) or not isinstance(orbit_radius, (int, float)) or orbit_radius <= 0:
-        raise ValueError("orbit_radius must be a positive number")
-    for sample in samples:
-        phases = sample.get("phases_radians", [])
-        if len(phases) != nodes:
-            raise ValueError("each sample must contain one phase per oscillator")
+    if not isinstance(nodes, int) or isinstance(nodes, bool) or nodes < 2:
+        raise ValueError("simulation must contain at least two nodes")
+    if not isinstance(samples, list) or not samples:
+        raise ValueError("simulation must contain at least one sample")
+    for name, value in (("frame_rate", frame_rate), ("orbit_radius", orbit_radius)):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+            raise ValueError(f"{name} must be a finite positive number")
+    for index, sample in enumerate(samples):
+        if not isinstance(sample, dict):
+            raise ValueError(f"samples[{index}] must be an object")
+        phases = sample.get("phases_radians")
+        if not isinstance(phases, list) or len(phases) != nodes:
+            raise ValueError(f"samples[{index}] must contain one phase per oscillator")
+        if "time_seconds" not in sample or "order_parameter" not in sample:
+            raise ValueError(f"samples[{index}] is missing time_seconds or order_parameter")
+
+    run_payload = json.dumps(params, sort_keys=True, separators=(",", ":"))
+    run_id = hashlib.sha256(run_payload.encode("utf-8")).hexdigest()[:16]
 
     objects: list[dict[str, Any]] = []
     for index in range(nodes):
@@ -46,15 +56,15 @@ def kuramoto_to_scene(
                     0.0,
                 ],
             })
-        first = keyframes[0]["value"]
         objects.append({
             "id": f"oscillator-{index:04d}",
             "type": "oscillator",
-            "transform": {"position": first, "scale": [1.0, 1.0, 1.0]},
+            "transform": {"position": keyframes[0]["value"], "scale": [1.0, 1.0, 1.0]},
             "geometry": {"primitive": "point"},
             "animation": [{"property": "transform.position", "keyframes": keyframes}],
             "data_binding": {
                 "source_model": simulation["model"],
+                "source_run_id": run_id,
                 "source_field": f"samples[*].phases_radians[{index}]",
                 "evidence_class": "MODEL_OUTPUT",
                 "mapping": "polar_phase_to_cartesian_position",
@@ -73,6 +83,7 @@ def kuramoto_to_scene(
         "animation": [{"property": "material.emission_intensity", "keyframes": coherence_keys}],
         "data_binding": {
             "source_model": simulation["model"],
+            "source_run_id": run_id,
             "source_field": "samples[*].order_parameter",
             "evidence_class": "MODEL_OUTPUT",
             "mapping": "order_parameter_to_normalized_emission_intensity",
@@ -81,15 +92,14 @@ def kuramoto_to_scene(
     })
 
     duration = float(samples[-1]["time_seconds"])
-    seed = params.get("seed", "unknown")
     return {
         "schema_version": "0.1.0",
-        "scene_id": scene_id or f"kuramoto-seed-{seed}",
+        "scene_id": scene_id or f"kuramoto-{run_id}",
         "title": "Coupled Oscillators — Phase Synchronization",
         "duration_seconds": max(duration, 1.0 / float(frame_rate)),
         "frame_rate": float(frame_rate),
         "interpretation_mode": "ANALYTICAL",
-        "evidence_refs": [f"simulation:kuramoto-seed-{seed}"],
+        "evidence_refs": [f"simulation:kuramoto:{run_id}"],
         "coordinate_system": "2D_CARTESIAN",
         "units": "normalized_scene_units",
         "objects": objects,
@@ -97,6 +107,7 @@ def kuramoto_to_scene(
         "metadata": {
             "source_model": simulation["model"],
             "source_model_version": simulation.get("model_version"),
+            "source_run_id": run_id,
             "evidence_class": "MODEL_OUTPUT",
             "scientific_scope": simulation.get("scientific_scope"),
             "mapping": "x=R*cos(theta); y=R*sin(theta); coherence=r(t)",
