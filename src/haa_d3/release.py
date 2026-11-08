@@ -8,7 +8,9 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
-from .contracts import validate_scene\nfrom .schema_validation import validate_json_schema\nfrom .render_svg import render_scene_frames
+from .contracts import validate_scene
+from .schema_validation import validate_json_schema
+from .render_svg import render_scene_frames
 from .sonification import write_sonification_midi
 
 
@@ -26,7 +28,11 @@ def build_release_bundle(
     output_path: Path,
 ) -> Path:
     """Create ZIP with simulation, SceneSpec, SVG frames, MIDI and hash manifest."""
-    schema_errors = validate_json_schema(scene, "scene-spec.schema.json")\n    semantic_errors = validate_scene(scene)\n    if schema_errors or semantic_errors:\n        raise ValueError("invalid SceneSpec: " + "; ".join(schema_errors + semantic_errors))\n    output_path.parent.mkdir(parents=True, exist_ok=True)
+    schema_errors = validate_json_schema(scene, "scene-spec.schema.json")
+    semantic_errors = validate_scene(scene)
+    if schema_errors or semantic_errors:
+        raise ValueError("invalid SceneSpec: " + "; ".join(schema_errors + semantic_errors))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="haa-d3-release-") as temporary:
         root = Path(temporary)
         (root / "frames").mkdir()
