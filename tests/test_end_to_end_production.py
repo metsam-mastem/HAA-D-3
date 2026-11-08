@@ -89,5 +89,19 @@ class EndToEndProductionTests(unittest.TestCase):
                 render_scene_frames(scene, Path(directory))
 
 
+    def test_blender_adapter_preserves_unowned_scene_objects(self):
+        adapter = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        source = adapter.read_text(encoding="utf-8")
+        self.assertIn('obj.get("haa_d3_generated") is True', source)
+        self.assertNotIn("bpy.ops.object.select_all", source)
+        self.assertNotIn("bpy.ops.object.delete", source)
+
+    def test_blender_adapter_has_render_budget_preflight(self):
+        adapter = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        source = adapter.read_text(encoding="utf-8")
+        self.assertIn("SceneSpec exceeds Blender render budget", source)
+        self.assertIn("at most 1000 entries", source)
+
+
 if __name__ == "__main__":
     unittest.main()
