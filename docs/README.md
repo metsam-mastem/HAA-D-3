@@ -11,6 +11,7 @@ This is the authoritative navigation index. A document not listed as implemented
 ## Product, architecture and contracts
 - [Product Scope](02-product/PRODUCT-SCOPE.md)
 - [Reference Architecture](03-architecture/REFERENCE-ARCHITECTURE.md)
+- [Adapter Capability Contract](03-architecture/ADAPTER-CAPABILITY-CONTRACT.md)
 - [Domain Model](04-domain/DOMAIN-MODEL.md)
 - [Scene Contract](08-contracts/SCENE-SPEC-CONTRACT.md)
 - [Platform Portability](14-platform/PLATFORM-PORTABILITY.md)
