@@ -74,6 +74,7 @@ This file is an inventory, not an approval or assertion that all planned work is
 | `examples/**/*.json`, `prototype/data/*.json` | samples/configs | semantic validation and tests |
 | `demo/neural-odyssey/*` | browser-based illustrative demo | visual review separately |
 | `.github/workflows/*.yml` | automated workflows | Actions results |
+| `scripts/check_document_catalog.py`, `scripts/check_markdown_links.py` | anti-drift and local link check scripts | Quality CI |
 | `pyproject.toml`, `.gitignore` | package/tool and repo config | review |
 | `scenes/`, `creative/`, `adapters/`, `research/`, `artifacts/`, `releases/` | canonical workspaces | inventory and workspace README |
 
@@ -83,7 +84,8 @@ This file is an inventory, not an approval or assertion that all planned work is
 - [x] Documentation index reorganized by discipline/workflow.
 - [x] Outdated README merge-state statement identified for correction.
 - [x] Historical handoff notes reconciled by appended current-status notes.
-- [x] Markdown catalog consistency script added to CI (link target checking remains separate and not yet enforced).
+- [x] Markdown catalog consistency checker runs in Quality CI and passed (run 42461219275).
+- [x] Local Markdown link destination checker runs in Quality CI and passed (run 42461219275).
 - [ ] Dedicated JSON Schema engine in CI remains planned.
 - [ ] Owner approval of the full documentation suite remains pending.
 - [ ] Project license remains undecided.
