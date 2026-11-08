@@ -34,6 +34,7 @@ No LLM, cloud provider, renderer, operating system or frontend framework is mand
 - [Documentation map](docs/README.md)
 - [Mandatory continuity and knowledge-ingestion protocol](docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md)
 - [Platform portability strategy](docs/14-platform/PLATFORM-PORTABILITY.md)
+- [Adapter capability contract](docs/03-architecture/ADAPTER-CAPABILITY-CONTRACT.md)
 - [Architecture decision records](docs/16-decisions/README.md)
 
 ## Repository map
