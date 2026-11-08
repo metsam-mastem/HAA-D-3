@@ -12,7 +12,8 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 | `AGENTS.md` | Repository guide |
 | `CONTRIBUTING.md` | Repository guide |
 | `README.md` | Repository guide |
-| `adapters/README.md` | Repository guide |\n| `adapters/blender/README.md` | Repository guide |
+| `adapters/README.md` | Repository guide |
+| `adapters/blender/README.md` | Repository guide |
 | `artifacts/README.md` | Repository guide |
 | `creative/README.md` | Repository guide |
 | `demo/neural-odyssey/README.md` | Repository guide |
@@ -60,7 +61,8 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 | `docs/14-platform/PLATFORM-PORTABILITY.md` | Project document |
 | `docs/15-operations/RELEASE-AND-QUALITY.md` | Project document |
 | `docs/16-decisions/ADR-0001-portable-core-adapter-first.md` | Project document |
-| `docs/16-decisions/README.md` | Project document |\n| `docs/17-delivery/PHASED-DELIVERY-PLAN.md` | Project document |
+| `docs/16-decisions/README.md` | Project document |
+| `docs/17-delivery/PHASED-DELIVERY-PLAN.md` | Project document |
 | `docs/END-TO-END-LIFECYCLE.md` | Project document |
 | `docs/GOVERNANCE.md` | Project document |
 | `docs/README.md` | Project document |
