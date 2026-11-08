@@ -104,3 +104,16 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - The complete Python suite (31 tests), SceneSpec schema/semantic validation, Kuramoto SceneSpec generation, release ZIP build, ZIP content checks, artifact upload, knowledge-graph outputs, repository topology, Markdown inventory and local-link checks all passed.
 - Actions artifact `haa-d3-e2e-release` uploaded successfully: 6,143 bytes; SHA-256 `52e8661b8296634f20a28a08534a24d7e617965be6f2e2b1f6ad5ed9f57640e0`; expires 2026-11-22.
 - The archive is a generated software proof, not a finished episode or a scientifically/creatively approved public release.
+
+
+## Multi-agent GitHub coordination and API safety — 2026-11-08
+- Added [Multi-Agent GitHub Coordination and Rate Safety Policy](../13-planning/MULTI-AGENT-GITHUB-COORDINATION-AND-RATE-SAFETY.md) on isolated branch `agent-audit/coordination-policy-20261108` to reduce overlapping writes, API bursts, duplicate issue creation, and unsafe retries while another ChatGPT agent works on the same account.
+- Enumerated 18 repositories accessible under `metsam-mastem` using a single paginated repository-list request. This is metadata inventory only; repository-by-repository content audit remains pending.
+- Policy linked from the docs navigation and catalog. It specifies serial requests, conservative mutation pacing, branch/path ownership, respecting rate-limit headers, and stopping/backing off after 403/429. It does not guarantee that GitHub will never limit requests.
+- Official guidance consulted: GitHub REST API rate limits and REST API best practices (see links in policy).
+
+
+## Reconcile recovered requirements with executable E2E release evidence — 2026-11-08
+- Appended a status correction to [Conversation Requirements and Gap Audit](../13-planning/CONVERSATION-REQUIREMENTS-AND-GAP-AUDIT.md): the latest recorded Quality Gate run [42465296924](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42465296924) provides a software-level E2E proof (simulation, SceneSpec, SVG frames, MIDI cue, ZIP manifest/package) with 31 tests and an uploaded artifact.
+- Reclassified CR-03/P3 from broad “E2E not implemented” wording to **PARTIAL / executable software proof; final media E2E NOT RUN**. Blender/human creative-scientific-accessibility-rights QC and finished episode release remain outside the evidence.
+- This status correction is on isolated draft PR #9 branch; it is not merged to main.

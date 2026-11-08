@@ -57,6 +57,7 @@ The checker compares this exact list with tracked Markdown paths. A new, moved o
 | `docs/13-planning/HANDOFF-2026-11-08-vs02.md` | Project document |
 | `docs/13-planning/HANDOFF-TEMPLATE.md` | Project document |
 | `docs/13-planning/LEGACY-DOCUMENT-INVENTORY.md` | Project document |
+| `docs/13-planning/MULTI-AGENT-GITHUB-COORDINATION-AND-RATE-SAFETY.md` | Project document |
 | `docs/13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md` | Project document |
 | `docs/13-planning/ROADMAP-AND-GATES.md` | Project document |
 | `docs/14-platform/PLATFORM-PORTABILITY.md` | Project document |
