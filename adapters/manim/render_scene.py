@@ -53,7 +53,7 @@ class HaaD3SceneSpecSmoke(Scene):
 
         title = Text("HAA-D-3  /  COUPLED OSCILLATORS", font_size=28, color=WHITE)
         subtitle = Text("Analytical model output · not biological anatomy", font_size=16, color=BLUE_C)
-        subtitle.next_to(title, down, buff=0.12)
+        subtitle.next_to(title, DOWN, buff=0.12)
         header = VGroup(title, subtitle).to_edge(UP, buff=0.35)
         orbit = Circle(radius=2.25, color=BLUE_C, stroke_opacity=0.35)
         center = Dot(ORIGIN, radius=0.055, color=WHITE)
