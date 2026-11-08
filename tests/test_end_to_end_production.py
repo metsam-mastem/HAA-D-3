@@ -103,5 +103,14 @@ class EndToEndProductionTests(unittest.TestCase):
         self.assertIn("at most 1000 entries", source)
 
 
+    def test_svg_renderer_rejects_boolean_and_non_numeric_timing(self):
+        for value in (True, "24"):
+            scene = dict(self.scene)
+            scene["frame_rate"] = value
+            with tempfile.TemporaryDirectory() as directory:
+                with self.assertRaises(ValueError):
+                    render_scene_frames(scene, Path(directory))
+
+
 if __name__ == "__main__":
     unittest.main()
