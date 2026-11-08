@@ -6,6 +6,8 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 from typing import Any
 
+from .contracts import validate_scene
+
 
 def _interpolate(keyframes: list[dict[str, Any]], time_seconds: float) -> Any:
     if not keyframes:
@@ -48,7 +50,13 @@ def render_scene_frames(
     height: int = 720,
 ) -> list[Path]:
     """Render SVG frames using only the Python standard library."""
-    fps = float(frame_rate if frame_rate is not None else scene["frame_rate"])
+    errors = validate_scene(scene)
+    if errors:
+        raise ValueError("invalid SceneSpec: " + "; ".join(errors))
+    raw_fps = frame_rate if frame_rate is not None else scene["frame_rate"]
+    if isinstance(raw_fps, bool) or not isinstance(raw_fps, (int, float)) or not math.isfinite(raw_fps) or raw_fps <= 0:
+        raise ValueError("frame_rate must be finite and positive")
+    fps = float(raw_fps)
     duration = float(scene["duration_seconds"])
     if not math.isfinite(fps) or fps <= 0:
         raise ValueError("frame_rate must be finite and positive")
