@@ -188,5 +188,20 @@ class EndToEndProductionTests(unittest.TestCase):
             self.assertEqual((output / "scene.blend").read_bytes(), b"preserve")
 
 
+    def test_blender_adapter_selects_available_eevee_engine(self):
+        import importlib.util
+        import sys
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        adapter_path = Path(__file__).resolve().parents[1] / "adapters" / "blender" / "render_scene.py"
+        spec = importlib.util.spec_from_file_location("haa_d3_blender_engine_test", adapter_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+            spec.loader.exec_module(module)
+        self.assertEqual(module.eevee_engine_for_version((4, 0, 0)), "BLENDER_EEVEE")
+        self.assertEqual(module.eevee_engine_for_version((4, 2, 0)), "BLENDER_EEVEE_NEXT")
+
+
 if __name__ == "__main__":
     unittest.main()
