@@ -39,7 +39,8 @@ class EndToEndProductionTests(unittest.TestCase):
             metadata = write_sonification_midi(self.simulation, target)
             payload = target.read_bytes()
             self.assertEqual(payload[:4], b"MThd")
-            self.assertEqual(payload[14:18], b"MTrk")\n            self.assertEqual(payload[22:29], b"\\x00\\xff\\x51\\x03\\x07\\xa1\\x20")
+            self.assertEqual(payload[14:18], b"MTrk")
+            self.assertEqual(payload[22:29], b"\\x00\\xff\\x51\\x03\\x07\\xa1\\x20")
             self.assertGreater(metadata["event_count"], 0)
             self.assertEqual(metadata["evidence_class"], "MODEL_OUTPUT")
 
