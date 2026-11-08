@@ -130,7 +130,7 @@ The accessible account inventory contained 18 repositories at the time of the au
 ### P0 — prove the smallest useful vertical slice
 1. Lock one 30–60 second scientific concept from HAA-D-3 (no new claims without evidence).
 2. Make one approved script and 5–8-scene storyboard.
-3. Blender 4.0.2 EEVEE headless render and H.264/AAC preview are verified (11 frames, 1920×1080, WAV data sonification, 0.02 s audio/video duration delta, SHA-256 inventory); Manim test scene remains NOT RUN. Record machine, versions, duration, and output hashes for each renderer.
+3. Blender 4.0.2 EEVEE headless render and H.264/AAC preview are verified (11 frames, 1920×1080, WAV data sonification, 0.02 s audio/video duration delta, SHA-256 inventory); Manim Community 0.19.0 SceneSpec-driven smoke render is now implemented and queued for CI verification. Record machine, versions, duration, and output hashes for each renderer.
 4. Assemble narrated MP4 with FFmpeg and export a vertical derivative using a separate safe-area layout.
 5. Run science/visual/audio/accessibility/rights checklist and record reviewer decisions.
 
