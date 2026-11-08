@@ -95,7 +95,7 @@ jobs:
       - name: Install Blender runtime
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender xvfb xauth libgl1-mesa-dri
           blender --version
       - name: Install HAA-D-3 core
         run: |
@@ -106,7 +106,7 @@ jobs:
           PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 8 --steps 10 --dt 0.1 --frame-rate 10 --seed 17 --output /tmp/haa-d3-blender-scene.json
       - name: Execute Blender background render
         run: |
-          blender --background --factory-startup --python adapters/blender/render_scene.py -- --scene /tmp/haa-d3-blender-scene.json --output /tmp/haa-d3-blender
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender --background --factory-startup --python adapters/blender/render_scene.py -- --scene /tmp/haa-d3-blender-scene.json --output /tmp/haa-d3-blender
       - name: Verify Blender render and editable project
         run: |
           python - <<'PY'
@@ -135,7 +135,7 @@ jobs:
           PY
       - name: Reopen saved Blender project
         run: |
-          blender --background /tmp/haa-d3-blender/scene.blend --python-expr "import bpy; assert bpy.context.scene.camera is not None; assert sum(1 for obj in bpy.data.objects if obj.get('haa_d3_generated') is True) >= 10; print('BLEND_REOPEN_PASS', bpy.app.version_string)"
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender --background /tmp/haa-d3-blender/scene.blend --python-expr "import bpy; assert bpy.context.scene.camera is not None; assert sum(1 for obj in bpy.data.objects if obj.get('haa_d3_generated') is True) >= 10; print('BLEND_REOPEN_PASS', bpy.app.version_string)"
       - name: Upload Blender render evidence
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
