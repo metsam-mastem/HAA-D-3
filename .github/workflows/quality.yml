@@ -41,13 +41,15 @@ jobs:
           python-version: "3.11"
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install patched build tooling
+        run: python -m pip install --upgrade "setuptools>=84.1.0"
       - name: Install package and media dependencies
         run: python -m pip install -e ".[media]"
       - name: Audit installed Python dependencies
         run: |
           python -m pip install pip-audit
-          pip-audit
-          pip-audit --format cyclonedx-json --output /tmp/haa-d3-sbom.json
+          pip-audit --skip-editable
+          pip-audit --skip-editable --format cyclonedx-json --output /tmp/haa-d3-sbom.json
       - name: Upload dependency SBOM
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
