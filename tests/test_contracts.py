@@ -85,5 +85,13 @@ class KuramotoSimulationTests(unittest.TestCase):
         self.assertNotEqual(a["scene_id"], b["scene_id"])
 
 
+    def test_rejects_non_finite_scene_numbers_and_booleans(self):
+        for value in (float("nan"), float("inf"), True):
+            with self.subTest(value=value):
+                scene = self.scene()
+                scene["duration_seconds"] = value
+                self.assertTrue(any("duration_seconds" in error for error in validate_scene(scene)))
+
+
 if __name__ == "__main__":
     unittest.main()
