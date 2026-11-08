@@ -11,7 +11,8 @@ from typing import Any
 from .contracts import validate_scene
 from .schema_validation import validate_json_schema
 from .render_svg import render_scene_frames
-from .sonification import write_sonification_midi\nfrom .media import write_sonification_wav, render_scene_mp4
+from .sonification import write_sonification_midi
+from .media import write_sonification_wav, render_scene_mp4
 
 
 def _sha256(path: Path) -> str:
@@ -26,6 +27,8 @@ def build_release_bundle(
     simulation: dict[str, Any],
     scene: dict[str, Any],
     output_path: Path,
+    *,
+    include_video: bool = False,
 ) -> Path:
     """Create ZIP with simulation, SceneSpec, SVG frames, MIDI and hash manifest."""
     schema_errors = validate_json_schema(scene, "scene-spec.schema.json")
@@ -58,7 +61,7 @@ def build_release_bundle(
         (root / "README.md").write_text(
             "# HAA-D-3 generated vertical slice\n\n"
             "Contents: source simulation, renderer-neutral SceneSpec, SVG frames, MP4 preview, WAV/MIDI sonification, "
-            "MIDI data-sonification cue and SHA-256 manifest.\n\n"
+            "MIDI/WAV data-sonification cue, MP4 preview and SHA-256 manifest.\n\n"
             "Status: GENERATED_NOT_REVIEWED. Numerical software checks do not establish empirical "
             "or biological validity. Human scientific, creative, accessibility and rights review "
             "is required before public release.\n",
@@ -81,7 +84,9 @@ def build_release_bundle(
             "parameters": simulation.get("parameters"),
             "scene_id": scene.get("scene_id"),
             "frame_count": len(list((root / "frames").glob("*.svg"))),
-            "sonification": sonification,\n            "wav_sonification": wav_metadata,\n            "video": video_metadata,
+            "sonification": sonification,
+            "wav_sonification": wav_metadata,
+            "video": video_metadata,\n            "wav_sonification": wav_metadata,\n            "video": video_metadata,
             "artifacts": artifacts,
             "required_reviews": ["scientific", "creative", "accessibility", "rights"],
             "limitations": [
