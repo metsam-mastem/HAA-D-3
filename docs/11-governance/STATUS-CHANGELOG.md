@@ -117,3 +117,9 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Read README/index or project report for the six non-empty candidates at this audit level: `1` (SOVEREIGN Workbench, prior README inspection), `4` (SSG Python reference core v0.5.0, prior README inspection), `HAA-D-3` (active project), `SssssssskiLLL` (Repository Intelligence Archive with L0–L4 evidence model), `STD` (media workbench research baseline), `VINT` (Reel Intelligence work report under `projects/reel-intelligence/`).
 - VINT discovery corrected: root README is not present, but project subdirectory report is. It proposes a local-first, platform-independent multimodal import/analyze/index workbench; URL ingestion is optional and no production maturity is inferred.
 - Audit depth is metadata + README/index/work-report inspection, not exhaustive line-by-line code/security/dependency/test execution for every populated repository. This remains a deeper portfolio-audit backlog item.
+
+
+## GitHub Actions run ergonomics — 2026-11-08
+- Added manual workflow dispatch scopes to the canonical `.github/workflows/quality.yml`: `full` (default), `docs`, and `python`. Push and pull-request triggers continue to run both validation jobs; scoped profiles only affect a manual run.
+- Added a prominent expandable “Run the Quality Gate” section near the top of README with exact GitHub UI steps, workflow/action links, profile descriptions and artifact download instructions (14-day retention).
+- Manual dispatch profile availability requires the workflow file to be present on the default branch; this change is proposed through a PR before it is available from main.
