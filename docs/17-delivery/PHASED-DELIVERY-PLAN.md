@@ -23,7 +23,7 @@
 - Blender background adapter creates editable scene, animated oscillator objects, coherence ring and PNG sequence.
 - Gate: execute in a pinned Blender version, compare frame count and render manifest, inspect frames and confirm no unsupported scientific depiction.
 
-**State:** PASS — Blender 4.0.2 / BLENDER_EEVEE executed in GitHub Actions. 11 PNG frames at 1920×1080 were rendered and assembled into an H.264/AAC MP4 with deterministic Kuramoto order-parameter WAV sonification. FFprobe and full FFmpeg decode passed; audio/video duration delta was 0.02 s. Hashes, dimensions, frame count and saved .blend reopen passed; original factory Cube/Camera/Light were preserved and restored. Run [42473039140](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473039140); evidence artifact ID 13614063107 (10,937,896 bytes).
+**State:** PASS — Blender 4.0.2 / BLENDER_EEVEE executed in GitHub Actions. 11 PNG frames at 1920×1080 were rendered and assembled into an H.264/AAC MP4 with deterministic Kuramoto order-parameter WAV sonification. FFprobe and full FFmpeg decode passed; audio/video duration delta was 0.02 s. Hashes, dimensions, frame count and saved .blend reopen passed; original factory Cube/Camera/Light were preserved and restored. Run [42473234672](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672); all three CI jobs PASS. Evidence artifact [haa-d3-blender-runtime-evidence](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42473234672/artifacts/13613359974), artifact ID 13613359974 (10,938,087 bytes).
 
 ## Phase D — Production acceptance and release
 - Scientific review of model assumptions and selected source/data.
