@@ -72,6 +72,8 @@ def render_svg(graph: dict[str, Any], width: int = 1000, height: int = 600) -> s
     if errors: raise ValueError("; ".join(errors))
     if isinstance(width, bool) or isinstance(height, bool) or not isinstance(width, int) or not isinstance(height, int) or width < 200 or height < 160:
         raise ValueError("width must be >= 200 and height must be >= 160")
+    if width * height > 16_000_000:
+        raise ValueError("graph render pixel budget exceeded (16000000)")
     nodes, edges = graph["concepts"], graph["relations"]
     if not nodes:
         return f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}"><title>{_escape(graph.get("title", "HAA-D-3 graph"))}</title><desc>Empty graph.</desc><rect width="100%" height="100%" fill="#0b1020"/></svg>\n'
