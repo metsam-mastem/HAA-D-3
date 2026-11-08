@@ -66,7 +66,7 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 
 ## Project-state reconciliation — 2026-11-08
 - PR #6 merged to main at `78dde7741adddf22d0ae44919bb5be98a2d2c5e7`.
-- Quality Gate run [42463486089](https://github.com/github.com/metsam-mastem/HAA-D-3/actions/runs/42463486089) passed `python-core` and `repository-governance`.
+- Quality Gate run [42463486089](https://github.com/metsam-mastem/HAA-D-3/actions/runs/42463486089) passed `python-core` and `repository-governance`.
 - README, source map and foundation handoff now agree on merged status and verification scope.
 - The current source map explicitly keeps runtime code under `src/haa_d3/` and independent numerical verification under `tests/`.
 
@@ -110,3 +110,10 @@ Date; version; author; affected paths; reason/request/source; impact; verificati
 - Captured source-led scientific visualization QC criteria informed by Nature Cell Biology (Jambor, 2025) and Nature Human Behaviour (Fujii, 2026), including clear claims, axis/unit labeling, uncertainty, accessible encodings and mobile legibility.
 - GitHub README-level portfolio snapshot: explicitly empty repos observed for `2`, `3`, `HTH`, `H2H`, `JRYAN`, `KAAVAAK`, `KAAVAAK-`, `SHEED`, `RaYa`; `STD` is research-only with local renderer MVP not validated; `VINT` README lookup remains unresolved; several other repositories still require content audit. This is not yet a complete 18-repository content audit.
 - Added pipeline document to `docs/README.md` and exact Markdown catalog. CI verification for this branch is pending.
+
+
+### Repository content audit update — 2026-11-08
+- Account inventory has 18 repos. Explicit GitHub “repository is empty” API responses confirmed 12 repos: `2`, `3`, `HTH`, `H2H`, `-JRYAN`, `JRYAN`, `RISMAAAN`, `SAEQE`, `KAAVAAK-`, `KAAVAAK`, `SHEED`, `RaYa`.
+- Read README/index or project report for the six non-empty candidates at this audit level: `1` (SOVEREIGN Workbench, prior README inspection), `4` (SSG Python reference core v0.5.0, prior README inspection), `HAA-D-3` (active project), `SssssssskiLLL` (Repository Intelligence Archive with L0–L4 evidence model), `STD` (media workbench research baseline), `VINT` (Reel Intelligence work report under `projects/reel-intelligence/`).
+- VINT discovery corrected: root README is not present, but project subdirectory report is. It proposes a local-first, platform-independent multimodal import/analyze/index workbench; URL ingestion is optional and no production maturity is inferred.
+- Audit depth is metadata + README/index/work-report inspection, not exhaustive line-by-line code/security/dependency/test execution for every populated repository. This remains a deeper portfolio-audit backlog item.
