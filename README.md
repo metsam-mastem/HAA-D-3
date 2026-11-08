@@ -18,6 +18,48 @@ This repository does not claim a validated novel neural architecture, measured p
 2. **The Convergence / همگرایی:** architecture, relationships, feedback, modeling and the research-to-scene bridge.
 3. **The Emergence / ظهور:** validation, synthesis, visual storytelling and cinematic presentation.
 
+
+## Preserved original research and narrative baseline
+
+The initial program baseline focused on investigating hybrid neural architectures and their research questions. This track remains part of the project; it is not a claim that any proposed architecture has been validated:
+
+- Spatially embedded neural graphs.
+- Modular computation and multi-path processing.
+- Recurrent and multi-path feedback mechanisms.
+- Foundation-model integration through replaceable adapters.
+- Local learning and resource-aware execution.
+- Scientific visualization and measurable benchmark comparisons.
+
+The original research cautions remain active:
+- Spatial embedding is a research direction; placing neurons in 3D is not by itself evidence of improved intelligence.
+- Feedback requires explicit objectives, stability controls and ablation benchmarks.
+- A pretrained foundation model is a pragmatic baseline; a custom spatial/feedback network should begin as a bounded, testable subsystem or adapter.
+- Sparse topology, low-rank methods, quantization, selective execution and profiling are candidate interventions, not promised gains.
+- A vertical slice must prove a small end-to-end workflow before scope expands.
+
+### Original three-chapter soundtrack references
+
+These links are preserved as creative references from the initial README. They are not bundled audio, endorsements, or permission to reproduce the works.
+
+1. **Chapter I — The Genesis / پیدایش:** [Aaron — Endless Song by Musigen](https://on.soundcloud.com/Mqv1P2Fsc8lwdTUagf)
+2. **Chapter II — The Convergence / همگرایی:** [Welcome G — Khali G x Shayan Roohi](https://on.soundcloud.com/XmVrz9jdq75DlWBpGZ) · [The Look — Metronomy](https://on.soundcloud.com/ZZhZ90sOMj4V2kG8Rl)
+3. **Chapter III — The Emergence / ظهور:** [Pain in my Heart — Schrotthagen](https://on.soundcloud.com/tSLUbmBdLv76rPaWto) · [Life — Kako Band](https://on.soundcloud.com/m26dzgMfvZUyarB2xC) · [Balthazar — bunker](https://on.soundcloud.com/ch2TtqmDfgVGQcnbVt)
+
+Final episode sequencing, tempo, mood and synchronization remain subject to the creator's brief and rights review. No audio files, lyrics or copyrighted media are redistributed.
+
+### Original success criteria — retained
+
+1. Every major claim is linked to evidence or marked as a hypothesis.
+2. Research branches have explicit scope, dependencies and outputs.
+3. Architecture modules have stable contracts and acceptance tests.
+4. A reproducible vertical slice has baseline comparisons and resource measurements.
+5. Creative visualizations remain faithful to scientific sources and distinguish metaphor from measurement.
+6. Rights, licenses, provenance and data privacy are documented.
+
+### Legacy documentation recovery
+
+The original README also listed a larger documentation map. The inspected original `main` tree did not contain those referenced files. Their names and intended purposes are preserved in [Legacy Documentation Inventory](docs/13-planning/LEGACY-DOCUMENT-INVENTORY.md). This inventory distinguishes missing originals from newly authored replacement drafts and prevents fabricated recovery claims.
+
 ## Product architecture
 - **Research Engine:** sources, claims, datasets, models, experiments, validation and benchmarks.
 - **Computational Core:** portable domain logic, contracts, deterministic transforms and CLI.
