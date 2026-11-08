@@ -137,6 +137,7 @@ def build_scene(spec, output_dir, *, overwrite=False):
                 raise ValueError(f"objects[{index}].animation[{track_index}] is invalid")
             if len(track.get("keyframes", [])) > 1000:
                 raise ValueError(f"objects[{index}].animation[{track_index}] exceeds keyframe limit")
+
     output_dir = Path(output_dir)
     if output_dir.exists() and not output_dir.is_dir():
         raise NotADirectoryError(f"output path is not a directory: {output_dir}")
@@ -149,62 +150,115 @@ def build_scene(spec, output_dir, *, overwrite=False):
         if overwrite:
             for path in existing_outputs:
                 path.unlink()
+
     clear_scene()
     scene = bpy.context.scene
-    fps = float(spec["frame_rate"])
-    duration = float(spec["duration_seconds"])
-    scene.render.fps = round(fps)
-    scene.render.fps_base = scene.render.fps / fps
-    scene.frame_start = 1
-    scene.frame_end = max(1, round(duration * fps) + 1)
-    scene.render.resolution_x = 1920
-    scene.render.resolution_y = 1080
-    scene.render.resolution_percentage = 100
-    scene.render.image_settings.file_format = "PNG"
-    scene.render.film_transparent = False
-    scene.render.engine = eevee_engine_for_version(bpy.app.version)
-    if scene.world is None:
-        scene.world = bpy.data.worlds.new("HAA-D3-World")
-        scene.world["haa_d3_generated"] = True
-    scene.world.color = (0.005, 0.012, 0.025)
-    cyan = make_material("HAA-D3-Cyan", (0.08, 0.72, 0.82), 1.2)
-    amber = make_material("HAA-D3-Amber", (1.0, 0.52, 0.12), 0.8)
-    for item in spec.get("objects", []):
-        if item.get("type") == "oscillator":
-            bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=8, radius=0.075)
-            obj = bpy.context.object
-            obj.name = item["id"]
-            obj["haa_d3_generated"] = True
-            obj.data["haa_d3_generated"] = True
-            obj.data.materials.append(cyan)
-            track = next((x for x in item.get("animation", []) if x.get("property") == "transform.position"), None)
-            if track:
-                for key in track.get("keyframes", []):
-                    frame = round(float(key["time_seconds"]) * fps) + 1
-                    obj.location = tuple(key["value"])
-                    obj.keyframe_insert(data_path="location", frame=frame)
-            else:
-                obj.location = tuple(item.get("transform", {}).get("position", [0, 0, 0]))
-        elif item.get("type") == "metric":
-            bpy.ops.mesh.primitive_torus_add(major_radius=0.45, minor_radius=0.012, major_segments=96, minor_segments=8)
-            obj = bpy.context.object
-            obj.name = item["id"]
-            obj["haa_d3_generated"] = True
-            obj.data["haa_d3_generated"] = True
-            obj.data.materials.append(amber)
-            track = next((x for x in item.get("animation", []) if x.get("property") == "material.emission_intensity"), None)
-            if track:
-                for key in track.get("keyframes", []):
-                    frame = round(float(key["time_seconds"]) * fps) + 1
-                    strength = max(0.05, min(1.0, float(key["value"])))
-                    obj.scale = (0.6 + strength, 0.6 + strength, 0.6 + strength)
-                    obj.keyframe_insert(data_path="scale", frame=frame)
-    add_camera_and_light()
-    output_dir.mkdir(parents=True, exist_ok=True)
-    scene.render.filepath = str((output_dir / "frame_").resolve())
-    scene.render.use_file_extension = True
+    original = {
+        "camera": scene.camera,
+        "world": scene.world,
+        "engine": scene.render.engine,
+        "fps": scene.render.fps,
+        "fps_base": scene.render.fps_base,
+        "frame_start": scene.frame_start,
+        "frame_end": scene.frame_end,
+        "frame_current": scene.frame_current,
+        "resolution_x": scene.render.resolution_x,
+        "resolution_y": scene.render.resolution_y,
+        "resolution_percentage": scene.render.resolution_percentage,
+        "file_format": scene.render.image_settings.file_format,
+        "film_transparent": scene.render.film_transparent,
+        "filepath": scene.render.filepath,
+        "use_file_extension": scene.render.use_file_extension,
+        "world_color": tuple(scene.world.color) if scene.world is not None else None,
+    }
+    unowned_objects = [
+        (obj, obj.hide_render)
+        for obj in list(scene.objects)
+        if obj.get("haa_d3_generated") is not True
+    ]
+    render_fps = float(fps)
+    render_engine = eevee_engine_for_version(bpy.app.version)
+    render_resolution = (1920, 1080)
+    frame_start = 1
+    frame_end = max(1, round(float(duration) * render_fps) + 1)
+
+    try:
+        scene.render.fps = round(render_fps)
+        scene.render.fps_base = scene.render.fps / render_fps
+        scene.frame_start = frame_start
+        scene.frame_end = frame_end
+        scene.render.resolution_x, scene.render.resolution_y = render_resolution
+        scene.render.resolution_percentage = 100
+        scene.render.image_settings.file_format = "PNG"
+        scene.render.film_transparent = False
+        scene.render.engine = render_engine
+        if scene.world is None:
+            scene.world = bpy.data.worlds.new("HAA-D3-World")
+            scene.world["haa_d3_generated"] = True
+        scene.world.color = (0.005, 0.012, 0.025)
+
+        cyan = make_material("HAA-D3-Cyan", (0.08, 0.72, 0.82), 1.2)
+        amber = make_material("HAA-D3-Amber", (1.0, 0.52, 0.12), 0.8)
+        for item in spec.get("objects", []):
+            if item.get("type") == "oscillator":
+                bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=8, radius=0.075)
+                obj = bpy.context.object
+                obj.name = item["id"]
+                obj["haa_d3_generated"] = True
+                obj.data["haa_d3_generated"] = True
+                obj.data.materials.append(cyan)
+                track = next((x for x in item.get("animation", []) if x.get("property") == "transform.position"), None)
+                if track:
+                    for key in track.get("keyframes", []):
+                        frame = round(float(key["time_seconds"]) * render_fps) + 1
+                        obj.location = tuple(key["value"])
+                        obj.keyframe_insert(data_path="location", frame=frame)
+                else:
+                    obj.location = tuple(item.get("transform", {}).get("position", [0, 0, 0]))
+            elif item.get("type") == "metric":
+                bpy.ops.mesh.primitive_torus_add(major_radius=0.45, minor_radius=0.012, major_segments=96, minor_segments=8)
+                obj = bpy.context.object
+                obj.name = item["id"]
+                obj["haa_d3_generated"] = True
+                obj.data["haa_d3_generated"] = True
+                obj.data.materials.append(amber)
+                track = next((x for x in item.get("animation", []) if x.get("property") == "material.emission_intensity"), None)
+                if track:
+                    for key in track.get("keyframes", []):
+                        frame = round(float(key["time_seconds"]) * render_fps) + 1
+                        strength = max(0.05, min(1.0, float(key["value"])))
+                        obj.scale = (0.6 + strength, 0.6 + strength, 0.6 + strength)
+                        obj.keyframe_insert(data_path="scale", frame=frame)
+        add_camera_and_light()
+        output_dir.mkdir(parents=True, exist_ok=True)
+        scene.render.filepath = str((output_dir / "frame_").resolve())
+        scene.render.use_file_extension = True
+        for obj, _old_hide_render in unowned_objects:
+            obj.hide_render = True
+        bpy.ops.render.render(animation=True)
+    finally:
+        for obj, old_hide_render in unowned_objects:
+            if obj.name in bpy.data.objects:
+                obj.hide_render = old_hide_render
+        scene.camera = original["camera"]
+        scene.world = original["world"]
+        if original["world"] is not None and original["world_color"] is not None:
+            scene.world.color = original["world_color"]
+        scene.render.engine = original["engine"]
+        scene.render.fps = original["fps"]
+        scene.render.fps_base = original["fps_base"]
+        scene.frame_start = original["frame_start"]
+        scene.frame_end = original["frame_end"]
+        scene.render.resolution_x = original["resolution_x"]
+        scene.render.resolution_y = original["resolution_y"]
+        scene.render.resolution_percentage = original["resolution_percentage"]
+        scene.render.image_settings.file_format = original["file_format"]
+        scene.render.film_transparent = original["film_transparent"]
+        scene.render.filepath = original["filepath"]
+        scene.render.use_file_extension = original["use_file_extension"]
+        scene.frame_set(original["frame_current"])
+
     bpy.ops.wm.save_as_mainfile(filepath=str((output_dir / "scene.blend").resolve()))
-    bpy.ops.render.render(animation=True)
     rendered_frames = sorted(output_dir.glob("frame_*.png"))
     artifacts = [output_dir / "scene.blend", *rendered_frames]
     artifact_inventory = {
@@ -218,14 +272,13 @@ def build_scene(spec, output_dir, *, overwrite=False):
         "status": "RENDERED_NOT_REVIEWED",
         "scene_id": spec["scene_id"],
         "blender_version": bpy.app.version_string,
-        "render_engine": scene.render.engine,
-        "frame_start": scene.frame_start,
-        "frame_end": scene.frame_end,
+        "render_engine": render_engine,
+        "frame_start": frame_start,
+        "frame_end": frame_end,
         "frame_count": len(rendered_frames),
-        "fps": scene.render.fps,
-        "fps_base": scene.render.fps_base,
-        "effective_fps": scene.render.fps / scene.render.fps_base,
-        "resolution": [scene.render.resolution_x, scene.render.resolution_y],
+        "fps": round(render_fps, 6),
+        "resolution": list(render_resolution),
+        "unowned_objects_preserved": len(unowned_objects),
         "artifact_inventory": artifact_inventory,
         "evidence_class": spec.get("metadata", {}).get("evidence_class", "UNKNOWN"),
         "scientific_scope": spec.get("metadata", {}).get("scientific_scope"),
@@ -233,7 +286,6 @@ def build_scene(spec, output_dir, *, overwrite=False):
     }
     (output_dir / "render-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(manifest, indent=2))
-
 
 if __name__ == "__main__":
     arguments = parse_args()
