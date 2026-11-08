@@ -56,7 +56,7 @@ The Python package has one canonical root: src/haa_d3/. The test suite has one r
 - Capability descriptors and deterministic adapter selection.
 - Seeded Kuramoto coupled-oscillator prototype and research-to-scene mapping.
 - Independent numerical checks: O(N²) pairwise reference, analytical K=0 solution and Heun second-order convergence (CI run 42463415737: PASS).
-- Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt.
+- Runtime JSON Schema validation for SceneSpec and Finding contracts.\n- Deterministic SVG frame renderer and MIDI data-sonification adapter.\n- End-to-end ZIP release bundler with SHA-256 inventory and explicit review status.\n- Optional Blender 4.2+ background renderer adapter (runtime execution pending).\n- Knowledge-graph validation, deterministic SVG projection and SHA-256 provenance receipt.
 - Browser-based Neural Odyssey illustrative demo.
 
 Graph and Kuramoto outputs remain computational/model outputs, not empirical scientific validation. The Kuramoto numerical implementation passes independent-formulation, analytical-special-case and convergence checks; external scientific review and experimental-data comparison remain pending. It is a generic coupled-oscillator system, not a biological brain model.
@@ -65,14 +65,14 @@ Graph and Kuramoto outputs remain computational/model outputs, not empirical sci
 Requires Python 3.11+.
 
 ~~~bash
-PYTHONPATH=src python -m unittest discover -s tests -v
+python -m pip install -e .\nPYTHONPATH=src python -m unittest discover -s tests -v
 PYTHONPATH=src python -m haa_d3.cli validate-scene examples/scenes/synthetic-emergence.scene.json
 PYTHONPATH=src python -m haa_d3.cli simulate-kuramoto --nodes 64 --coupling 1.5 --dt 0.02 --steps 500 --seed 7 --output /tmp/kuramoto.json
 PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 64 --steps 250 --seed 7 --output /tmp/kuramoto-scene.json
-PYTHONPATH=src python -m haa_d3.cli render-knowledge-graph examples/knowledge/seed-graph.json --out /tmp/haa-d3-graph
+PYTHONPATH=src python -m haa_d3.cli render-knowledge-graph examples/knowledge/seed-graph.json --out /tmp/haa-d3-graph\nPYTHONPATH=src python -m haa_d3.cli build-release --nodes 24 --steps 100 --dt 0.05 --frame-rate 24 --output artifacts/haa-d3-release.zip
 ~~~
 
-## Creative identity
+## Delivery plan\nThe compressed execution gates and acceptance criteria are in [Phased Delivery Plan](docs/17-delivery/PHASED-DELIVERY-PLAN.md).\n\n## Creative identity
 The narrative frame has three chapters: **The Genesis / پیدایش**, **The Convergence / همگرایی**, and **The Emergence / ظهور**. Original music references and creative direction remain in the series bible and creative reference map. They are inspiration only; no copyrighted audio is bundled or assumed cleared.
 
 ## Quality and evidence
