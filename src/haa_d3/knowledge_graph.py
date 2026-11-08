@@ -3,6 +3,9 @@ from __future__ import annotations
 import hashlib, json, math
 from typing import Any
 
+MAX_CONCEPTS = 10_000
+MAX_RELATIONS = 50_000
+
 def canonical_json(value: dict[str, Any]) -> bytes:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
@@ -20,6 +23,12 @@ def validate_graph(graph: dict[str, Any]) -> list[str]:
         errors.append("concepts must be an array"); concepts = []
     if not isinstance(relations, list):
         errors.append("relations must be an array"); relations = []
+    if len(concepts) > MAX_CONCEPTS:
+        errors.append(f"concept limit exceeded ({MAX_CONCEPTS})")
+        return errors
+    if len(relations) > MAX_RELATIONS:
+        errors.append(f"relation limit exceeded ({MAX_RELATIONS})")
+        return errors
     identifiers: set[str] = set()
     for index, node in enumerate(concepts):
         if not isinstance(node, dict):
