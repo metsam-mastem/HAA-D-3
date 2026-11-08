@@ -11,11 +11,32 @@ from .scene_mappings import kuramoto_to_scene
 from .knowledge_graph import create_receipt, render_svg, validate_graph
 
 
+def _unique_json_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON object key: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str):
+    raise ValueError(f"non-standard JSON numeric constant: {value}")
+
+
 def _read_json(path: Path) -> dict:
-    try: payload = json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError: raise ValueError(f"file not found: {path}") from None
-    except json.JSONDecodeError as exc: raise ValueError(f"invalid JSON: {exc}") from None
-    if not isinstance(payload, dict): raise ValueError("top-level JSON value must be an object")
+    try:
+        payload = json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_unique_json_object,
+            parse_constant=_reject_json_constant,
+        )
+    except FileNotFoundError:
+        raise ValueError(f"file not found: {path}") from None
+    except (json.JSONDecodeError, ValueError) as exc:
+        raise ValueError(f"invalid JSON: {exc}") from None
+    if not isinstance(payload, dict):
+        raise ValueError("top-level JSON value must be an object")
     return payload
 
 
