@@ -2,6 +2,7 @@ import unittest
 from haa_d3.contracts import validate_finding, validate_scene
 from haa_d3.capabilities import AdapterDescriptor, RuntimeProfile, select_adapters
 from haa_d3.kuramoto import simulate_kuramoto, order_parameter
+from haa_d3.scene_mappings import kuramoto_to_scene
 
 class ContractTests(unittest.TestCase):
     def scene(self):
@@ -66,6 +67,15 @@ class KuramotoSimulationTests(unittest.TestCase):
 
     def test_order_parameter_for_identical_phases_is_one(self):
         self.assertAlmostEqual(order_parameter([0.3, 0.3, 0.3]), 1.0, places=12)
+
+    def test_kuramoto_scene_mapping_preserves_provenance_and_shape(self):
+        simulation = simulate_kuramoto(nodes=5, steps=3, seed=4)
+        scene = kuramoto_to_scene(simulation)
+        self.assertEqual(scene["interpretation_mode"], "ANALYTICAL")
+        self.assertEqual(scene["metadata"]["evidence_class"], "MODEL_OUTPUT")
+        self.assertEqual(len(scene["objects"]), 6)
+        self.assertEqual(len(scene["objects"][0]["animation"][0]["keyframes"]), 4)
+        self.assertTrue(any(obj["id"] == "global-coherence" for obj in scene["objects"]))
 
 
 if __name__ == "__main__":
