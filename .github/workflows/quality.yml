@@ -17,3 +17,7 @@ jobs:
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Validate example SceneSpec
         run: PYTHONPATH=src python -m haa_d3.cli validate-scene examples/scenes/synthetic-emergence.scene.json
+      - name: Generate analytical SceneSpec from Kuramoto simulation
+        run: PYTHONPATH=src python -m haa_d3.cli kuramoto-scene --nodes 12 --steps 5 --seed 11 --output /tmp/kuramoto-scene.json
+      - name: Validate generated SceneSpec
+        run: PYTHONPATH=src python -m haa_d3.cli validate-scene /tmp/kuramoto-scene.json
