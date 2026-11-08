@@ -6,6 +6,7 @@ This is the authoritative navigation index. A document not listed as implemented
 - [Program Operating Model](00-charter/PROGRAM-OPERATING-MODEL.md)
 - [Project Continuity and Ingestion Protocol](13-planning/PROJECT-CONTINUITY-AND-INGESTION-PROTOCOL.md)
 - [Foundation Handoff Record](13-planning/HANDOFF-2026-11-08-foundation.md)
+- [Vertical Slice 02 Handoff](13-planning/HANDOFF-2026-11-08-vs02.md)
 - [Legacy Documentation Inventory](13-planning/LEGACY-DOCUMENT-INVENTORY.md)
 - [Handoff Template](13-planning/HANDOFF-TEMPLATE.md)
 - [Architecture Decision Records](16-decisions/README.md)
