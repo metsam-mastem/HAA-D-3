@@ -83,4 +83,63 @@ def validate_scene(value: dict[str, Any]) -> list[str]:
                 errors.append(f"duplicate object id: {object_id}")
             elif isinstance(object_id, str):
                 seen.add(object_id)
+
+            transform = obj.get("transform", {})
+            if not isinstance(transform, dict):
+                errors.append(f"objects[{index}].transform must be an object")
+            elif "position" in transform:
+                position = transform["position"]
+                if (not isinstance(position, (list, tuple)) or len(position) != 3
+                        or any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) for v in position)):
+                    errors.append(f"objects[{index}].transform.position must contain three finite numbers")
+
+            animation = obj.get("animation", [])
+            if not isinstance(animation, list):
+                errors.append(f"objects[{index}].animation must be an array")
+                continue
+            if len(animation) > 100:
+                errors.append(f"objects[{index}].animation track limit exceeded (100)")
+                continue
+            total_keyframes = 0
+            for track_index, track in enumerate(animation):
+                if not isinstance(track, dict):
+                    errors.append(f"objects[{index}].animation[{track_index}] must be an object")
+                    continue
+                prop = track.get("property")
+                if not isinstance(prop, str) or not prop.strip():
+                    errors.append(f"objects[{index}].animation[{track_index}].property must be a non-empty string")
+                keyframes = track.get("keyframes", [])
+                if not isinstance(keyframes, list):
+                    errors.append(f"objects[{index}].animation[{track_index}].keyframes must be an array")
+                    continue
+                if len(keyframes) > 1000:
+                    errors.append(f"objects[{index}].animation[{track_index}] keyframe limit exceeded (1000)")
+                    continue
+                total_keyframes += len(keyframes)
+                previous_time = None
+                for key_index, keyframe in enumerate(keyframes):
+                    if not isinstance(keyframe, dict):
+                        errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}] must be an object")
+                        continue
+                    time_value = keyframe.get("time_seconds")
+                    if (isinstance(time_value, bool) or not isinstance(time_value, (int, float))
+                            or not math.isfinite(time_value) or time_value < 0):
+                        errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].time_seconds must be finite and non-negative")
+                    elif previous_time is not None and time_value <= previous_time:
+                        errors.append(f"objects[{index}].animation[{track_index}] keyframe time_seconds must be strictly increasing")
+                    else:
+                        previous_time = time_value
+                    value = keyframe.get("value")
+                    if isinstance(value, bool):
+                        valid_value = False
+                    elif isinstance(value, (int, float)):
+                        valid_value = math.isfinite(value)
+                    elif isinstance(value, (list, tuple)) and len(value) == 3:
+                        valid_value = all(not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) for v in value)
+                    else:
+                        valid_value = False
+                    if not valid_value:
+                        errors.append(f"objects[{index}].animation[{track_index}].keyframes[{key_index}].value must be a finite number or 3D vector")
+            if total_keyframes > 50_000:
+                errors.append("scene total keyframe budget exceeded (50000)")
     return errors
