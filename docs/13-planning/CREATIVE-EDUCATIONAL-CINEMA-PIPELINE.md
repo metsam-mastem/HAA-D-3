@@ -116,7 +116,7 @@ The accessible account inventory contained 18 repositories at the time of the au
 | `SAEQE` | Empty repository |
 | `KAAVAAK-` | Empty repository |
 | `KAAVAAK` | Empty repository |
-| `HAA-D-3` | Active project; recent main commit adds playable MP4 research-to-cinema preview |
+| `HAA-D-3` | Active project; reproducible SVG/MP4/WAV/MIDI vertical slice and Blender 4.0.2 EEVEE render plus H.264/AAC audiovisual preview and WAV data sonification verified in CI; human creative/science review remains pending |
 | `SHEED` | Empty repository |
 | `SssssssskiLLL` | Repository Intelligence Archive; README/docs index describe 8 upstream repositories across memory/context, benchmark, MCP, agent runtime, multi-agent IDE, local AI deployment and scoped-access security. Its README says code-flow deep dive and isolated test execution are not yet done in that archive. |
 | `RaYa` | Empty repository |
@@ -130,7 +130,7 @@ The accessible account inventory contained 18 repositories at the time of the au
 ### P0 — prove the smallest useful vertical slice
 1. Lock one 30–60 second scientific concept from HAA-D-3 (no new claims without evidence).
 2. Make one approved script and 5–8-scene storyboard.
-3. Render a Manim test scene and Blender headless smoke scene; record machine, versions, duration, and output hashes.
+3. Blender 4.0.2 EEVEE headless render and H.264/AAC preview are verified (11 frames, 1920×1080, WAV data sonification, 0.02 s audio/video duration delta, SHA-256 inventory); Manim Community 0.19.0 SceneSpec-driven smoke render is now implemented and queued for CI verification. Record machine, versions, duration, and output hashes for each renderer.
 4. Assemble narrated MP4 with FFmpeg and export a vertical derivative using a separate safe-area layout.
 5. Run science/visual/audio/accessibility/rights checklist and record reviewer decisions.
 
